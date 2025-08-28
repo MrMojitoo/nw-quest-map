@@ -77,3 +77,18 @@ select { background: #0c1524; color: var(--text); border: 1px solid var(--border
   paint-order: stroke fill;
   shape-rendering: crispEdges;
 }
+
+.copy-id {
+  cursor: pointer;
+  user-select: text;
+  border-radius: 4px;
+  padding: 0 4px;
+  transition: background-color .15s ease, outline-color .15s ease;
+}
+.copy-id:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+.copy-id.copied {
+  outline: 2px solid #34d399; /* feedback vert */
+  outline-offset: 2px;
+}

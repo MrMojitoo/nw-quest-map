@@ -15,5 +15,5 @@ export function getZoneByIdPrefix(questId: string | undefined | null): ZoneInfo 
   if (id.startsWith('16'))   return { name: "Brimstone Sands",    color: "#facc15" }       // jaune sable
   if (id.startsWith('09A_')) return { name: "Elysian Wilds",      color: "#86efac" }       // vert clair
   // défaut
-  return { name: "Zone inconnue", color: "#94a3b8" }
+  return { name: "Zone inconnue", color: "#ffffff" }
 }

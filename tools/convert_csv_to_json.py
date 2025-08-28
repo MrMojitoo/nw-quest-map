@@ -12,7 +12,7 @@ csv_path = sys.argv[1]
 out_path = os.path.join('public', 'data', 'quests.json')
 df = pd.read_csv(csv_path, encoding='utf-8', low_memory=False)
 df.columns = [c.strip() for c in df.columns]
-EXCLUDE_RE = re.compile(r"(^01_|^S_|^Quest_|AC_Test|devworld|_alt|EnterZone_SM|_EG|_RW" \
+EXCLUDE_RE = re.compile(r"(^01_|^S_|^Quest_|AC_Test|devworld|_alt|EnterZone_SM|_EG|_RW|^9806_|^9809_|^9812_" \
                         r"|(_soldier|_destroyer|_ranger|_musketeer|_occultist|_mystic|_swordsman)$)")
 TYPE_EXCLUDE_RE = re.compile(r"\b(Artifact|Mission|Community Goal)\b", re.IGNORECASE)
 MANUAL_PATH = os.path.join('tools', 'manual_links.json')

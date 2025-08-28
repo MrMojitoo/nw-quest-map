@@ -5,6 +5,7 @@ import { Handle, Position } from 'reactflow'
 import { getZoneByIdPrefix } from '../utils/zones'
 
 export default function NodeCard({ data }: { data: any }) {
+  const [copied, setCopied] = React.useState(false)
   const toggle = useStore(s => s.toggleQuest)
   const active = useStore(s => s.characters.find(c => c.id === s.activeId))
   const isCompleted = !!active?.completed?.[data.id]
@@ -52,8 +53,41 @@ export default function NodeCard({ data }: { data: any }) {
         )}
         <div className="title">{data.title || data.id}</div>
       </div>
-      {/* Ligne debug : afficher l'ID de la quête */}
-      <div className="muted" style={{ fontSize: 12, marginTop: 4 }}>ID : {data.id}</div>
+      {/* ID cliquable : copie l'identifiant en un clic */}
+      <div className="muted" style={{ fontSize: 12, marginTop: 4 }}>
+        ID :{' '}
+        <code
+          className={`copy-id${copied ? ' copied' : ''}`}
+          title="Cliquer pour copier l'ID"
+          onMouseDown={(e) => e.stopPropagation()} // évite le pan/drag
+          onClick={async (e) => {
+            e.stopPropagation()
+            const text = String(data.id)
+            try {
+              if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(text)
+              } else {
+                // Fallback pour anciens navigateurs
+                const ta = document.createElement('textarea')
+                ta.value = text
+                ta.setAttribute('readonly', '')
+                ta.style.position = 'fixed'
+                ta.style.opacity = '0'
+                document.body.appendChild(ta)
+                ta.select()
+                document.execCommand('copy')
+                document.body.removeChild(ta)
+              }
+              setCopied(true)
+              window.setTimeout(() => setCopied(false), 900)
+            } catch {
+              // silencieux ; on peut logger si besoin
+            }
+          }}
+        >
+          {data.id}
+        </code>
+      </div>
       <div className="meta">
         {normType && <span className="tag"><ScrollText size={14}/> {normType}</span>}
         {isRepeatable && <span className="tag" style={{ borderColor:'#facc15', color:'#facc15' }}>Repeatable</span>}

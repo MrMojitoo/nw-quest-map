@@ -1,7 +1,7 @@
 {
-  "generated_at": "2025-08-28T13:48:03.363059Z",
-  "quest_count": 739,
-  "edge_count": 643,
+  "generated_at": "2025-08-28T16:20:02.302770Z",
+  "quest_count": 730,
+  "edge_count": 679,
   "quests": [
     {
       "id": "06_getoffbeach",
@@ -19,8 +19,8 @@
       "required_achievements_expr": "!S_introtosettlement && !Watched_IGC_Aelstrom_MB",
       "prerequisites": [],
       "not_prerequisites": [
-        "06_raisealarm",
-        "12_raisealarm"
+        "12_raisealarm",
+        "06_raisealarm"
       ],
       "repeatable": false,
       "priority": 0
@@ -41,8 +41,8 @@
       "required_achievements_expr": "!S_introtosettlement && !Watched_IGC_Aelstrom_WW",
       "prerequisites": [],
       "not_prerequisites": [
-        "06_raisealarm",
-        "12_raisealarm"
+        "12_raisealarm",
+        "06_raisealarm"
       ],
       "repeatable": false,
       "priority": 0
@@ -4139,7 +4139,9 @@
       ],
       "achievement_id": "02_Quest_Obelisk_11",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "99C_MSQ_11_Lepus"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -4159,7 +4161,9 @@
       ],
       "achievement_id": "02_Quest_04",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "99B_MSQ_06_lostcathedral"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -4201,7 +4205,9 @@
       ],
       "achievement_id": "02_Quest_16",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "99B_MSQ_02_meetgalahad"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -4243,7 +4249,9 @@
       ],
       "achievement_id": "02_Quest_19",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "99B_MSQ_05_findingfort"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -4307,7 +4315,9 @@
       ],
       "achievement_id": "02_Quest_22",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "99B_MSQ_07_cursedcemetery"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -4349,7 +4359,9 @@
       ],
       "achievement_id": "02_Quest_26",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "99B_MSQ_05_findingfort"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -4435,7 +4447,9 @@
       ],
       "achievement_id": "02A_SQ_01",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "99B_MSQ_01_searchwalsham"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -5089,7 +5103,9 @@
       ],
       "achievement_id": "04A_Side02_01",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "99A_MSQ_01_LearnSoulwardens"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -5241,7 +5257,9 @@
       ],
       "achievement_id": "04A_Side03_01",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "99A_MSQ_02_Rumors"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -5305,7 +5323,9 @@
       ],
       "achievement_id": "04A_Side04_01",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "99A_MSQ_04_ToAdiana"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -5457,7 +5477,9 @@
       ],
       "achievement_id": "04A_Side05_01",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "99A_MSQ_02_Rumors"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -5543,7 +5565,9 @@
       ],
       "achievement_id": "04A_Side06_01",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "FactionIntro_Marauders_01"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -5585,7 +5609,9 @@
       ],
       "achievement_id": "04A_Side07_01",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "FactionIntro_Syndicate_01"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -5671,7 +5697,9 @@
       ],
       "achievement_id": "04A_Side08_01",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "FactionIntro_Covenant_01"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -5735,7 +5763,9 @@
       ],
       "achievement_id": "04A_Side09_01",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "FactionIntro_Syndicate_01"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -5755,7 +5785,9 @@
       ],
       "achievement_id": "04A_Side10_01",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "99A_MSQ_03_ClimbArcturus"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -7255,7 +7287,9 @@
       ],
       "achievement_id": "07_Quest_Isabella_02",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "0726_0101_MightyTempest"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -7276,7 +7310,9 @@
       ],
       "achievement_id": "07_Quest_Isabella_03",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "0726_0102_IsabellaDeLeon"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -7297,7 +7333,9 @@
       ],
       "achievement_id": "07_Quest_Isabella_04",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "0726_0103_IsabellasCorruption"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -7318,7 +7356,9 @@
       ],
       "achievement_id": "07_Quest_Isabella_05",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "0726_0104_RiseOfIsabella"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -7339,7 +7379,9 @@
       ],
       "achievement_id": "07_Quest_Isabella_06",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "0726_0105_DeathOfHeretic"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -7359,7 +7401,9 @@
       ],
       "achievement_id": "07_Quest_Isabella_07",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "0726_0106_PossessionOfRusso"
+      ],
       "not_prerequisites": [],
       "repeatable": true,
       "priority": 1
@@ -10204,10 +10248,10 @@
       "achievement_id": "12_Quest_Housing_2",
       "required_achievements_expr": "S_downpayment",
       "prerequisites": [
-        "1225_0101_downpayment_WW",
-        "1225_0101_downpayment_EF",
         "1225_0101_downpayment_FL",
-        "1225_0101_downpayment_MB"
+        "1225_0101_downpayment_WW",
+        "1225_0101_downpayment_MB",
+        "1225_0101_downpayment_EF"
       ],
       "not_prerequisites": [],
       "repeatable": false,
@@ -13466,7 +13510,10 @@
       ],
       "achievement_id": "C91_FishQ_01",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "06_raisealarm",
+        "12_raisealarm"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -15253,66 +15300,6 @@
       "priority": 1
     },
     {
-      "id": "9806_M_0001_RankUp",
-      "title": "Marauder Advancement: Gladiator",
-      "description": "Earn enough Faction Reputation to qualify for the rank of Gladiator and then complete the Trial of the Gladiator quest from the Enclave.",
-      "type": "Faction Story  Marauders",
-      "icon": "",
-      "recommended_level": 25,
-      "required_level": 0,
-      "zone_id": 0,
-      "rewards": [
-        "Azoth +50",
-        "Coin +9625"
-      ],
-      "achievement_id": "FactionRank_M_0001_RankUp",
-      "required_achievements_expr": null,
-      "prerequisites": [],
-      "not_prerequisites": [],
-      "repeatable": false,
-      "priority": 1
-    },
-    {
-      "id": "9809_M_0001_RankUp",
-      "title": "Marauder Advancement: Gladiator",
-      "description": "Earn enough Faction Reputation to qualify for the rank of Gladiator and then complete the Trial of the Gladiator quest from the Enclave.",
-      "type": "Faction Story  Marauders",
-      "icon": "",
-      "recommended_level": 25,
-      "required_level": 0,
-      "zone_id": 0,
-      "rewards": [
-        "Azoth +50",
-        "Coin +9625"
-      ],
-      "achievement_id": "FactionRank_M_0001_RankUp",
-      "required_achievements_expr": null,
-      "prerequisites": [],
-      "not_prerequisites": [],
-      "repeatable": false,
-      "priority": 1
-    },
-    {
-      "id": "9812_M_0001_RankUp",
-      "title": "Marauder Advancement: Gladiator",
-      "description": "Earn enough Faction Reputation to qualify for the rank of Gladiator and then complete the Trial of the Gladiator quest from the Enclave.",
-      "type": "Faction Story  Marauders",
-      "icon": "",
-      "recommended_level": 25,
-      "required_level": 0,
-      "zone_id": 0,
-      "rewards": [
-        "Azoth +50",
-        "Coin +9625"
-      ],
-      "achievement_id": "FactionRank_M_0001_RankUp",
-      "required_achievements_expr": null,
-      "prerequisites": [],
-      "not_prerequisites": [],
-      "repeatable": false,
-      "priority": 1
-    },
-    {
       "id": "98_M_01_combatprowess",
       "title": "Marauder: Trial of the Gladiator",
       "description": "Defeat the Lost and their leader, Pirate Lawrence of the Long Shadow to prove you're worthy to advance to the rank of Gladiator. Talk to Commander Silas at the Marauder Enclave when the task is complete.",
@@ -15347,7 +15334,9 @@
       ],
       "achievement_id": "FactionRank_M_0102_RankUp",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "9804_M_0001_RankUp"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -15389,7 +15378,9 @@
       ],
       "achievement_id": "FactionRank_M_0203_RankUp",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "98_M_0102_RankUp"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -15431,7 +15422,9 @@
       ],
       "achievement_id": "FactionRank_M_0304_RankUp",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "98_M_0203_RankUp"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -15473,7 +15466,9 @@
       ],
       "achievement_id": "FactionRank_M_0405_RankUp",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "98_M_0304_RankUp"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -15502,66 +15497,6 @@
     },
     {
       "id": "9804_S_0001_RankUp",
-      "title": "Syndicate Advancement: Scrivener",
-      "description": "Earn enough Faction Reputation to qualify for the rank of Scrivener and then complete the Trial of the Scrivener Quest from the Enclave.",
-      "type": "Faction Story  Syndicate",
-      "icon": "",
-      "recommended_level": 25,
-      "required_level": 0,
-      "zone_id": 0,
-      "rewards": [
-        "Azoth +50",
-        "Coin +9625"
-      ],
-      "achievement_id": "FactionRank_S_0001_RankUp",
-      "required_achievements_expr": null,
-      "prerequisites": [],
-      "not_prerequisites": [],
-      "repeatable": false,
-      "priority": 1
-    },
-    {
-      "id": "9806_S_0001_RankUp",
-      "title": "Syndicate Advancement: Scrivener",
-      "description": "Earn enough Faction Reputation to qualify for the rank of Scrivener and then complete the Trial of the Scrivener Quest from the Enclave.",
-      "type": "Faction Story  Syndicate",
-      "icon": "",
-      "recommended_level": 25,
-      "required_level": 0,
-      "zone_id": 0,
-      "rewards": [
-        "Azoth +50",
-        "Coin +9625"
-      ],
-      "achievement_id": "FactionRank_S_0001_RankUp",
-      "required_achievements_expr": null,
-      "prerequisites": [],
-      "not_prerequisites": [],
-      "repeatable": false,
-      "priority": 1
-    },
-    {
-      "id": "9809_S_0001_RankUp",
-      "title": "Syndicate Advancement: Scrivener",
-      "description": "Earn enough Faction Reputation to qualify for the rank of Scrivener and then complete the Trial of the Scrivener Quest from the Enclave.",
-      "type": "Faction Story  Syndicate",
-      "icon": "",
-      "recommended_level": 25,
-      "required_level": 0,
-      "zone_id": 0,
-      "rewards": [
-        "Azoth +50",
-        "Coin +9625"
-      ],
-      "achievement_id": "FactionRank_S_0001_RankUp",
-      "required_achievements_expr": null,
-      "prerequisites": [],
-      "not_prerequisites": [],
-      "repeatable": false,
-      "priority": 1
-    },
-    {
-      "id": "9812_S_0001_RankUp",
       "title": "Syndicate Advancement: Scrivener",
       "description": "Earn enough Faction Reputation to qualify for the rank of Scrivener and then complete the Trial of the Scrivener Quest from the Enclave.",
       "type": "Faction Story  Syndicate",
@@ -15615,7 +15550,9 @@
       ],
       "achievement_id": "FactionRank_S_0102_RankUp",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "9804_S_0001_RankUp"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -15657,7 +15594,9 @@
       ],
       "achievement_id": "FactionRank_S_0203_RankUp",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "98_S_0102_RankUp"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -15699,7 +15638,9 @@
       ],
       "achievement_id": "FactionRank_S_0304_RankUp",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "98_S_0203_RankUp"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -15741,7 +15682,9 @@
       ],
       "achievement_id": "FactionRank_S_0405_RankUp",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "98_S_0304_RankUp"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -15770,66 +15713,6 @@
     },
     {
       "id": "9804_C_0001_RankUp",
-      "title": "Covenant Advancement: Templar",
-      "description": "Earn enough Faction Reputation to qualify for the rank of Templar and then complete the Trial of the Templar quest from Beatris Roose at the Covenant Enclave.",
-      "type": "Faction Story  Covenant",
-      "icon": "",
-      "recommended_level": 25,
-      "required_level": 0,
-      "zone_id": 0,
-      "rewards": [
-        "Azoth +50",
-        "Coin +9625"
-      ],
-      "achievement_id": "FactionRank_C_0001_RankUp",
-      "required_achievements_expr": null,
-      "prerequisites": [],
-      "not_prerequisites": [],
-      "repeatable": false,
-      "priority": 1
-    },
-    {
-      "id": "9806_C_0001_RankUp",
-      "title": "Covenant Advancement: Templar",
-      "description": "Earn enough Faction Reputation to qualify for the rank of Templar and then complete the Trial of the Templar quest from Beatris Roose at the Covenant Enclave.",
-      "type": "Faction Story  Covenant",
-      "icon": "",
-      "recommended_level": 25,
-      "required_level": 0,
-      "zone_id": 0,
-      "rewards": [
-        "Azoth +50",
-        "Coin +9625"
-      ],
-      "achievement_id": "FactionRank_C_0001_RankUp",
-      "required_achievements_expr": null,
-      "prerequisites": [],
-      "not_prerequisites": [],
-      "repeatable": false,
-      "priority": 1
-    },
-    {
-      "id": "9809_C_0001_RankUp",
-      "title": "Covenant Advancement: Templar",
-      "description": "Earn enough Faction Reputation to qualify for the rank of Templar and then complete the Trial of the Templar quest from Beatris Roose at the Covenant Enclave.",
-      "type": "Faction Story  Covenant",
-      "icon": "",
-      "recommended_level": 25,
-      "required_level": 0,
-      "zone_id": 0,
-      "rewards": [
-        "Azoth +50",
-        "Coin +9625"
-      ],
-      "achievement_id": "FactionRank_C_0001_RankUp",
-      "required_achievements_expr": null,
-      "prerequisites": [],
-      "not_prerequisites": [],
-      "repeatable": false,
-      "priority": 1
-    },
-    {
-      "id": "9812_C_0001_RankUp",
       "title": "Covenant Advancement: Templar",
       "description": "Earn enough Faction Reputation to qualify for the rank of Templar and then complete the Trial of the Templar quest from Beatris Roose at the Covenant Enclave.",
       "type": "Faction Story  Covenant",
@@ -15883,7 +15766,9 @@
       ],
       "achievement_id": "FactionRank_C_0102_RankUp",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "9804_C_0001_RankUp"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -15925,7 +15810,9 @@
       ],
       "achievement_id": "FactionRank_C_0203_RankUp",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "98_C_0102_RankUp"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -15967,7 +15854,9 @@
       ],
       "achievement_id": "FactionRank_C_0304_RankUp",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "98_C_0203_RankUp"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1
@@ -16009,7 +15898,9 @@
       ],
       "achievement_id": "FactionRank_C_0405_RankUp",
       "required_achievements_expr": null,
-      "prerequisites": [],
+      "prerequisites": [
+        "98_C_0304_RankUp"
+      ],
       "not_prerequisites": [],
       "repeatable": false,
       "priority": 1

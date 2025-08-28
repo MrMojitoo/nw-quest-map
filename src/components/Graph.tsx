@@ -6,6 +6,7 @@ import 'reactflow/dist/style.css'
 import dagre from 'dagre'
 import NodeCard from './NodeCard'
 import useStore from '../store'
+import manual from '../../tools/manual_links.json'
 
 type Quest = {
   id: string
@@ -43,6 +44,7 @@ const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
 
 
+
 const MiniMapNode = (props: any) => {
   const { id, x, y, width, height } = props
   const color = getZoneByIdPrefix(String(id)).color
@@ -61,9 +63,18 @@ const MiniMapNode = (props: any) => {
   )
 }
 
-const getLayouted = (nodes: Node[], edgesForLayout: Edge[], direction: 'LR'|'TB' = 'LR') => {
+const DEFAULT_RANKSEP = 200; // LR: horizontal | TB: vertical
+const DEFAULT_NODESEP = 180; // LR: vertical   | TB: horizontal
+
+const getLayouted = (
+  nodes: Node[],
+  edgesForLayout: Edge[],
+  direction: 'LR'|'TB' = 'LR',
+  ranksep: number = DEFAULT_RANKSEP,
+  nodesep: number = DEFAULT_NODESEP
+) => {
   const isHorizontal = direction === 'LR'
-  dagreGraph.setGraph({ rankdir: direction, ranksep: 200, nodesep: 100, edgesep: 20 })
+  dagreGraph.setGraph({ rankdir: direction, ranksep, nodesep, edgesep: 20 })
   nodes.forEach((n) => dagreGraph.setNode(n.id, { width: 240, height: 120 }))
   edgesForLayout.forEach((e) => dagreGraph.setEdge(e.source, e.target))
   dagre.layout(dagreGraph)
@@ -90,19 +101,62 @@ function GraphInner({ quests }: { quests: Quest[] }) {
   const nodesEdges = useMemo(() => {
     const done = new Set(Object.keys(active?.completed ?? {}))
     const filtered = quests.filter(q => filterZone === 'all' || String(q.zone_id) === filterZone)
+    // — niveaux requis manuels (ne servent que si CSV n’a pas de valeur) —
+    const manualLevels: Record<string, number> = (manual as any).requiredLevels || {}
 
-    const nodes: Node[] = filtered.map(q => ({
+    // Enrichit chaque quête avec required_level effectif (CSV sinon override manuel)
+    const enriched = filtered.map((q) => ({
+      ...q,
+      required_level: q.required_level || manualLevels[q.id] || 0,
+    }))
+
+    const nodes: Node[] = enriched.map(q => ({
       id: q.id,
       type: 'card',
-      data: q,
+      data: q, // <- contient le required_level effectif
       position: { x: 0, y: 0 },
       draggable: true,
       style: onlyTodo && done.has(q.id) ? { opacity: 0.35 } : undefined,
     }))
+
+    // === NŒUDS DE NIVEAU : "LEVEL_XX" ===
+    // Rassemble les quêtes SANS prérequis de quête mais AVEC required_level
+    const levelParents: Record<string, string[]> = {}
+    for (const q of enriched) {
+      const hasQuestPrereq =
+        (q.prerequisites?.length ?? 0) > 0 ||
+        (q.not_prerequisites?.length ?? 0) > 0
+      if (!hasQuestPrereq && (q.required_level ?? 0) > 0) {
+        const key = String(q.required_level)
+        ;(levelParents[key] ||= []).push(q.id)
+      }
+    }
+    // Crée un node par niveau requis trouvé
+    Object.keys(levelParents).forEach((lvl) => {
+      nodes.push({
+        id: `LEVEL_${lvl}`,
+        type: 'card',
+        data: {
+          id: `LEVEL_${lvl}`,
+          title: `Level ${lvl}`,
+          type: 'Level',                      // type simple, s’affichera comme une carte
+          description: `Atteindre le niveau ${lvl}`,
+          required_level: Number(lvl),
+          prerequisites: [],
+          not_prerequisites: [],
+          zone_id: null,
+          rewards: [],
+          priority: -2,                        // MSQ (priority 0) reste prioritaire
+        },
+        position: { x: 0, y: 0 },
+        draggable: true,
+      } as Node)
+    })
+
     const edgesPos: Edge[] = []
     const edgesNeg: Edge[] = []
-    const ids = new Set(filtered.map(f=>f.id))
-    for (const q of filtered) {
+    const ids = new Set(enriched.map(f=>f.id))
+    for (const q of enriched) {
       for (const src of q.prerequisites) {
         if (!ids.has(src)) continue
         if (src === q.id) continue
@@ -132,7 +186,55 @@ function GraphInner({ quests }: { quests: Quest[] }) {
         })
       }
     }
+    // Arêtes des nœuds LEVEL_XX vers les quêtes concernées
+    for (const [lvl, targets] of Object.entries(levelParents)) {
+      const srcId = `LEVEL_${lvl}`
+      for (const t of targets) {
+        edgesPos.push({
+          id: `${srcId}->${t}`,
+          source: srcId,
+          target: t,
+          sourceHandle: 'r',
+          targetHandle: 'l',
+          markerEnd: { type: MarkerType.ArrowClosed, width: 16, height: 16 },
+          animated: false,
+          style: { strokeWidth: 1.5, stroke: '#ffffff' },
+        })
+      }
+    }    
+
+    // === Chaînage des niveaux entre eux (LEVEL_a -> LEVEL_b -> ...) ===
+    const levelOrder = Object.keys(levelParents)
+      .map((n) => Number(n))
+      .sort((a, b) => a - b)
+    for (let i = 0; i < levelOrder.length - 1; i++) {
+      const a = levelOrder[i]
+      const b = levelOrder[i + 1]
+      edgesPos.push({
+        id: `LEVEL_${a}->LEVEL_${b}`,
+        source: `LEVEL_${a}`,
+        target: `LEVEL_${b}`,
+        sourceHandle: 'r',
+        targetHandle: 'l',
+        markerEnd: { type: MarkerType.ArrowClosed, width: 16, height: 16 },
+        animated: false,
+        style: { strokeWidth: 1.5, stroke: '#ffffff' },
+      })
+    }
+
     const laid = getLayouted(nodes, edgesPos, direction)
+
+    // === Aligne tous les nœuds LEVEL_… sur la même hauteur (même Y) ===
+    {
+      const levelNodes = laid.nodes.filter((n) => n.id.startsWith('LEVEL_'))
+      if (levelNodes.length > 1) {
+        // on prend le Y minimal comme ligne de référence (tout en haut)
+        const baseY = Math.min(...levelNodes.map((n) => n.position.y))
+        levelNodes.forEach((n) => {
+          n.position.y = baseY
+        })
+      }
+    }
 
     // --- Post-traitement : parent d'abord, gauche→droite ---
     // Seules les arêtes POSITIVES (blanches) structurent le placement
@@ -155,7 +257,7 @@ function GraphInner({ quests }: { quests: Quest[] }) {
 
     // Traitement parent→enfant en ordre de rang (X croissant)
     const ordered = [...laid.nodes].sort((a, b) => a.position.x - b.position.x)
-    const ROW_STEP = 500
+    const ROW_STEP = 300
     const seen = new Set<string>()
     function alignFromParent(id: string) {
       if (seen.has(id)) return
@@ -214,6 +316,7 @@ function GraphInner({ quests }: { quests: Quest[] }) {
     return () => window.removeEventListener('focus-node', handler as EventListener)
   }, [reactFlow])
 
+  
   // Force (au besoin) la bordure blanche du viewport de la MiniMap
   React.useEffect(() => {
     // on laisse le temps à la MiniMap de (re)peindre
