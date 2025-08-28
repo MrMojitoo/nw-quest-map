@@ -1,0 +1,11 @@
+{
+  "links": [
+    {"source": "06_raisealarm", "target": "06A_MSQ_01_Quartermaster", "type": "requires" },
+    {"source": "12_raisealarm", "target": "06A_MSQ_01_Quartermaster", "type": "requires" },
+    {"source": "06A_MSQ_22_TalkToSoulwarden", "target": "12A_MSQ_02_InnTutorial", "type": "requires" },
+    {"source": "12A_MSQ_26_ToYonas", "target": "99A_MSQ_01_LearnSoulwardens", "type": "requires" },
+    {"source": "99B_MSQ_01_searchwalsham", "target": "99B_MSQ_02_meetgalahad", "type": "requires" },
+    {"source": "99G_MSQ_SM_DesertVector", "target": "1625_0100_brimstoneundersiege", "type": "requires" },
+    {"source": "99A_MSQ_10_GetCrosspiece", "target": "99A_MSQ_11_ForgeStaff", "type": "requires" }
+  ]
+}
