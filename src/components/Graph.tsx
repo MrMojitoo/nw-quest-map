@@ -20,6 +20,7 @@ type Quest = {
   prerequisites: string[]
   not_prerequisites?: string[]
   repeatable?: boolean
+  priority?: number
 }
 
 // Palette de couleurs cohérente avec les cartes (par zone)
@@ -40,6 +41,25 @@ const nodeTypes = { card: NodeCard }
 
 const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
+
+
+const MiniMapNode = (props: any) => {
+  const { id, x, y, width, height } = props
+  const color = getZoneByIdPrefix(String(id)).color
+  return (
+    <rect
+      x={x}
+      y={y}
+      width={Math.max(4, width)}
+      height={Math.max(4, height)}
+      fill={color}
+      stroke="#e2e8f0"
+      strokeWidth={1}
+      rx={2}
+      ry={2}
+    />
+  )
+}
 
 const getLayouted = (nodes: Node[], edgesForLayout: Edge[], direction: 'LR'|'TB' = 'LR') => {
   const isHorizontal = direction === 'LR'
@@ -114,53 +134,50 @@ function GraphInner({ quests }: { quests: Quest[] }) {
     }
     const laid = getLayouted(nodes, edgesPos, direction)
 
-    // --- Post-traitement : "première connexion alignée", suivantes en dessous ---
-    // enfants POSITIFS uniquement (les NOT n'influencent pas le placement)
+    // --- Post-traitement : parent d'abord, gauche→droite ---
+    // Seules les arêtes POSITIVES (blanches) structurent le placement
     const children: Record<string, string[]> = {}
-    const inDeg: Record<string, number> = {}
     for (const e of edgesPos) {
       (children[e.source] ||= []).push(e.target)
-      inDeg[e.target] = (inDeg[e.target] || 0) + 1
-      inDeg[e.source] = inDeg[e.source] || 0
     }
-    // on peut trier les enfants pour donner une stabilité visuelle (ex: par id)
+    // Tri enfants par priorité PUIS ID (MSQ = priority 0 en premier)
+    const prio: Record<string, number> = {}
+    for (const n of laid.nodes) prio[n.id] = (n.data as any)?.priority ?? 1
     for (const k of Object.keys(children)) {
-      children[k].sort((a, b) => a.localeCompare(b))
+      children[k].sort((a, b) => {
+        const pa = prio[a] ?? 1, pb = prio[b] ?? 1
+        if (pa !== pb) return pa - pb
+        return a.localeCompare(b)
+      })
     }
-
     const nodeMap: Record<string, any> = {}
     for (const n of laid.nodes) nodeMap[n.id] = n
 
-    // Trouver des racines (sans entrée positive) pour propager l'alignement
-    const roots = laid.nodes
-      .map(n => n.id)
-      .filter(id => (inDeg[id] || 0) === 0)
-
-    const ROW_STEP = 120 // décalage vertical entre "branches" sœurs
+    // Traitement parent→enfant en ordre de rang (X croissant)
+    const ordered = [...laid.nodes].sort((a, b) => a.position.x - b.position.x)
+    const ROW_STEP = 500
     const seen = new Set<string>()
-
-    function alignPrimaryChain(sourceId: string) {
-      if (seen.has(sourceId)) return
-      seen.add(sourceId)
-      const kids = children[sourceId] || []
+    function alignFromParent(id: string) {
+      if (seen.has(id)) return
+      seen.add(id)
+      const parent = nodeMap[id]
+      if (!parent) return
+      const kids = children[id] || []
       if (!kids.length) return
-      const parent = nodeMap[sourceId]
-      // 1) premier enfant sur la même ligne (même Y) que le parent
-      const first = nodeMap[kids[0]]
+      // enfant primaire aligné sur le Y du parent
+      const firstId = kids[0]
+      const first = nodeMap[firstId]
       if (first) first.position.y = parent.position.y
-      // 2) les suivants descendent l’un sous l’autre
+      // enfants suivants en colonne sous le Y du parent
       for (let i = 1; i < kids.length; i++) {
-        const k = nodeMap[kids[i]]
-        if (!k) continue
-        k.position.y = parent.position.y + i * ROW_STEP
+        const kid = nodeMap[kids[i]]
+        if (!kid) continue
+        kid.position.y = parent.position.y + i * ROW_STEP
       }
-      // 3) propager à la chaîne primaire suivante (le "first" devient le parent)
-      alignPrimaryChain(kids[0])
-      // (les autres branches suivent le layout dagre de base)
+      // propager immédiatement sur l'enfant primaire (garde la MSQ bien droite)
+      if (first) alignFromParent(firstId)
     }
-
-    for (const r of roots) alignPrimaryChain(r)
-
+    for (const n of ordered) alignFromParent(n.id)
     return { nodes: laid.nodes, edges: [...edgesPos, ...edgesNeg] }
   }, [quests, direction, active?.completed, onlyTodo, filterZone])
 
@@ -197,6 +214,26 @@ function GraphInner({ quests }: { quests: Quest[] }) {
     return () => window.removeEventListener('focus-node', handler as EventListener)
   }, [reactFlow])
 
+  // Force (au besoin) la bordure blanche du viewport de la MiniMap
+  React.useEffect(() => {
+    // on laisse le temps à la MiniMap de (re)peindre
+    requestAnimationFrame(() => {
+      const el = document.querySelector(
+        '.minimap--white-viewport .react-flow__minimap-viewport'
+      ) as SVGGraphicsElement | null
+      if (el) {
+        el.setAttribute('stroke', '#ffffff')
+        el.setAttribute('stroke-width', '3')
+        el.setAttribute('fill', 'none')
+        ;(el as any).style.filter = 'drop-shadow(0 0 2px rgba(255,255,255,0.85))'
+      }
+    })
+  }, [
+    nodesEdges.nodes.length,
+    nodesEdges.edges.length,
+    direction,
+  ])
+
   return (
     <div className="graph">
       <div style={{ position: 'absolute', zIndex: 5, display:'flex', gap:8, padding:8 }}>
@@ -205,4 +242,50 @@ function GraphInner({ quests }: { quests: Quest[] }) {
           <option value="TB">Haut → Bas</option>
         </select>
         <label className="controls">
-    
+          <input type="checkbox" checked={onlyTodo} onChange={e=>setOnlyTodo(e.target.checked)} />
+          Masquer les quêtes finies
+        </label>
+        <select value={filterZone} onChange={(e)=>setFilterZone(e.target.value)}>
+          <option value="all">Toutes zones</option>
+          {zones.map((z:any) => <option key={String(z)} value={String(z)}>Zone {String(z)}</option>)}
+        </select>
+        {/* Bouton pour revenir en haut à gauche */}
+        <button
+          onClick={() => {
+            // Si on a des nœuds, on calcule le coin haut-gauche puis on centre dessus
+            const ns = nodesEdges.nodes
+            if (!ns || ns.length === 0) return
+            const minX = Math.min(...ns.map(n => n.position.x))
+            const minY = Math.min(...ns.map(n => n.position.y))
+            // on laisse un petit padding
+            reactFlow.setViewport({ x: minX - 40, y: minY - 40, zoom: 1 }, { duration: 300 })
+          }}
+          title="Revenir en haut à gauche"
+        >
+          Revenir ↑←
+        </button>
+      </div>
+      <ReactFlow nodes={nodesEdges.nodes} edges={nodesEdges.edges} nodeTypes={nodeTypes} fitView>
+        <MiniMap
+          className="minimap--white-viewport"
+          style={{ backgroundColor: '#0b0f14' }}
+          maskColor="rgba(0,0,0,0.15)"   // masque plus léger → bordure visible
+          nodeStrokeColor="#e2e8f0"
+          nodeBorderRadius={2}
+          nodeComponent={MiniMapNode}      // <— rendu custom fiable
+        />
+        <Controls />
+        <Background variant={BackgroundVariant.Dots} gap={16} size={1} />
+      </ReactFlow>
+    </div>
+  )
+}
+
+export default function Graph({ quests }: { quests: Quest[] }) {
+  // Fournit le contexte React Flow pour GraphInner (où l’on utilise useReactFlow).
+  return (
+    <ReactFlowProvider>
+      <GraphInner quests={quests} />
+    </ReactFlowProvider>
+  )
+}

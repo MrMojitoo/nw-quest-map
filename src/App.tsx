@@ -22,6 +22,7 @@ type Quest = {
   prerequisites: string[]
   not_prerequisites?: string[]
   repeatable?: boolean
+  priority?: number
 }
 
 type Data = {

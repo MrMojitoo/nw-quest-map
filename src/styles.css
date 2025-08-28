@@ -52,3 +52,28 @@ select { background: #0c1524; color: var(--text); border: 1px solid var(--border
   stroke-width: 2px !important;
   fill: transparent !important;
 }
+
+.minimap--white-viewport .react-flow__minimap-viewport {
+  stroke: #ffffff !important;          /* bordure blanche */
+  stroke-width: 3px !important;
+  fill: none !important;
+  vector-effect: non-scaling-stroke;   /* trait net au zoom */
+}
+
+.minimap--white-viewport svg .react-flow__minimap-viewport {
+  stroke: #ffffff !important;     /* bordure blanche */
+  stroke-width: 3px !important;
+  fill: none !important;
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.85)); /* halo discret */
+}
+
+/* Assure un bon contraste du masque, sans couvrir la bordure */
+.minimap--white-viewport .react-flow__minimap-mask {
+  /* le viewport est un trou dans ce path : on trace son contour */
+  fill: rgba(0, 0, 0, 0.15) !important; /* masque plus léger */
+  stroke: #ffffff !important;           /* BORDURE BLANCHE DU VIEWPORT */
+  stroke-width: 5px !important;
+  vector-effect: non-scaling-stroke;    /* trait net au zoom */
+  paint-order: stroke fill;
+  shape-rendering: crispEdges;
+}
