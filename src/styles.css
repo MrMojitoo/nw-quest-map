@@ -47,6 +47,15 @@ button:hover { border-color: #2a3b56; }
 input[type="text"] { background: #0c1524; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; width: 100%; }
 select { background: #0c1524; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; }
 
+.react-flow__edge-path,
+.react-flow__connection-path {
+  cursor: pointer;
+}
+
+.react-flow__minimap {
+  cursor: pointer;
+}
+
 .react-flow__minimap-viewport {
   stroke: #ffffff !important;
   stroke-width: 2px !important;

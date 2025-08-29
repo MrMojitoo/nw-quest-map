@@ -59,11 +59,11 @@ const MiniMapNode = (props: any) => {
 }
 
 const DEFAULT_RANKSEP = 160; // LR: horizontal | TB: vertical
-const DEFAULT_NODESEP = 140; // LR: vertical   | TB: horizontal+
+const DEFAULT_NODESEP = 170; // LR: vertical   | TB: horizontal+
 // === Heuristiques pour estimer la hauteur des cartes ===
 const EST_NODE_BASE_H = 160;  // hauteur mini estimée d'une carte
 const EST_LINE_H = 16;        // hauteur d'une ligne de texte
-const SIBLING_STEP = 180;     // écart vertical entre enfants d'un même parent (au lieu de 300)
+const SIBLING_STEP = 250;     // écart vertical entre enfants d'un même parent (au lieu de 300)
 const BAND_GAP = 100;         // espace entre deux bandes (MSQ, LEVEL, Objective, …)
 
 // --- ELK instance ---
@@ -104,12 +104,19 @@ function bandFrom(
   type?: string,
   id?: string,
   reachableFromLevel?: boolean,
-  reachableFromMsq?: boolean
+  reachableFromMsq?: boolean,
+  reqLevel?: number
 ): number {
   const t = (type || '').toLowerCase()
-  if (t.includes('main story')) return 100
-  if (reachableFromMsq) return 95
+  const isMsq = t.includes('main story')
+  // Les cartes LEVEL_* restent la rangée des niveaux
   if (id?.startsWith('LEVEL_')) return 90
+  // Cas spécial : MSQ qui n'a PAS d'ancêtre MSQ et qui est gated par un niveau
+  // => on la met juste SOUS la ligne des niveaux (bande 89)
+  if (isMsq && (reqLevel ?? 0) > 0 && !reachableFromMsq) return 89
+  // MSQ "classiques" (chaîne principale)
+  if (isMsq) return 100
+  if (reachableFromMsq) return 95
   if (reachableFromLevel) return 89
   const p = computePriority(type, id)
   return p > 0 ? p * 10 - 20 : 0 // 8→60, 7→50, …, 1→-10 (rare)
@@ -323,9 +330,38 @@ function GraphInner({ quests }: { quests: Quest[] }) {
          t,
          n.id,
          reachableFromLevel.has(n.id),
-         reachableFromMsq.has(n.id)
+         reachableFromMsq.has(n.id),
+         Number((n.data as any)?.required_level || 0)
         )
       }
+
+      // --- MSQ "après niveau" : forcer la bande 89 pour les MSQ qui
+      // descendent de racines MSQ gated par niveau (ex: ..._MedusaRaidVector → ..._MedusaRaid)
+      const msqLevelRootIds = nodesRaw
+        .filter(n => {
+          const dt = String(((n.data as any)?.type || '')).toLowerCase()
+          const req = Number(((n.data as any)?.required_level || 0))
+          return dt.includes('main story') && req > 0 && !reachableFromMsq.has(n.id)
+        })
+        .map(n => n.id)
+      const msqAfterLevel = new Set<string>()
+      {
+        const q2: string[] = [...msqLevelRootIds]
+        while (q2.length) {
+          const cur = q2.shift()!
+          for (const to of succ[cur] || []) {
+            if (!msqAfterLevel.has(to)) { msqAfterLevel.add(to); q2.push(to) }
+          }
+        }
+      }
+      // Forcer la bande 89 uniquement pour les nœuds MSQ situés dans cette descendance
+      for (const n of nodesRaw) {
+        const dt = String(((n.data as any)?.type || '')).toLowerCase()
+        if (dt.includes('main story') && msqAfterLevel.has(n.id)) {
+          (n.data as any).band = 89
+        }
+      }
+      
 
       // Ordonne une vue des nodes par priorité (desc), puis par id — cela
       // influence l’ordre vertical dans une même couche grâce à
@@ -477,17 +513,24 @@ function GraphInner({ quests }: { quests: Quest[] }) {
         }
       }
 
-      const orderBands = [100, 95, 90, 89, 80, 70, 60, 50, 40, 30, 20, 10, 0]
       const nodesByBand: Record<number, string[]> = {}
       for (const n of ordered) {
         const b = ((nodeMap[n.id]?.data as any)?.band ?? 0)
         ;(nodesByBand[b] ||= []).push(n.id)
       }
-      // point de départ : top actuel de la MSQ si elle existe, sinon top global
+      const dynamicBands = Object.keys(nodesByBand)
+        .map(Number)
+        .sort((a, b) => b - a)  // plus grande bande tout en haut
+
+      // Point de départ : top de la MSQ si elle existe, sinon top global
+      const msqIds = nodesByBand[100] || []
       const allIds = ordered.map(o => o.id)
-      const minYAll = Math.min(...allIds.map(id => nodeMap[id].position.y))
-      let cursorY = minYAll
-      for (const b of orderBands) {
+      const msqTop = msqIds.length
+        ? Math.min(...msqIds.map(id => nodeMap[id].position.y))
+        : Math.min(...allIds.map(id => nodeMap[id].position.y))
+      let cursorY = msqTop
+
+      for (const b of dynamicBands) {
         const ids = nodesByBand[b]
         if (!ids || !ids.length) continue
         const minY = Math.min(...ids.map(id => nodeMap[id].position.y))
@@ -502,6 +545,16 @@ function GraphInner({ quests }: { quests: Quest[] }) {
         for (const id of ids) alignFromParent(id)
         const newMaxBottom = Math.max(...ids.map(id => nodeMap[id].position.y + estimateNodeHeight(nodeMap[id] as any)))
         cursorY = newMaxBottom + BAND_GAP
+      }
+
+      {
+        const levelIds = ordered
+          .filter(n => n.id.startsWith('LEVEL_'))
+          .map(n => n.id)
+        if (levelIds.length) {
+          const yLevels = Math.min(...levelIds.map(id => nodeMap[id].position.y))
+          for (const id of levelIds) nodeMap[id].position.y = yLevels
+        }
       }
 
       if (!cancelled) {
@@ -560,6 +613,67 @@ function GraphInner({ quests }: { quests: Quest[] }) {
     direction,
   ])
 
+  // --- Clic sur une arête : aller au nœud opposé à l'extrémité cliquée ---
+  const handleEdgeClick = React.useCallback(
+    (evt: any, edge: any) => {
+      if (!edge || !edge.source || !edge.target) return;
+      // Convertit la position écran -> coordonnées du graphe
+      const toFlow = (pt: { x: number; y: number }) =>
+        (reactFlow as any).screenToFlowPosition
+          ? (reactFlow as any).screenToFlowPosition(pt)
+          : reactFlow.project(pt);
+      const p = toFlow({ x: evt.clientX, y: evt.clientY });
+
+      const src = reactFlow.getNode(edge.source);
+      const tgt = reactFlow.getNode(edge.target);
+      if (!src || !tgt) return;
+
+      const centerOf = (n: any) => {
+        const ax = n.positionAbsolute?.x ?? n.position?.x ?? 0;
+        const ay = n.positionAbsolute?.y ?? n.position?.y ?? 0;
+        const w = n.width ?? n.measured?.width ?? 200;
+        const h = n.height ?? n.measured?.height ?? 120;
+        return { x: ax + w / 2, y: ay + h / 2 };
+      };
+
+      const cSrc = centerOf(src);
+      const cTgt = centerOf(tgt);
+      const dSrc = (p.x - cSrc.x) ** 2 + (p.y - cSrc.y) ** 2;
+      const dTgt = (p.x - cTgt.x) ** 2 + (p.y - cTgt.y) ** 2;
+
+      // Si clic plus proche de la cible → aller à la source, sinon aller à la cible
+      const focus = dTgt < dSrc ? src : tgt;
+      const { zoom } = reactFlow.getViewport();
+      const fc = centerOf(focus);
+      reactFlow.setCenter(fc.x, fc.y, { zoom, duration: 300 });
+    },
+    [reactFlow]
+  );
+
+
+  // Click sur la MiniMap -> se déplacer à l'endroit cliqué
+  React.useEffect(() => {
+    // On cible le svg de la minimap
+    const svg = document.querySelector('.react-flow__minimap svg') as SVGSVGElement | null
+    if (!svg) return
+
+    const onClick = (e: MouseEvent) => {
+      const vb = svg.getAttribute('viewBox')
+      if (!vb) return
+      const [vbX, vbY, vbW, vbH] = vb.split(/\s+/).map(Number)
+      const rect = svg.getBoundingClientRect()
+      const relX = (e.clientX - rect.left) / rect.width
+      const relY = (e.clientY - rect.top) / rect.height
+      const gx = vbX + relX * vbW
+      const gy = vbY + relY * vbH
+      const { zoom } = reactFlow.getViewport()
+      reactFlow.setCenter(gx, gy, { zoom, duration: 300 })
+    }
+
+    svg.addEventListener('click', onClick)
+    return () => svg.removeEventListener('click', onClick)
+  }, [reactFlow, rfNodes.length, rfEdges.length, direction])
+
   return (
     <div className="graph">
       <div style={{ position: 'absolute', zIndex: 5, display:'flex', gap:8, padding:8 }}>
@@ -591,7 +705,14 @@ function GraphInner({ quests }: { quests: Quest[] }) {
           Revenir ↑←
         </button>
       </div>
-      <ReactFlow nodes={rfNodes} edges={rfEdges} nodeTypes={nodeTypes} fitView>
+      <ReactFlow
+        nodes={rfNodes}
+        edges={rfEdges}
+        nodeTypes={nodeTypes}
+        fitView
+        onEdgeClick={handleEdgeClick}
+        defaultEdgeOptions={{ interactionWidth: 24 }}
+      >
         <MiniMap
           className="minimap--white-viewport"
           style={{ backgroundColor: '#0b0f14' }}
