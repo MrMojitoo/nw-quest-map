@@ -4,6 +4,7 @@ import { BadgeCheck, Sword, ScrollText, Map } from 'lucide-react'
 import { Handle, Position } from 'reactflow'
 import { getZoneByIdPrefix } from '../utils/zones'
 
+
 // Helpers to render nested key/values from ObjectiveTasks rows
 function renderEntries(obj: any, depth = 0): JSX.Element {
   if (obj === null || obj === undefined) return <em className="muted">—</em>
@@ -87,6 +88,85 @@ const REWARD_ICON_BASE = {
 const fmt = (n?: number | string) =>
   (typeof n === 'number' ? n : Number(n ?? 0)).toLocaleString()
 
+// Parse tokens:
+//   {{ITEM::icon=...::name=...::drop=...::rarity=...}}
+//   {{POI::icon=...::name=...::tid=12345}}
+const TOKEN_RE = /\{\{(ITEM|POI)(?:::[^}]*)\}\}/g;
+function renderTaskText(text: string) {
+  if (!text) return null;
+  const nodes: React.ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+
+  while ((m = TOKEN_RE.exec(text))) {
+    const full = m[0];
+    const kind = m[1]; // "ITEM" | "POI"
+    // Exemple de payload : "ITEM::icon=...::name=...::drop=...::rarity=Rare"
+    const payload = full.slice(2, -2); // enlever {{ }}
+    const parts = payload.split("::").slice(1); // enlever "ITEM"/"POI"
+    const kv: Record<string, string> = {};
+    for (const p of parts) {
+      const eq = p.indexOf("=");
+      if (eq > -1) kv[p.slice(0, eq)] = p.slice(eq + 1);
+    }
+    const icon = kv.icon || "";
+    const name = kv.name || "";
+    const drop = kv.drop || "";
+    const raritySlug = (kv.rarity || "").toLowerCase().replace(/\s+/g, "-");
+    const tid = kv.tid || "";
+    // push plain text before the token
+    if (m.index > last) {
+      nodes.push(text.slice(last, m.index));
+    }
+    // push token as JSX
+    if (kind === 'ITEM') {
+      nodes.push(
+        <span
+          className={`task-item ${raritySlug ? `rarity-${raritySlug}` : ""}`}
+          key={`${m.index}-${full}`}
+        >
+          {icon ? <img className="reward-icon" src={icon} alt="" /> : null}
+          <span className="task-item__name">{name || "Item"}</span>
+          {drop ? <span className="drop-badge">{drop}</span> : null}
+        </span>
+      );
+    } else {
+      // POI badge cliquable -> lien NWDB
+      const href = tid ? `https://nwdb.info/db/zone/${tid}` : undefined;
+      const inner = (
+        <>
+          {icon ? <img className="reward-icon" src={icon} alt="" /> : null}
+          <span className="task-item__name">{name || "POI"}</span>
+        </>
+      );
+      nodes.push(
+        href ? (
+          <a
+            key={`${m.index}-${full}`}
+            className="task-item poi-badge"
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            onMouseDown={(e)=>e.stopPropagation()}
+          >
+            {inner}
+          </a>
+        ) : (
+          <span key={`${m.index}-${full}`} className="task-item poi-badge">
+            {inner}
+          </span>
+        )
+      );
+    }
+    last = TOKEN_RE.lastIndex;
+  }
+  // push trailing text
+  if (last < text.length) {
+    nodes.push(text.slice(last));
+  }
+  return nodes;
+}
+
 
 export default function NodeCard({ data }: { data: any }) {
   const [copied, setCopied] = React.useState(false)
@@ -142,7 +222,7 @@ export default function NodeCard({ data }: { data: any }) {
         ID :{' '}
         <code
           className={`copy-id${copied ? ' copied' : ''}`}
-          title="Cliquer pour copier l'ID"
+          title="Click to copy ID"
           onMouseDown={(e) => e.stopPropagation()} // évite le pan/drag
           onClick={async (e) => {
             e.stopPropagation()
@@ -281,6 +361,7 @@ export default function NodeCard({ data }: { data: any }) {
             ? (data as any).task_desc_texts
             : (Array.isArray((data as any)?.task_desc_tags) ? (data as any).task_desc_tags : [])) as string[]
         if (!texts || texts.length === 0) return null
+
         return (
           <div className="tasks-raw" style={{ marginTop: 8 }}>
             <details>
@@ -295,18 +376,11 @@ export default function NodeCard({ data }: { data: any }) {
               >
                 Tasks ({texts.length})
               </summary>
-              <ul
-                style={{
-                  margin: 0,
-                  paddingLeft: 18,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 4,
-                }}
-              >
+              {/* Liste avec tirets et rendu compact/centré des éléments */}
+              <ul className="tasks-ul">
                 {texts.map((s, i) => (
-                  <li key={i} style={{ fontSize: 12, lineHeight: 1.2 }}>
-                    {s}
+                  <li key={i} className="task-li">
+                    <span className="task-line">{renderTaskText(s)}</span>
                   </li>
                 ))}
               </ul>

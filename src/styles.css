@@ -96,7 +96,7 @@ body { background: linear-gradient(180deg, #0b0f14, #0d1117); color: var(--text)
 }
 
 /* Variantes de rareté (fond  bordure plus claire) */
-.node-card .reward.item-reward.rarity-common    { background: #6b7280; border-color: #9ca3af; }
+.node-card .reward.item-reward.rarity-common    { background: #484c55; border-color: #9ca3af; }
 .node-card .reward.item-reward.rarity-uncommon  { background: #065f46; border-color: #10b981; }
 .node-card .reward.item-reward.rarity-rare      { background: #096792; border-color: #7dd3fc; }
 .node-card .reward.item-reward.rarity-epic      { background: #7c3aed; border-color: #a78bfa; }
@@ -243,6 +243,22 @@ select { background: #0c1524; color: var(--text); border: 1px solid var(--border
   flex-direction: column;
   gap: 6px;
 }
+/* Generic token rendering (works in normal tasks list and raw section) */
+.node-card .task-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 6px;
+  border: 1px solid var(--muted-2, #2a2a2a);
+  border-radius: 8px;
+  margin: 0 4px;
+  line-height: 1.15;
+}
+.node-card .task-item .reward-icon {
+  width: 16px; height: 16px; border-radius: 3px; object-fit: cover;
+}
+.node-card .drop-badge { font-size: 11px; padding: 1px 6px; border: 1px solid var(--muted-2, #2a2a2a); border-radius: 999px; }
+ 
 .node-card .task-raw {
   background: #0b1220;
   border: 1px solid var(--border);
@@ -275,3 +291,114 @@ select { background: #0c1524; color: var(--text); border: 1px solid var(--border
 .node-card .kv-grid .kv-val {
   word-break: break-word;
 }
+
+/* ---- Tasks (rendu d'items inline) ---- */
+.tasks-raw .task-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 20px;
+  padding: 0 8px;
+  border: 1px solid var(--muted-2, #2a2a2a);
+  border-radius: 9999px;
+  margin: 0 4px;
+  line-height: 20px; /* même hauteur que la ligne pour un alignement propre */
+}
+.tasks-raw .task-item .reward-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  object-fit: cover;
+}
+.tasks-raw .drop-badge {
+  font-size: 11px;
+  padding: 1px 6px;
+  border: 1px solid var(--muted-2, #2a2a2a);
+  border-radius: 999px;
+}
+
+/* -------- Tasks layout & badges -------- */
+.task-line{
+  display:inline;           /* pas de flex ici -> flux naturel */
+  font-size:13px;
+  line-height:1.35;         /* lignes plus serrées mais lisibles */
+  vertical-align:middle;
+  margin:0;                 /* aucune marge ajoutée ligne à ligne */
+}
+
+.task-item{
+  display:inline-flex;      /* centre icône + nom verticalement */
+  align-items:center;
+  /* pas de height fixe -> s’aligne mieux avec le texte */
+  min-height:18px;
+  padding:0 8px;
+  border-radius:9999px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  vertical-align:middle;
+}
+.task-item__name{ line-height:1; }
+
+/* POI badge (cliquable) */
+.poi-badge{
+  text-decoration:none;
+  cursor:pointer;
+  background:rgba(70,166,255,0.12);
+  border-color:rgba(70,166,255,0.35);
+}
+.poi-badge:hover{
+  background:rgba(70,166,255,0.18);
+  border-color:rgba(70,166,255,0.5);
+}
+
+.reward-icon{
+  width:16px; height:16px;
+  margin-right:6px;
+  vertical-align:middle;    /* ensure icon sits on middle too */
+}
+
+.drop-badge{
+  display:inline-flex;
+  align-items:center;
+  height:18px;
+  line-height:18px;
+  padding:0 6px;
+  margin-left:6px;
+  border-radius:9999px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.08);
+  vertical-align:middle;
+}
+
+/* Liste Tasks avec tirets custom + espacements propres */
+.tasks-ul{
+  list-style:none;
+  padding-left:0;
+  margin:6px 0 0 0;
+}
+.task-li{
+  position:relative;
+  padding-left:18px;        /* place pour le tiret */
+  margin:0;                 /* pas d’écart intra-task */
+}
+/* espace uniquement entre 2 tasks (pas entre lignes d’une même task) */
+.task-li + .task-li{ margin-top:8px; }
+/* petit tiret horizontal soigné au lieu du caractère '–' */
+.task-li::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:0.8em;                /* aligné sur la première ligne */
+  width:10px;
+  height:2px;
+  background:rgba(255,255,255,0.35);
+  border-radius:2px;
+}
+
+/* Couleurs par rareté (pour .task-item) */
+.task-item.rarity-common    { background:#484c55; border-color:#9ca3af; color:#fff; }
+.task-item.rarity-uncommon  { background:#065f46; border-color:#10b981; color:#eafff6; }
+.task-item.rarity-rare      { background:#096792; border-color:#7dd3fc; color:#e8f7ff; }
+.task-item.rarity-epic      { background:#7c3aed; border-color:#a78bfa; color:#fff; }
+.task-item.rarity-legendary { background:#b47508; border-color:#fde68a; color:#fff; }
+.task-item.rarity-artifact  { background:#b45309; border-color:#f59e0b; color:#fff; }

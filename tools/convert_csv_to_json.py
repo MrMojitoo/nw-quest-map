@@ -155,7 +155,95 @@ def _iter_subtask_ids(row: dict) -> list[str]:
                 ids.append(tid)
     return ids
 
-def _collect_desc_tags_from_row(row: dict, visited: set[str]) -> list[str]:
+def _format_percent(p) -> str:
+    """Normalise un pourcentage : 0.25 -> '25%', 25 -> '25%'."""
+    try:
+        if p is None or (isinstance(p, float) and np.isnan(p)):
+            return ""
+        v = float(p)
+        if v <= 1.0:
+            v = v * 100.0
+        # pas d'arrondi agressif, gardons 0 décimale si entier
+        if abs(v - round(v)) < 1e-6:
+            return f"{int(round(v))}%"
+        return f"{v:.1f}%"
+    except Exception:
+        s = str(p).strip()
+        return s if s.endswith('%') else (s + '%')
+
+def _apply_placeholders(txt: str, row: dict) -> str:
+    """
+    Remplace {POITags}, {itemName}, {targetName} dans 'txt' à partir des colonnes de 'row'.
+    Pour {itemName}, on injecte un token spécial lisible par le front :
+      {{ITEM::icon=<url>::name=<nom>::drop=<xx%>}}
+    """
+    if not isinstance(txt, str) or not txt:
+        return txt
+    out = txt
+
+    # {POITags}
+    poi_tag = str(row.get('POITag') or '').strip()
+    if '{POITags}' in out and poi_tag:
+        # si plusieurs tags sont listés, on prend le 1er résolu
+        candidates = [t.strip() for t in re.split(r'[,\|\s]+', poi_tag) if t.strip()] or [poi_tag]
+        token_or_text = None
+        for t in candidates:
+            rec = poi_tag_to_def.get(t)
+            if rec and (rec.get("name") or rec.get("icon") or rec.get("territoryId") is not None):
+                name = rec.get("name") or t
+                icon = rec.get("icon") or ""
+                tid  = rec.get("territoryId")
+                # Token POI consommé par le front (affiche un badge + lien NWDB zone/tid)
+                token_or_text = f"{{{{POI::icon={icon}::name={name}::tid={tid}}}}}"
+                break
+        if not token_or_text:
+            # fallback: tentative directe via locale, sinon garder le tag brut
+            token_or_text = _locale_get(candidates[0]) or candidates[0]
+        out = out.replace('{POITags}', token_or_text)
+
+    # {itemName} -> token ITEM
+    if '{itemName}' in out:
+        item_raw = str(row.get('ItemName') or '').strip()
+        icon, disp, rarity = "", "", ""
+        if item_raw:
+            # résolution via items.csv (par nom, puis par ID)
+            rec = items_by_name.get(item_raw.lower()) or items_by_id.get(item_raw)
+            if rec:
+                icon = rec.get('icon') or ''
+                disp = rec.get('name') or item_raw
+                rarity = (rec.get('rarity') or '').lower()
+            else:
+                disp = item_raw
+        drop = _format_percent(row.get('ItemDropProbability') if row.get('ItemDropProbability') not in (None, '') else row.get('ChestDropProbability'))
+        token = f"{{{{ITEM::icon={icon}::name={disp}::drop={drop}::rarity={rarity}}}}}"
+        out = out.replace('{itemName}', token)
+
+    # {targetName} -> "TargetQty <label>"
+    if '{targetName}' in out:
+        qty = row.get('TargetQty')
+        try:
+            if qty is None or (isinstance(qty, float) and np.isnan(qty)):
+                qty = ''
+            else:
+                qf = float(qty)
+                qty = int(qf) if abs(qf - int(qf)) < 1e-6 else qf
+        except Exception:
+            qty = str(qty).strip()
+        label = ''
+        if row.get('ItemDropVC'):
+            label = _locale_get(str(row.get('ItemDropVC')))
+        if not label:
+            label = str(row.get('KillEnemyType') or '').strip()
+        label = label or 'Target'
+        qty_part = (f"{qty} " if str(qty) != '' else "")
+        out = out.replace('{targetName}', f"{qty_part}{label}")
+    return out
+
+def _collect_desc_texts(row: dict, visited: set[str]) -> list[str]:
+    """
+    Récupère récursivement les descriptions (locale résolue) en appliquant les placeholders.
+    Ignore IsHidden == 1.
+    """
     out: list[str] = []
     tid = str(row.get('TaskID') or row.get('Task Id') or row.get('ID') or '').strip()
     if tid:
@@ -163,13 +251,14 @@ def _collect_desc_tags_from_row(row: dict, visited: set[str]) -> list[str]:
             return out
         visited.add(tid)
     if not _is_hidden_task(row):
-        desc = str(row.get('TP_DescriptionTag') or '').strip()
-        if desc:
-            out.append(desc)
+        tag = str(row.get('TP_DescriptionTag') or '').strip()
+        if tag:
+            base = _locale_get(tag) if locale_map else tag
+            out.append(_apply_placeholders(base, row))
     for cid in _iter_subtask_ids(row):
         child = task_index.get(cid)
         if child:
-            out.extend(_collect_desc_tags_from_row(child, visited))
+            out.extend(_collect_desc_texts(child, visited))
     return out
 
 # ---------- Locale helpers ----------
@@ -185,6 +274,76 @@ def _desc_key_from_tag(tag: str) -> str:
         s = s[1:-1]
     return s
 
+def _locale_get(key: str) -> str:
+    """
+    Lookup insensible à la casse dans le fichier de locale.
+    Retourne la clé brute si non trouvée.
+    """
+    if not isinstance(key, str) or not key.strip():
+        return ""
+    k = _desc_key_from_tag(key)
+    return locale_map.get(k) or locale_map.get(k.lower()) or k
+
+# ---------- POI definitions (javelindata_poidefinitions_*.json) ----------
+# On construit un mapping: poi_tag -> {"name": <nom localisé>, "icon": <url absolue>, "territoryId": <int>}
+def load_poi_defs(dir_path: str) -> Dict[str, dict]:
+    mapping: Dict[str, dict] = {}
+    if not dir_path or not os.path.isdir(dir_path):
+        return mapping
+    files = sorted(glob.glob(os.path.join(dir_path, "javelindata_poidefinitions_*.json")))
+    total = 0
+    cdn_prefix = "https://cdn.nw-buddy.de/nw-data/live/"
+
+    for fp in files:
+        try:
+            with open(fp, "r", encoding="utf-8") as f:
+                arr = json.load(f)
+        except Exception as e:
+            print(f"[WARN] Impossible de lire {os.path.basename(fp)}: {e}")
+            continue
+        if not isinstance(arr, list):
+            continue
+        for rec in arr:
+            total += 1
+            tags = rec.get("POITag")
+            name_key = rec.get("NameLocalizationKey")
+            map_icon = rec.get("MapIcon") or ""
+            territory_id = rec.get("TerritoryID")
+            # URL absolue vers l'icône (si fournie)
+            icon_url = (cdn_prefix + map_icon) if map_icon else ""
+            if not tags or not name_key:
+                continue
+            # POITag est un tableau; on mappe chaque tag vers le nom localisé
+            try:
+                for t in tags:
+                    t_str = str(t).strip()
+                    if t_str and t_str not in mapping:
+                        mapping[t_str] = {
+                            "name": _locale_get(name_key),   # enlève @ et résout via locale
+                            "icon": icon_url,
+                            "territoryId": territory_id
+                        }
+            except Exception:
+                # si jamais ce n'est pas un tableau
+                t_str = str(tags).strip()
+                if t_str and t_str not in mapping:
+                    mapping[t_str] = {
+                        "name": _locale_get(name_key),
+                        "icon": icon_url,
+                        "territoryId": territory_id
+                    }
+    print(f"[OK] POI defs chargés: {len(mapping)} tags (depuis {len(files)} fichiers, {total} entrées)")
+    return mapping
+
+# chemin du dossier contenant les javelindata_poidefinitions_*.json
+poi_dir = None
+if len(sys.argv) >= 6 and sys.argv[5]:
+    poi_dir = sys.argv[5]
+else:
+    # défaut: tools/pointofinterestdefinitions
+    cand = os.path.join("tools", "pointofinterestdefinitions")
+    poi_dir = cand if os.path.isdir(cand) else None
+poi_tag_to_def: Dict[str, dict] = load_poi_defs(poi_dir) if poi_dir else {}
 
 # Helper pour récupérer l'ID de tâche dans une ligne brute (clé "Task ID"/"ID", etc.)
 def task_id_from_row(row: dict) -> str:
@@ -334,41 +493,21 @@ for r in rows:
                 # rien trouvé → on garde l’ID brut pour debug/affichage
                 q["tasks"].append({"task_id": tid})
 
-
-    task_descs: list[str] = []
+    # ----- Descriptions finales (avec placeholders appliqués) -----
+    desc_texts: list[str] = []
     visited_ids: set[str] = set()
     for t in q["tasks"]:
         row = t.get("data")
-        if not isinstance(row, dict):
-            continue
-        task_descs.extend(_collect_desc_tags_from_row(row, visited_ids))
+        if isinstance(row, dict):
+            desc_texts.extend(_collect_desc_texts(row, visited_ids))
     # de-dupe en préservant l'ordre
-    seen: set[str] = set()
-    flat: list[str] = []
-    for d in task_descs:
-        if d not in seen:
-            seen.add(d)
-            flat.append(d)
-    q["task_desc_tags"] = flat
-
-    # --- Résolution en texte (locale) ---
-    if locale_map:
-        resolved: list[str] = []
-        seen_txt: set[str] = set()
-        for tag in flat:
-            raw_key = _desc_key_from_tag(tag)
-            # lookup insensible à la casse : d'abord exact, puis en lower()
-            txt = locale_map.get(raw_key) or locale_map.get(raw_key.lower())
-            if not txt:
-                # fallback: si non trouvé on peut garder la clé brute
-                txt = raw_key
-            if txt not in seen_txt:
-                seen_txt.add(txt)
-                resolved.append(txt)
-        q["task_desc_texts"] = resolved
-    else:
-        # pas de locale fournie : on laisse la liste vide (UI fera fallback si besoin)
-        q["task_desc_texts"] = []
+    seen_txt: set[str] = set()
+    flat_txt: list[str] = []
+    for s in desc_texts:
+        if s not in seen_txt:
+            seen_txt.add(s)
+            flat_txt.append(s)
+    q["task_desc_texts"] = flat_txt
 
     # Repeatable via "Schedule Id" (Hourly/Daily)
     sched = str(get(r, 'Schedule Id', '') or '')
