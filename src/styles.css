@@ -41,6 +41,69 @@ body { background: linear-gradient(180deg, #0b0f14, #0d1117); color: var(--text)
 .repeatable { outline: 3px solid #facc15; outline-offset: 0; }
 .mainstory { outline: 3px solid #ffffff; outline-offset: 0; }
 
+.node-card .rewards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.node-card .reward {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #0f1729;
+  font-size: 12px;
+  line-height: 1;
+}
+.node-card .reward img {
+  width: 14px;
+  height: 14px;
+  display: block;
+  opacity: 0.95;
+}
+
+.reward-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+/* ===== Badge complet pour l'item reward (fond  bordure  arrondis) ===== */
+.node-card .reward.item-reward {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  border: 1px solid transparent; /* sera surchargé par les variantes */
+  line-height: 1.1;
+  color: #fff; /* lisible sur les fonds colorés */
+}
+.node-card .reward.item-reward .reward-icon {
+  width: 18px;
+  height: 18px;
+}
+.node-card .reward.item-reward b {
+  font-weight: 600;
+}
+.node-card .reward.item-reward .item-reward__name {
+  opacity: 0.95;
+}
+
+/* Variantes de rareté (fond  bordure plus claire) */
+.node-card .reward.item-reward.rarity-common    { background: #6b7280; border-color: #9ca3af; }
+.node-card .reward.item-reward.rarity-uncommon  { background: #065f46; border-color: #10b981; }
+.node-card .reward.item-reward.rarity-rare      { background: #096792; border-color: #7dd3fc; }
+.node-card .reward.item-reward.rarity-epic      { background: #7c3aed; border-color: #a78bfa; }
+.node-card .reward.item-reward.rarity-legendary { background: #b47508; border-color: #fde68a; }
+.node-card .reward.item-reward.rarity-artifact  { background: #b45309; border-color: #f59e0b; }
+
+
 .controls { display: flex; gap: 8px; align-items: center; }
 button, .button { background: #0f172a; color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 6px 10px; cursor: pointer; }
 button:hover { border-color: #2a3b56; }
@@ -100,4 +163,115 @@ select { background: #0c1524; color: var(--text); border: 1px solid var(--border
 .copy-id.copied {
   outline: 2px solid #34d399; /* feedback vert */
   outline-offset: 2px;
+}
+
+
+/* ===== Tasks ===== */
+.node-card .tasks {
+  margin-top: 10px;
+  border-top: 1px dashed var(--border);
+  padding-top: 8px;
+}
+.node-card .tasks .section-title {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.node-card .task {
+  background: #0b1220;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px;
+  margin-top: 6px;
+}
+.node-card .task .task-id code {
+  background: #0f1729;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 11px;
+}
+.node-card .kv {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.node-card .kv .pair {
+  font-size: 11px;
+  background: #0f1729;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+.node-card details.task-details {
+  margin-top: 6px;
+}
+.node-card details.task-details summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 12px;
+}
+.node-card .grid-kv {
+  margin-top: 6px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 8px;
+  font-size: 11px;
+}
+.node-card .grid-kv .k {
+  color: var(--muted);
+}
+.node-card .grid-kv .v {
+  word-break: break-word;
+}
+
+/* ===== Tasks (brut / auto-généré depuis ObjectiveTasks) ===== */
+.node-card .tasks-raw {
+  margin-top: 10px;
+  border-top: 1px dashed var(--border);
+  padding-top: 8px;
+}
+.node-card .tasks-raw summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 12px;
+}
+.node-card .tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.node-card .task-raw {
+  background: #0b1220;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px;
+}
+.node-card .task-raw code {
+  background: #0f1729;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: 11px;
+}
+
+/* ===== Rendu des paires clé/valeur imbriquées ===== */
+.node-card .kv-array .nested {
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px dashed var(--border);
+}
+.node-card .kv-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 8px;
+  font-size: 11px;
+}
+.node-card .kv-grid .kv-key {
+  color: var(--muted);
+}
+.node-card .kv-grid .kv-val {
+  word-break: break-word;
 }

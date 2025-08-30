@@ -1,8 +1,92 @@
 import React from 'react'
 import useStore from '../store'
-import { BadgeCheck, Sword, ScrollText, Map, Gift } from 'lucide-react'
+import { BadgeCheck, Sword, ScrollText, Map } from 'lucide-react'
 import { Handle, Position } from 'reactflow'
 import { getZoneByIdPrefix } from '../utils/zones'
+
+// Helpers to render nested key/values from ObjectiveTasks rows
+function renderEntries(obj: any, depth = 0): JSX.Element {
+  if (obj === null || obj === undefined) return <em className="muted">—</em>
+  if (Array.isArray(obj)) {
+    if (obj.length === 0) return <span>[]</span>
+    return (
+      <div className="kv-array">
+        {obj.map((item, i) => (
+          <div key={i} className="nested">
+            {renderEntries(item, depth + 1)}
+          </div>
+        ))}
+      </div>
+    )
+  }
+  if (typeof obj === 'object') {
+    const entries = Object.entries(obj).filter(
+      ([, v]) => v !== null && v !== undefined && String(v) !== ''
+    )
+    if (entries.length === 0) return <span>{'{}'}</span>
+    return (
+      <div className="kv-grid">
+        {entries.map(([k, v]) => (
+          <React.Fragment key={k}>
+            <div className="kv-key">{k}</div>
+            <div className="kv-val">{renderEntries(v, depth + 1)}</div>
+          </React.Fragment>
+        ))}
+      </div>
+    )
+  }
+  return <span>{String(obj)}</span>
+}
+
+
+
+
+function Icon({
+  base,
+  alt = '',
+  className = 'reward-icon',
+}: {
+  base: string
+  alt?: string
+  className?: string
+}) {
+  const [src, setSrc] = React.useState<string>(`/icons/${base}.webp`)
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      onError={(e) => {
+        // si le .webp échoue, on tente le .png
+        if (src.endsWith('.webp')) {
+          setSrc(`/icons/${base}.png`)
+        } else {
+          // dernier recours : masquer l’icône cassée
+          e.currentTarget.style.display = 'none'
+        }
+      }}
+    />
+  )
+}
+
+
+
+// Noms de bases des fichiers d’icônes
+const REWARD_ICON_BASE = {
+  xp: 'reward_xp',
+  coin: 'reward_coin',
+  factionInfluence: 'faction-influence',
+  factionReputation: 'faction-reputaiton',
+  factionTokens: 'faction-tokens',
+  azoth: 'reward_azoth',
+  standing: 'reward_territorystanding',
+  item: 'reward_coin', 
+}
+
+// Séparateur de milliers
+const fmt = (n?: number | string) =>
+  (typeof n === 'number' ? n : Number(n ?? 0)).toLocaleString()
+
 
 export default function NodeCard({ data }: { data: any }) {
   const [copied, setCopied] = React.useState(false)
@@ -100,11 +184,138 @@ export default function NodeCard({ data }: { data: any }) {
           {String(data.description)}
         </p>
       )}
-      {data.rewards && data.rewards.length > 0 && (
-        <div className="meta" style={{ marginTop: 6 }}>
-          <span className="tag"><Gift size={14}/> {data.rewards.slice(0,2).join(' · ')}</span>
-        </div>
-      )}
+      {/* Récompenses détaillées */}
+      {(() => {
+        // Les clés supposées issues du convert: adapte si nécessaire
+        const xp = (data as any)?.experience_reward ?? (data as any)?.universal_exp_amount ?? 0
+        const coin = (data as any)?.currency_reward ?? 0
+        const factionInfluence = (data as any)?.faction_influence ?? 0
+        const factionReputation = (data as any)?.faction_reputation ?? 0
+        const factionTokens = (data as any)?.faction_tokens ?? 0
+        const azoth = (data as any)?.azoth_reward ?? 0
+        const standing = (data as any)?.territory_standing ?? 0
+        const itemId = (data as any)?.item_reward ?? (data as any)?.item_reward_name ?? ''
+        const itemQty = (data as any)?.item_reward_qty ?? 0
+        const itemNameId = (data as any)?.item_reward_name ?? ''
+        const itemResolved = (data as any)?.item_reward_resolved_name ?? ''
+        const itemIcon = (data as any)?.item_reward_icon ?? ''
+        const itemRarityRaw = String((data as any)?.item_reward_rarity || '').trim()
+        const raritySlug = itemRarityRaw
+          ? itemRarityRaw.toLowerCase().replace(/\s+/g, '-')
+          : ''
+
+        const hasAny =
+          (xp && xp > 0) ||
+          (coin && coin > 0) ||
+          (azoth && azoth > 0) ||
+          (standing && standing > 0) ||
+          itemId || itemNameId
+
+        if (!hasAny) return null
+
+        return (
+          <div className="rewards">
+            {xp > 0 && (
+              <span className="reward">
+                <Icon base={REWARD_ICON_BASE.xp} />
+                <b>{fmt(xp)}</b> XP
+              </span>
+            )}
+            {coin > 0 && (
+              <span className="reward">
+                <Icon base={REWARD_ICON_BASE.coin} />
+                <b>{fmt(coin)}</b> Coin
+              </span>
+            )}
+            {factionInfluence > 0 && (
+              <span className="reward">
+                <Icon base={REWARD_ICON_BASE.factionInfluence} />
+                <b>{fmt(factionInfluence)}</b> Faction&nbsp;Influence
+              </span>
+            )}
+            {factionReputation > 0 && (
+              <span className="reward">
+                <Icon base={REWARD_ICON_BASE.factionReputation} />
+                <b>{fmt(factionReputation)}</b> Faction&nbsp;Reputation
+              </span>
+            )}
+            {factionTokens > 0 && (
+              <span className="reward">
+                <Icon base={REWARD_ICON_BASE.factionTokens} />
+                <b>{fmt(factionTokens)}</b> Faction&nbsp;Tokens
+              </span>
+            )}
+            {azoth > 0 && (
+              <span className="reward">
+                <Icon base={REWARD_ICON_BASE.azoth} />
+                <b>{fmt(azoth)}</b> Azoth
+              </span>
+            )}
+            {standing > 0 && (
+              <span className="reward">
+                <Icon base={REWARD_ICON_BASE.standing} />
+                <b>{fmt(standing)}</b> Territory&nbsp;Standing
+              </span>
+            )}
+            {(itemId || itemNameId || itemResolved) && (
+              <span className={`reward item-reward ${raritySlug ? `rarity-${raritySlug}` : ''}`}>
+                {itemIcon ? (
+                  <img src={itemIcon} alt="" className="reward-icon" />
+                ) : (
+                  <Icon base={REWARD_ICON_BASE.item} />
+                )}
+                {itemQty ? <b>{fmt(itemQty)}×</b> : null}
+                <span className="item-reward__name">
+                  {String(itemResolved || itemNameId || itemId)}
+                </span>
+              </span>
+            )}
+          </div>
+        )
+      })()}
+      
+      {/* ----- Tasks (résolues via en-us.json si dispo, sinon tags) ----- */}
+      {(() => {
+        const texts: string[] =
+          (Array.isArray((data as any)?.task_desc_texts) && (data as any).task_desc_texts.length
+            ? (data as any).task_desc_texts
+            : (Array.isArray((data as any)?.task_desc_tags) ? (data as any).task_desc_tags : [])) as string[]
+        if (!texts || texts.length === 0) return null
+        return (
+          <div className="tasks-raw" style={{ marginTop: 8 }}>
+            <details>
+              <summary
+                style={{
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  fontWeight: 600,
+                  fontSize: 13,
+                }}
+                onMouseDown={(e) => e.stopPropagation()}
+              >
+                Tasks ({texts.length})
+              </summary>
+              <ul
+                style={{
+                  margin: 0,
+                  paddingLeft: 18,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 4,
+                }}
+              >
+                {texts.map((s, i) => (
+                  <li key={i} style={{ fontSize: 12, lineHeight: 1.2 }}>
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </div>
+        )
+      })()}
+
+
       <div style={{ display:'flex', gap:8, marginTop:8 }}>
         <button onClick={() => toggle(data.id)}>{isCompleted ? 'Marquer non fait' : 'Marquer fini'}</button>
       </div>
