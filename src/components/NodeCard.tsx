@@ -5,6 +5,7 @@ import { Handle, Position } from 'reactflow'
 import { getZoneByIdPrefix } from '../utils/zones'
 
 
+
 // Helpers to render nested key/values from ObjectiveTasks rows
 function renderEntries(obj: any, depth = 0): JSX.Element {
   if (obj === null || obj === undefined) return <em className="muted">—</em>
@@ -91,7 +92,8 @@ const fmt = (n?: number | string) =>
 // Parse tokens:
 //   {{ITEM::icon=...::name=...::drop=...::rarity=...}}
 //   {{POI::icon=...::name=...::tid=12345}}
-const TOKEN_RE = /\{\{(ITEM|POI)(?:::[^}]*)\}\}/g;
+//   {{VC::name=...::qty=...::named=0|1}}
+const TOKEN_RE = /\{\{(ITEM|POI|VC)(?:::[^}]*)\}\}/g;
 function renderTaskText(text: string) {
   if (!text) return null;
   const nodes: React.ReactNode[] = [];
@@ -113,7 +115,10 @@ function renderTaskText(text: string) {
     const name = kv.name || "";
     const drop = kv.drop || "";
     const raritySlug = (kv.rarity || "").toLowerCase().replace(/\s+/g, "-");
+    const vcid = kv.vcid || kv.id || ""; // pour VC -> lien NWDB
     const tid = kv.tid || "";
+    const qty = kv.qty || "";
+    const isNamed = (kv.named || "") === "1" || (kv.named || "").toLowerCase() === "true";
     // push plain text before the token
     if (m.index > last) {
       nodes.push(text.slice(last, m.index));
@@ -130,7 +135,7 @@ function renderTaskText(text: string) {
           {drop ? <span className="drop-badge">{drop}</span> : null}
         </span>
       );
-    } else {
+    } else if (kind === 'POI') {
       // POI badge cliquable -> lien NWDB
       const href = tid ? `https://nwdb.info/db/zone/${tid}` : undefined;
       const inner = (
@@ -156,6 +161,29 @@ function renderTaskText(text: string) {
             {inner}
           </span>
         )
+      );
+    } else {
+      // VC (Vitals Category) : quantité + badge cliquable vers NWDB creature
+      const href = vcid ? `https://nwdb.info/db/creature/${vcid}` : "";
+      nodes.push(
+        <span key={`${m.index}-${full}`} className="vc-wrap">
+          {qty ? <span className="target-qty">{qty}×</span> : null}
+          {href ? (
+            <a
+              className={`vc-badge${isNamed ? ' vc-named' : ''}`}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              {name || 'Target'}
+            </a>
+          ) : (
+            <span className={`vc-badge${isNamed ? ' vc-named' : ''}`}>
+              {name || 'Target'}
+            </span>
+          )}
+        </span>
       );
     }
     last = TOKEN_RE.lastIndex;
@@ -274,22 +302,27 @@ export default function NodeCard({ data }: { data: any }) {
         const factionTokens = (data as any)?.faction_tokens ?? 0
         const azoth = (data as any)?.azoth_reward ?? 0
         const standing = (data as any)?.territory_standing ?? 0
-        const itemId = (data as any)?.item_reward ?? (data as any)?.item_reward_name ?? ''
-        const itemQty = (data as any)?.item_reward_qty ?? 0
-        const itemNameId = (data as any)?.item_reward_name ?? ''
-        const itemResolved = (data as any)?.item_reward_resolved_name ?? ''
-        const itemIcon = (data as any)?.item_reward_icon ?? ''
-        const itemRarityRaw = String((data as any)?.item_reward_rarity || '').trim()
-        const raritySlug = itemRarityRaw
-          ? itemRarityRaw.toLowerCase().replace(/\s+/g, '-')
-          : ''
+        const itemRewards: Array<any> = Array.isArray((data as any)?.item_rewards) ? (data as any).item_rewards : []
+ 
+
+        // ---------- ITEM REWARD #2 (depuis "Item Reward Name" + "Item Reward Qty") ----------
+        const item2Name =
+          (data as any)?.item_reward2_resolved_name ||
+          (data as any)?.item_reward_name ||
+          ''
+        const item2Icon = (data as any)?.item_reward2_icon || ''
+        const item2Qty = (data as any)?.item_reward_qty ?? 0
+        const item2RaritySlug = String((data as any)?.item_reward2_rarity || '')
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, '-')
 
         const hasAny =
           (xp && xp > 0) ||
           (coin && coin > 0) ||
           (azoth && azoth > 0) ||
           (standing && standing > 0) ||
-          itemId || itemNameId
+          (itemRewards.length > 0)
 
         if (!hasAny) return null
 
@@ -337,19 +370,30 @@ export default function NodeCard({ data }: { data: any }) {
                 <b>{fmt(standing)}</b> Territory&nbsp;Standing
               </span>
             )}
-            {(itemId || itemNameId || itemResolved) && (
-              <span className={`reward item-reward ${raritySlug ? `rarity-${raritySlug}` : ''}`}>
-                {itemIcon ? (
-                  <img src={itemIcon} alt="" className="reward-icon" />
-                ) : (
-                  <Icon base={REWARD_ICON_BASE.item} />
-                )}
-                {itemQty ? <b>{fmt(itemQty)}×</b> : null}
-                <span className="item-reward__name">
-                  {String(itemResolved || itemNameId || itemId)}
+            {/* ITEMS : un badge par entrée de item_rewards */}
+            {itemRewards.map((it, idx) => {
+              const rslug = String(it?.rarity || '')
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, '-')
+              const key = (it?.id || it?.name || '') + '-' + idx
+              return (
+                <span
+                  key={key}
+                  className={`reward item-reward ${rslug ? `rarity-${rslug}` : ''}`}
+                >
+                  {it?.icon ? (
+                    <img src={it.icon} alt="" className="reward-icon" />
+                  ) : (
+                    <Icon base={REWARD_ICON_BASE.item} />
+                  )}
+                  {it?.qty ? <b>{fmt(it.qty)}×</b> : null}
+                  <span className="item-reward__name">
+                    {String(it?.name || it?.id || 'Item')}
+                  </span>
                 </span>
-              </span>
-            )}
+              )
+            })}
           </div>
         )
       })()}

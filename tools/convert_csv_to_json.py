@@ -6,7 +6,7 @@ import numpy as np
 from typing import Dict, List, Set
 
 if len(sys.argv) < 2:
-    print("Usage: python tools/convert_csv_to_json.py <QUESTS_CSV> [ITEMS_CSV] [OBJECTIVE_TASKS_PATH]")
+    print("Usage: python tools/convert_csv_to_json.py <QUESTS_CSV> [ITEMS_CSV] [OBJECTIVE_TASKS_PATH] [LOCALE_JSON] [POI_DIR] [VITALS_JSON]")
     sys.exit(1)
 
 csv_path = sys.argv[1]
@@ -218,25 +218,31 @@ def _apply_placeholders(txt: str, row: dict) -> str:
         token = f"{{{{ITEM::icon={icon}::name={disp}::drop={drop}::rarity={rarity}}}}}"
         out = out.replace('{itemName}', token)
 
-    # {targetName} -> "TargetQty <label>"
+    # {targetName} -> "qty × {{VC::name=...::qty=...::named=0|1}}"
     if '{targetName}' in out:
-        qty = row.get('TargetQty')
+        raw_qty = row.get('TargetQty')
         try:
-            if qty is None or (isinstance(qty, float) and np.isnan(qty)):
-                qty = ''
+            if raw_qty is None or (isinstance(raw_qty, float) and np.isnan(raw_qty)):
+                qty_val = ''
             else:
-                qf = float(qty)
-                qty = int(qf) if abs(qf - int(qf)) < 1e-6 else qf
+                qf = float(raw_qty)
+                qty_val = int(qf) if abs(qf - int(qf)) < 1e-6 else qf
         except Exception:
-            qty = str(qty).strip()
-        label = ''
-        if row.get('ItemDropVC'):
-            label = _locale_get(str(row.get('ItemDropVC')))
-        if not label:
-            label = str(row.get('KillEnemyType') or '').strip()
-        label = label or 'Target'
-        qty_part = (f"{qty} " if str(qty) != '' else "")
-        out = out.replace('{targetName}', f"{qty_part}{label}")
+            qty_val = str(raw_qty).strip()
+
+        vc_id = str(row.get('ItemDropVC') or '').strip()
+        vc_rec = vitals_by_id.get(vc_id) or vitals_by_id.get(vc_id.lower()) if vc_id else None
+        if vc_rec:
+            vc_name = vc_rec.get("name") or vc_id
+            named   = "1" if vc_rec.get("isNamed") else "0"
+        else:
+            # fallback KillEnemyType (non nommé)
+            vc_name = str(row.get('KillEnemyType') or '').strip() or 'Target'
+            named   = "0"
+        qty_str = f"{qty_val}" if str(qty_val) != '' else ""
+        vc_url = f"https://nwdb.info/db/creature/{vc_id}" if vc_id else ""
+        token = f"{{{{VC::name={vc_name}::qty={qty_str}::named={named}::id={vc_id}::url={vc_url}}}}}"
+        out = out.replace('{targetName}', token)
     return out
 
 def _collect_desc_texts(row: dict, visited: set[str]) -> list[str]:
@@ -345,6 +351,42 @@ else:
     poi_dir = cand if os.path.isdir(cand) else None
 poi_tag_to_def: Dict[str, dict] = load_poi_defs(poi_dir) if poi_dir else {}
 
+# ---------- Vitals categories (javelindata_vitalscategories.json) ----------
+# Map: id -> {"name": <localisé>, "isNamed": bool}
+def load_vitals_categories(path: str) -> Dict[str, dict]:
+    mapping: Dict[str, dict] = {}
+    if not path or not os.path.isfile(path):
+        return mapping
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            arr = json.load(f)
+    except Exception as e:
+        print(f"[WARN] Impossible de lire {os.path.basename(path)}: {e}")
+        return mapping
+    if not isinstance(arr, list):
+        return mapping
+    for rec in arr:
+        vc_id = str(rec.get("VitalsCategoryID") or "").strip()
+        disp  = rec.get("DisplayName")
+        is_named = bool(rec.get("IsNamed", False))
+        if not vc_id:
+            continue
+        # Résolution via locale (enlève @, insensible à la casse)
+        name = _locale_get(str(disp) or "") if disp else vc_id
+        mapping[vc_id] = {"name": name, "isNamed": is_named}
+        # Accès tolérant à la casse
+        mapping.setdefault(vc_id.lower(), {"name": name, "isNamed": is_named})
+    print(f"[OK] VitalsCategories chargés: {len(mapping)} entrées depuis {path}")
+    return mapping
+
+# chemin du fichier javelindata_vitalscategories.json
+vitals_path = sys.argv[6] if len(sys.argv) >= 7 and sys.argv[6] else None
+if not vitals_path:
+    cand = os.path.join("tools", "javelindata_vitalscategories.json")
+    vitals_path = cand if os.path.isfile(cand) else None
+vitals_by_id: Dict[str, dict] = load_vitals_categories(vitals_path) if vitals_path else {}
+
+
 # Helper pour récupérer l'ID de tâche dans une ligne brute (clé "Task ID"/"ID", etc.)
 def task_id_from_row(row: dict) -> str:
     for k in row.keys():
@@ -443,38 +485,54 @@ for r in rows:
     if az  > 0: q["rewards"].append(f"Azoth +{az}")
     if coin> 0: q["rewards"].append(f"Coin +{coin}")
     if standing > 0: q["rewards"].append(f"Territory Standing +{standing}")
-    item_name = str(get(r, 'Item Reward Name', '')).strip()
-    item_id = str(get(r, 'Item Reward', '')).strip()
-    item_qty = to_int_safe(get(r, 'Item Reward Qty', None)) or 0
+    # ---- Items de récompense (peuvent être 0, 1 ou 2) ----
+    item_id_raw   = str(get(r, 'Item Reward', '')).strip()
+    item2_name_raw = str(get(r, 'Item Reward Name', '')).strip()
+    item2_qty      = to_int_safe(get(r, 'Item Reward Qty', None)) or 0  # qty liée au *Name* seulement
 
-    # Résolution via items.csv (par ID prioritaire, sinon par Name)
-    resolved = None
-    if item_id and item_id in items_by_id:
-        resolved = items_by_id[item_id]
-    elif item_name and item_name.lower() in items_by_name:
-        resolved = items_by_name[item_name.lower()]
-        # si l’ID manquait dans la quête on le récupère
-        if not item_id:
-            item_id = resolved.get('id') or ''
+    # Résolutions
+    resolved_by_id = items_by_id.get(item_id_raw) if item_id_raw else None
+    # "Item Reward Name" contient en réalité un *ID* d'item : on essaie par ID d'abord, puis par nom en fallback
+    resolved_item2 = (
+        items_by_id.get(item2_name_raw) or
+        (items_by_name.get(item2_name_raw.lower()) if item2_name_raw else None)
+    ) if item2_name_raw else None
 
-    # Champs “item_*” pour l’affichage détaillé
-    q["item_reward"] = item_id                    # ID d’origine (ou résolu)
-    q["item_reward_name"] = item_name             # Nom brut du CSV de quêtes
-    q["item_reward_qty"] = item_qty
-    q["item_reward_rarity"] = None
-    # Champs résolus (affichage)
-    if resolved:
-        q["item_reward_resolved_name"] = resolved.get("name") or item_name or item_id
-        q["item_reward_icon"] = resolved.get("icon") or None
-        q["item_reward_rarity"] = resolved.get("rarity") or None
-    else:
-        q["item_reward_resolved_name"] = item_name or item_id
-        q["item_reward_icon"] = None
-        q["item_reward_rarity"] = None
+    # Nouveau format : liste d’objets item_rewards
+    q["item_rewards"] = []
+    if item_id_raw:
+        q["item_rewards"].append({
+            "id": item_id_raw,
+            "name": (resolved_by_id.get("name") if resolved_by_id else item_id_raw),
+            "icon": (resolved_by_id.get("icon") if resolved_by_id else None),
+            "rarity": (resolved_by_id.get("rarity") if resolved_by_id else None),
+            "qty": None  # pas de quantité liée à "Item Reward" (ID)
+        })
+    if item2_name_raw:
+        q["item_rewards"].append({
+            "id":    (resolved_item2.get("id")    if resolved_item2 else None),
+            "name":  (resolved_item2.get("name")  if resolved_item2 else item2_name_raw),
+            "icon":  (resolved_item2.get("icon")  if resolved_item2 else None),
+            "rarity":(resolved_item2.get("rarity")if resolved_item2 else None),
+            "qty":   (item2_qty if item2_qty and item2_qty > 1 else None)
+        })
 
-    if q["item_reward_resolved_name"]:
-        disp = q["item_reward_resolved_name"]
-        q["rewards"].append(f"{disp}" + (f" x{item_qty}" if item_qty>1 else ""))
+    # Fallback compat’ avec l’existant (on privilégie l’item par *Name* s’il existe)
+    chosen = (q["item_rewards"][1] if len(q["item_rewards"]) > 1 else (q["item_rewards"][0] if q["item_rewards"] else None))
+    q["item_reward"]                 = (chosen.get("id") if chosen else (item_id_raw or ""))
+    q["item_reward_name"]            = (item2_name_raw or "")
+    q["item_reward_qty"]             = (item2_qty or 0)
+    q["item_reward_resolved_name"]   = (chosen.get("name") if chosen else (item2_name_raw or item_id_raw))
+    q["item_reward_icon"]            = (chosen.get("icon") if chosen else None)
+    q["item_reward_rarity"]          = (chosen.get("rarity") if chosen else None)
+
+    # Texte récap dans q["rewards"] (laisser simple)
+    if q["item_rewards"]:
+        for it in q["item_rewards"]:
+            label = it["name"]
+            if it.get("qty"):
+                label += f" x{it['qty']}"
+            q["rewards"].append(label)
 
     task_field = str(get(r, 'Task', '') or '').strip()
     if task_field:

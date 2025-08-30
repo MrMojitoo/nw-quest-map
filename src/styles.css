@@ -345,10 +345,56 @@ select { background: #0c1524; color: var(--text); border: 1px solid var(--border
   cursor:pointer;
   background:rgba(70,166,255,0.12);
   border-color:rgba(70,166,255,0.35);
+  color:#fff;                 /* lien blanc */
+  overflow:visible;           /* laisse l’icône dépasser si besoin */
 }
-.poi-badge:hover{
+.poi-badge:hover,
+.poi-badge:visited,
+.poi-badge:focus-visible{
+  color:#fff;                 /* garde le texte blanc à l’état hover/visited/focus */
   background:rgba(70,166,255,0.18);
   border-color:rgba(70,166,255,0.5);
+}
+
+/* Icône plus grande dans le badge POI */
+.poi-badge .reward-icon{
+  width:30px;
+  height:30px;
+  margin-right:2px;
+  vertical-align:middle;
+}
+
+/* VC (targetName) */
+.vc-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.target-qty {
+  display: inline-block;
+  min-width: 1ch;
+  text-align: right;
+  font-weight: 600;
+}
+.vc-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid #a84a4a;     /* bordure + claire */
+  background: #6e1f1f;            /* rouge foncé */
+  color: #fff;
+  line-height: 1.1;
+}
+.vc-badge.vc-named {
+  border-color: #c58a3a;
+  background: #7a3d00;            /* orange foncé */
+}
+.vc-badge:hover,
+.vc-badge:visited,
+.vc-badge:focus-visible {
+  color: #fff;
+  text-decoration: none;
 }
 
 .reward-icon{
