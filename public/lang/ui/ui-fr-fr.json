@@ -1,0 +1,61 @@
+{
+  "ui.search.placeholder": "Rechercher des quêtes (nom ou ID)…",
+  "ui.search.clear": "Effacer la recherche",
+
+  "ui.filters.types": "Types :",
+  "ui.filters.showAllTypes": "Tout afficher",
+  "ui.filters.hideAllTypes": "Tout masquer",
+  "ui.filters.zones": "Zones :",
+  "ui.filters.showAllZones": "Afficher toutes les zones",
+  "ui.filters.hideAllZones": "Masquer toutes les zones",
+  "ui.filters.repeatables": "Répétables",
+
+  "ui.achievements.show": "🏆 Afficher les succès",
+  "ui.achievements.select": "Sélectionner un succès",
+  "ui.achievements.questsCompleted": "quêtes complétées",
+  "ui.achievements.focus": "Focus",
+  "ui.common.close": "Fermer",
+
+  "ui.controls.back": "Revenir au début",
+  "ui.controls.unlock": "Déverrouiller le déplacement des cartes",
+  "ui.controls.lock": "Verrouiller le déplacement des cartes",
+
+  "ui.level.desc": "Atteindre le niveau",
+
+  "ui.progress.title": "PROGRESSION",
+  "ui.progress.reset": "Réinitialiser",
+  "ui.progress.resetDesc": "Réinitialiser la progression",
+  "ui.progress.resetConfirm": "Réinitialiser la progression du personnage actif ?",
+  "ui.progress.bulkMarkDone": "Marquer {count} quêtes « {type} » comme terminées ?",
+  "ui.progress.bulkMarkUndone": "Marquer {count} quêtes « {type} » comme non terminées ?",
+  "ui.progress.bulkUnmark": "Retirer le marquage de toutes les quêtes {type}",
+  "ui.progress.bulkMark": "Marquer toutes les quêtes {type} comme terminées",
+
+  "ui.help": "Aide",
+  "ui.help.open": "Ouvrir le panneau d’aide",
+  "ui.help.hide": "Masquer le panneau d’aide",
+
+  "ui.sidebar.information": "Informations",
+  "ui.sidebar.about": "À propos de cette carte",
+  "ui.sidebar.about.text": "Flux de quêtes interactif pour New World : filtre par type/zone, déplacement & zoom, et suivi de la progression des personnages localement dans le navigateur.",
+  "ui.sidebar.howto.title": "Mode d’emploi",
+  "ui.sidebar.howto.drag": "Faites glisser la zone pour vous déplacer (clic, molette ou MAJ+molette).",
+  "ui.sidebar.howto.zoom": "Utilisez CTRL+molette ou les boutons pour zoomer.",
+  "ui.sidebar.howto.minimap": "Vous pouvez cliquer sur la mini-carte pour vous déplacer.",
+  "ui.sidebar.howto.search": "Recherchez n’importe quelle quête avec la barre de recherche (nom ou ID).",
+  "ui.sidebar.howto.reorganize": "Faites glisser les cartes pour les réorganiser (désactivé quand « Verrouiller » 🔒 est activé).",
+  "ui.sidebar.howto.center": "Si vous êtes perdu, utilisez ↖️ pour centrer sur la première carte.",
+  "ui.sidebar.howto.copyId": "Cliquez sur l’ID d’une carte pour le copier.",
+  "ui.sidebar.howto.followEdge": "Cliquez sur l’extrémité d’une arête pour suivre le lien.",
+  "ui.sidebar.howto.character": "Créez un personnage pour suivre les quêtes par personnage.",
+  "ui.sidebar.howto.tasks": "Ouvrez le menu « Tâches » pour voir POI et ennemis (liens nw-buddy / NWDB).",
+
+  "ui.char.newPlaceholder": "Nouveau personnage…",
+  "ui.char.add": "Ajouter",
+  "ui.char.delete": "Supprimer le personnage",
+  "ui.char.deleteConfirm": "Supprimer le personnage « {name} » ? Cela effacera sa progression.",
+
+  "ui.card.tasks": "Tâches",
+  "ui.card.markDone": "Marquer comme terminé",
+  "ui.card.markUndone": "Marquer comme non terminé"
+}

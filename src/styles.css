@@ -1,0 +1,1203 @@
+:root {
+  --bg: #0b0f14;
+  --panel: #111826;
+  --text: #e5eef7;
+  --muted: #9fb1c7;
+  --accent: #46a6ff;
+  --ok: #14b86a;
+  --border: #1e293b;
+  --sidebar-w: 390px;
+  --sidebar-collapsed-w: 10px;
+  --progress-dock-w: 390px;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body { background: linear-gradient(180deg, #0b0f14, #0d1117); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif; }
+
+.layout { display: grid; grid-template-rows: 56px 1fr 32px; height: 100%; }
+.topbar { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 12px; align-items: center; padding: 8px 12px; background: rgba(17,24,38,0.8); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
+.brand{
+  /* Titre + sous-titre en colonne, logo à gauche via ::before */
+  display:grid;
+  grid-template-columns:auto 1fr;
+  grid-auto-rows:min-content;
+  align-items:center;
+  column-gap:10px;
+  line-height:1.1;
+  position:relative;
+}
+/* Logo à gauche du titre — dépose /public/logo-msq.svg ou ajuste le chemin */
+.brand::before{
+  content:'';
+  grid-row:1 / span 2;   /* occupe la hauteur titre + sous-titre */
+  grid-column:1;
+  width:40px;
+  height:40px;
+  background-image:url('/logo-nwqm.png');
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  filter: drop-shadow(0 0 2px rgba(0,0,0,.25));
+}
+.brand-title{
+  font-weight:800;
+  font-size:16px;
+  letter-spacing:.3px;
+  background: linear-gradient(90deg, #f4dd66 0%, #f5b45c 25%, #f97316 50%, #f472b6 75%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.brand-sub{
+  font-size:12px;
+  color: var(--muted);
+}
+@media (min-width:640px){
+  .brand-title{ font-size:18px; }
+}
+.content { display: grid; grid-template-columns: 1fr var(--sidebar-w); height: calc(100vh - 88px); }
+.sidebar-collapsed .content { grid-template-columns: 1fr var(--sidebar-collapsed-w); }
+
+.footer { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; border-top: 1px solid var(--border); background: rgba(17,24,38,0.8); }
+.muted { color: var(--muted); font-size: 12px; }
+.center { display: grid; place-items: center; height: 100%; }
+.error { color: #ff6b6b; }
+
+ .sidebar{
+  padding: 14px 16px;
+  color: #c9d2e2;
+  font-size: 14px;
+  width: var(--sidebar-w);
+  transition: width .2s ease, padding .2s ease, opacity .15s ease;
+  position: relative;
+ }
+.sidebar-collapsed .sidebar{
+  width: var(--sidebar-collapsed-w);
+  padding: 0;                 /* pas de padding pour la lame */
+  overflow: hidden;           /* cache le contenu qui dépasserait */
+  pointer-events: none;       /* évite les interactions sur le contenu caché */
+  border-left: 1px solid var(--border);
+}
+
+.sidebar-collapsed .sidebar > * { display: none; }
+.sidebar .section { margin-bottom: 16px; }
+.sidebar-title{
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  margin: 12px 0 6px;
+  color: #e6e9f2;
+}
+ .sidebar .muted{
+   opacity:.8;
+ }
+.sidebar-handle{
+  position: fixed;
+  top: 72px;                            /* sous la topbar */
+  right: calc(var(--sidebar-w) + 8px);  /* collée à l’extérieur de la sidebar */
+  z-index: 45;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-right: none;
+  padding: 6px 10px;
+  border-radius: 8px 0 0 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.35);
+  cursor: pointer;
+  user-select: none;
+}
+.sidebar-handle:hover{ border-color:#2a3b56; }
+/* Quand repliée, l’onglet se colle à la lame de 10px et devient "< Help" */
+.sidebar-collapsed .sidebar-handle{
+  right: calc(var(--sidebar-collapsed-w) + 8px);
+  border-right: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+
+.howto-list{
+  margin: 6px 0 0 16px;
+  line-height: 1.5;
+}
+
+/* Progress rows */
+.progress-total{
+  margin-bottom: 8px;
+}
+.progress-list{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.progress-row{
+  display: grid;
+  /* label | barre | check */
+  grid-template-columns: 1fr 120px auto;
+  gap: 8px;
+  align-items: center;
+}
+.progress-label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* petit check rond cliquable */
+.check-toggle{
+  width:18px; height:18px;
+  border-radius:9999px;
+  border:2px solid rgba(255,255,255,.4);
+  background:transparent;
+  cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center;
+  flex:0 0 auto;
+}
+.check-toggle:hover{ border-color:#ffffff; }
+.check-toggle.on{
+  background:#16a34a;          /* vert */
+  border-color:#86efac;         /* vert clair */
+}
+.check-toggle.on::after{
+  content:'✓';
+  font-size:12px;
+  color:#fff;
+  line-height:1;
+}
+/* Petite icône carré devant les types (Progress & filtres) */
+.type-icon{
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: -3px;
+  margin-right: 6px;
+  border-radius: 3px;
+  image-rendering: auto;
+}
+.progress-bar{
+  height: 6px;
+  background: rgba(255,255,255,.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-fill{
+  height: 100%;
+  background: linear-gradient(90deg, #9ddc6e, #58c77a);
+}
+.progress-dock{
+  position: fixed;
+  right: 12px;
+  bottom: 56px;              /* au-dessus du footer */
+  width: var(--progress-dock-w);
+  max-width: calc(100vw - 24px);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.35);
+  z-index: 40;
+}
+.progress-dock__title{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.progress-dock__title .title{
+  font-weight: 700;
+  font-size: 20px;
+}
+
+/* Bouton Reset en haut à droite du header PROGRESS */
+.btn-reset-progress{
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #dc2626;    /* red-600 */
+  background: #7f1d1d;          /* red-900 */
+  color:#fff;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+.btn-reset-progress:hover{ filter: brightness(1.1); }
+
+
+.graph { height: 100%; border-right: 1px solid var(--border); }
+
+.tag { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); background: #0f1729; font-size: 12px; }
+
+.toolbar-row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+  width:100%;             /* force un retour à la ligne entre les groupes */
+}
+.toolbar-label{ margin-right:4px; opacity:.85; font-weight:600; }
+
+.filters { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.toggle{
+  background:#0b1220;
+  color:#b7c6db;
+  border:1px solid #1f2a3a;
+  border-radius:999px;
+  padding:4px 10px;
+  font-size:12px;
+  line-height:1;
+  cursor:pointer;
+  transition: background .15s ease, border-color .15s ease, color .15s ease, opacity .15s ease;
+
+}
+.toggle.on{
+  background: linear-gradient(180deg, #3a4b6a, #2a3851);
+  color:#ffffff;
+  border-color:#5f89ff;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08) inset, 0 4px 10px rgba(0,0,0,.25);
+}
+.toggle:not(.on){
+  opacity: .55;
+  filter: saturate(.85);
+}
+.toggle:hover{
+  border-color:#33507e;
+  opacity:.95;
+}
+.toggle.repeatable{
+  /* style dédié au filtre Repeatable */
+  background: rgba(250, 204, 21, 0.16);   /* #facc15 avec transparence */
+  border-color: #facc15;                  /* même jaune que l'encadrement des quêtes repeatable */
+  color: #fff;
+}
+.toggle.repeatable.on{
+  /* état ON: fond jaune soutenu  bordure plus claire, contraste fort */
+  background: linear-gradient(180deg, #facc15, #eab308);
+  border-color: #fde68a;                  /* bordure un peu plus claire */
+  color: #111;                            /* lisible sur fond jaune */
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08) inset, 0 4px 10px rgba(0,0,0,.25);
+}
+.toggle.repeatable:not(.on){
+  opacity:.8;
+  filter:none; /* garde la teinte jaune même en OFF mais plus discrète */
+}
+.toggle.zone{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:3px 10px;
+}
+.toggle.zone .legend-dot{
+  width:10px; height:10px; border-radius:999px; display:inline-block;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.08) inset;
+}
+.toggle.zone:not(.on) .legend-dot{ filter: grayscale(1) brightness(.9); opacity:.7; }
+.toggle:hover{ border-color:#2a3b56; opacity: .9; }
+
+
+.node-card { background: #0f172a; border: 1px solid var(--border); border-radius: 12px; color: var(--text); padding: 8px; min-width: 220px; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
+.node-card { max-width: 300px; cursor: grab;} 
+/* nécessaire pour l’overlay + isolation peinture pour limiter les repaints */
+.node-card { position: relative; }
+
+.node-card .title { font-weight: 700; font-size: 20px; line-height: 1.1; }
+.node-card .meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; color: var(--muted); font-size: 12px; }
+.node-card .zone { height: 6px; border-radius: 4px; margin-bottom: 6px; }
+.node-card .desc { white-space: normal; line-height: 1.35; margin: 6px 0 0 0; }
+.node-card .q-icon { width: 20px; height: 20px; display: block; }
+
+.node-card:active { cursor: grabbing; }
+
+/* Évite de sélectionner le titre par accident lors du drag */
+.node-card .title { user-select: none; }
+
+.completed { outline: 3px solid var(--ok); outline-offset: 0; }
+.repeatable { outline: 3px solid #facc15; outline-offset: 0; }
+.mainstory { outline: 3px solid #ffffff; outline-offset: 0; }
+
+/* ===== Zébrage vert quand terminé (transition d’opacité only) ===== */
+.node-card .done-overlay{
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .12s linear;
+  will-change: opacity;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(20,184,106,0.20) 0px,
+      rgba(20,184,106,0.20) 24px,
+      rgba(20,184,106,0.38) 24px,
+      rgba(20,184,106,0.38) 48px
+    );
+}
+.node-card.is-done .done-overlay{ opacity: 1; }
+
+/* ===== Bouton "Mark as done" pleine largeur ===== */
+.node-card .complete-btn{
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  text-align: center;
+  background: #000000;
+  border: 1px solid #14532d;
+  color: #e6ffef;
+  border-radius: 8px;
+  padding: 6px 10px;
+  will-change: background-color, border-color;
+  transform: translateZ(0); /* hint GPU */
+}
+.node-card .complete-btn:hover{ background:#0f2a1a; border-color:#198754; }
+
+.node-card .rewards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.node-card .reward {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #0f1729;
+  font-size: 12px;
+  line-height: 1;
+}
+.node-card a.reward{
+  text-decoration: none;
+  color: inherit;
+}
+.node-card a.reward:hover{
+  filter: brightness(1.06);
+}
+.node-card .reward img {
+  width: 14px;
+  height: 14px;
+  display: block;
+  opacity: 0.95;
+}
+
+.reward-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+/* ===== Badge complet pour l'item reward (fond  bordure  arrondis) ===== */
+.node-card .reward.item-reward {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  border: 1px solid transparent; /* sera surchargé par les variantes */
+  line-height: 1.1;
+  color: #fff; /* lisible sur les fonds colorés */
+}
+.node-card .reward.item-reward .reward-icon {
+  width: 18px;
+  height: 18px;
+}
+.node-card .reward.item-reward b {
+  font-weight: 600;
+}
+.node-card .reward.item-reward .item-reward__name {
+  opacity: 0.95;
+}
+
+/* Variantes de rareté (fond  bordure plus claire) */
+.node-card .reward.item-reward.rarity-common    { background: #484c55; border-color: #9ca3af; }
+.node-card .reward.item-reward.rarity-uncommon  { background: #065f46; border-color: #10b981; }
+.node-card .reward.item-reward.rarity-rare      { background: #096792; border-color: #7dd3fc; }
+.node-card .reward.item-reward.rarity-epic      { background: #7c3aed; border-color: #a78bfa; }
+.node-card .reward.item-reward.rarity-legendary { background: #b47508; border-color: #fde68a; }
+.node-card .reward.item-reward.rarity-artifact  { background: #b45309; border-color: #f59e0b; }
+
+/* === Quêtes correspondant à l'achievement sélectionné === */
+.react-flow__node.ach-match .node-card{
+  outline: 3px solid #f472b6;     /* rose */
+  outline-offset: 6px;            /* bordure décollée */
+  box-shadow: 0 0 0 2px rgba(244,114,182,0.15);
+}
+
+.controls { display: flex; gap: 8px; align-items: center; }
+button, .button { background: #0f172a; color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 6px 10px; cursor: pointer; }
+button:hover { border-color: #2a3b56; }
+input[type="text"] { background: #0c1524; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; width: 100%; }
+select { background: #0c1524; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; }
+
+/* ==== Modern search bar ==== */
+.search{
+  position: relative;
+  display: block;
+  width: min(560px, 100%);
+  margin: 0 auto;                 /* centered */
+}
+.search__icon{
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px; height: 18px;
+  color: var(--muted);
+  pointer-events: none;
+}
+input.search__input{
+  width: 100%;
+  padding: 10px 50px 10px 52px;
+  background: #0c1524;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+input.search__input::placeholder{ color: var(--muted); }
+input.search__input:focus{
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(70,166,255,0.15);
+}
+.search__clear{
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+}
+.search__clear:hover{
+  color: #ffffff;
+  background: rgba(255,255,255,0.06);
+}
+
+.react-flow__edge-path,
+.react-flow__connection-path {
+  cursor: pointer;
+}
+
+.react-flow__minimap {
+  cursor: pointer;
+  z-index: 60;
+  right: 12px !important;
+}
+
+.sidebar-collapsed .react-flow__minimap {
+  right: calc(var(--progress-dock-w) + 24px) !important; 
+
+}
+
+.react-flow__minimap-viewport {
+  stroke: #ffffff !important;
+  stroke-width: 2px !important;
+  fill: transparent !important;
+}
+
+/* --- Améliore la netteté après transforms (zoom/pan) --- */
+.react-flow__renderer,
+.react-flow__nodes,
+.react-flow__node {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.react-flow__node {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Help the browser render crisp text/icons after transforms */
+.react-flow__node {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  image-rendering: auto;
+}
+
+.minimap--white-viewport .react-flow__minimap-viewport {
+  stroke: #ffffff !important;          /* bordure blanche */
+  stroke-width: 3px !important;
+  fill: none !important;
+  vector-effect: non-scaling-stroke;   /* trait net au zoom */
+}
+
+.minimap--white-viewport svg .react-flow__minimap-viewport {
+  stroke: #ffffff !important;     /* bordure blanche */
+  stroke-width: 3px !important;
+  fill: none !important;
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.85)); /* halo discret */
+}
+
+/* Assure un bon contraste du masque, sans couvrir la bordure */
+.minimap--white-viewport .react-flow__minimap-mask {
+  /* le viewport est un trou dans ce path : on trace son contour */
+  fill: rgba(0, 0, 0, 0.15) !important; /* masque plus léger */
+  stroke: #ffffff !important;           /* BORDURE BLANCHE DU VIEWPORT */
+  stroke-width: 5px !important;
+  vector-effect: non-scaling-stroke;    /* trait net au zoom */
+  paint-order: stroke fill;
+  shape-rendering: crispEdges;
+}
+
+.copy-id {
+  cursor: pointer;
+  user-select: text;
+  border-radius: 4px;
+  padding: 0 4px;
+  transition: background-color .15s ease, outline-color .15s ease;
+}
+.copy-id:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+.copy-id.copied {
+  outline: 2px solid #34d399; /* feedback vert */
+  outline-offset: 2px;
+}
+
+
+/* ===== Tasks ===== */
+.node-card .tasks {
+  margin-top: 10px;
+  border-top: 1px dashed var(--border);
+  padding-top: 8px;
+}
+.node-card .tasks .section-title {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.node-card .task {
+  background: #0b1220;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px;
+  margin-top: 6px;
+}
+.node-card .task .task-id code {
+  background: #0f1729;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 11px;
+}
+.node-card .kv {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.node-card .kv .pair {
+  font-size: 11px;
+  background: #0f1729;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+.node-card details.task-details {
+  margin-top: 6px;
+}
+.node-card details.task-details summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 12px;
+}
+.node-card .grid-kv {
+  margin-top: 6px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 8px;
+  font-size: 11px;
+}
+.node-card .grid-kv .k {
+  color: var(--muted);
+}
+.node-card .grid-kv .v {
+  word-break: break-word;
+}
+
+/* ===== Tasks (brut / auto-généré depuis ObjectiveTasks) ===== */
+.node-card .tasks-raw {
+  margin-top: 10px;
+  border-top: 1px dashed var(--border);
+  padding-top: 8px;
+}
+.node-card .tasks-raw summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 12px;
+}
+.node-card .tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+/* Generic token rendering (works in normal tasks list and raw section) */
+.node-card .task-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 6px;
+  border: 1px solid var(--muted-2, #2a2a2a);
+  border-radius: 8px;
+  margin: 0 4px;
+  line-height: 1.15;
+}
+.node-card a.task-item{
+  text-decoration: none;
+  color: inherit;
+}
+.node-card a.task-item:hover{
+  filter: brightness(1.06);
+}
+.node-card .task-item .reward-icon {
+  width: 16px; height: 16px; border-radius: 3px; object-fit: cover;
+}
+.node-card .drop-badge { font-size: 11px; padding: 1px 6px; border: 1px solid var(--muted-2, #2a2a2a); border-radius: 999px; }
+ 
+.node-card .task-raw {
+  background: #0b1220;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px;
+}
+.node-card .task-raw code {
+  background: #0f1729;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: 11px;
+}
+
+/* ===== Rendu des paires clé/valeur imbriquées ===== */
+.node-card .kv-array .nested {
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px dashed var(--border);
+}
+.node-card .kv-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 8px;
+  font-size: 11px;
+}
+.node-card .kv-grid .kv-key {
+  color: var(--muted);
+}
+.node-card .kv-grid .kv-val {
+  word-break: break-word;
+}
+
+/* ---- Tasks (rendu d'items inline) ---- */
+.tasks-raw .task-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 20px;
+  padding: 0 8px;
+  border: 1px solid var(--muted-2, #2a2a2a);
+  border-radius: 9999px;
+  margin: 0 4px;
+  line-height: 20px; /* même hauteur que la ligne pour un alignement propre */
+}
+.tasks-raw .task-item .reward-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  object-fit: cover;
+}
+.tasks-raw .drop-badge {
+  font-size: 11px;
+  padding: 1px 6px;
+  border: 1px solid var(--muted-2, #2a2a2a);
+  border-radius: 999px;
+}
+
+/* -------- Tasks layout & badges -------- */
+.task-line{
+  display:inline;           /* pas de flex ici -> flux naturel */
+  font-size:13px;
+  line-height:1.35;         /* lignes plus serrées mais lisibles */
+  vertical-align:middle;
+  margin:0;                 /* aucune marge ajoutée ligne à ligne */
+}
+
+.task-item{
+  display:inline-flex;      /* centre icône + nom verticalement */
+  align-items:center;
+  /* pas de height fixe -> s’aligne mieux avec le texte */
+  min-height:18px;
+  padding:0 8px;
+  border-radius:9999px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  vertical-align:middle;
+}
+.task-item__name{ line-height:1; }
+
+/* POI badge (cliquable) */
+.poi-badge{
+  text-decoration:none;
+  cursor:pointer;
+  background:rgba(70,166,255,0.12);
+  border-color:rgba(70,166,255,0.35);
+  color:#fff;                 /* lien blanc */
+  overflow:visible;           /* laisse l’icône dépasser si besoin */
+}
+.poi-badge:hover,
+.poi-badge:visited,
+.poi-badge:focus-visible{
+  color:#fff;                 /* garde le texte blanc à l’état hover/visited/focus */
+  background:rgba(70,166,255,0.18);
+  border-color:rgba(70,166,255,0.5);
+}
+
+/* Icône plus grande dans le badge POI */
+.poi-badge .reward-icon{
+  width:30px;
+  height:30px;
+  margin-right:2px;
+  vertical-align:middle;
+}
+
+/* VC (targetName) */
+.vc-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.target-qty {
+  display: inline-block;
+  min-width: 1ch;
+  text-align: right;
+  font-weight: 600;
+}
+.vc-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid #a84a4a;     /* bordure + claire */
+  background: #6e1f1f;            /* rouge foncé */
+  color: #fff;
+  line-height: 1.1;
+}
+.vc-badge.vc-named {
+  border-color: #c58a3a;
+  background: #7a3d00;            /* orange foncé */
+}
+.vc-badge:hover,
+.vc-badge:visited,
+.vc-badge:focus-visible {
+  color: #fff;
+  text-decoration: none;
+}
+
+.reward-icon{
+  width:16px; height:16px;
+  margin-right:6px;
+  vertical-align:middle;    /* ensure icon sits on middle too */
+}
+
+.drop-badge{
+  display:inline-flex;
+  align-items:center;
+  height:18px;
+  line-height:18px;
+  padding:0 6px;
+  margin-left:6px;
+  border-radius:9999px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.08);
+  vertical-align:middle;
+}
+
+/* Liste Tasks avec tirets custom + espacements propres */
+.tasks-ul{
+  list-style:none;
+  padding-left:0;
+  margin:6px 0 0 0;
+}
+.task-li{
+  position:relative;
+  padding-left:18px;        /* place pour le tiret */
+  margin:0;                 /* pas d’écart intra-task */
+}
+/* espace uniquement entre 2 tasks (pas entre lignes d’une même task) */
+.task-li + .task-li{ margin-top:8px; }
+/* petit tiret horizontal soigné au lieu du caractère '–' */
+.task-li::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:0.8em;                /* aligné sur la première ligne */
+  width:10px;
+  height:2px;
+  background:rgba(255,255,255,0.35);
+  border-radius:2px;
+}
+
+/* Couleurs par rareté (pour .task-item) */
+.task-item.rarity-common    { background:#484c55; border-color:#9ca3af; color:#fff; }
+.task-item.rarity-uncommon  { background:#065f46; border-color:#10b981; color:#eafff6; }
+.task-item.rarity-rare      { background:#096792; border-color:#7dd3fc; color:#e8f7ff; }
+.task-item.rarity-epic      { background:#7c3aed; border-color:#a78bfa; color:#fff; }
+.task-item.rarity-legendary { background:#b47508; border-color:#fde68a; color:#fff; }
+.task-item.rarity-artifact  { background:#b45309; border-color:#f59e0b; color:#fff; }
+
+/* Footer layout helpers for right-aligned "Updated data" */
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.footer-right {
+  margin-left: auto;
+  text-align: right;
+}
+
+/* ===== React Flow Controls: custom lock button contrast ===== */
+.react-flow__controls .rf-lock-btn {
+  border: 1px solid #475569;         /* slate-600 */
+  background: rgba(255,255,255,0.08);
+  color: #e2e8f0;                    /* slate-200 */
+  transition: background .15s ease, color .15s ease, border-color .15s ease, transform .05s ease;
+}
+.react-flow__controls .rf-lock-btn:hover {
+  background: rgba(255,255,255,0.18);
+}
+.react-flow__controls .rf-lock-btn.unlocked {
+  /* green-ish to suggest editing enabled */
+  background: #065f46;               /* emerald-900 */
+  border-color: #34d399;             /* emerald-400 */
+  color: #ffffff;
+}
+.react-flow__controls .rf-lock-btn.unlocked:hover {
+  background: #047857;               /* emerald-800 */
+}
+.react-flow__controls .rf-lock-btn.locked {
+  /* strong red to show locked state */
+  background: #7f1d1d;               /* red-900 */
+  border-color: #fca5a5;             /* red-300 */
+  color: #ffffff;
+}
+.react-flow__controls .rf-lock-btn.locked:hover {
+  background: #991b1b;               /* red-800 */
+}
+.react-flow__controls .rf-lock-btn:active {
+  transform: scale(0.98);
+}
+
+/* Character tabs */
+.char-tabs{display:flex;gap:12px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.char-tab-list{display:flex;gap:8px;flex-wrap:wrap}
+.char-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--border);border-radius:9999px;background:var(--panel);cursor:pointer;user-select:none;transition:transform .12s ease, background .15s ease, border-color .15s ease}
+.char-pill:hover{transform:translateY(-1px);border-color:var(--accent)}
+.char-pill.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.char-pill__name{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.char-close{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;line-height:18px;border-radius:9999px;font-weight:700;opacity:.85;background:transparent}
+.char-close:hover{opacity:1;background:rgba(0,0,0,.08)}
+.char-add{display:flex;gap:8px;align-items:center}
+.char-input{min-width:180px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--panel);color:var(--text)}
+
+ 
+/* Nœuds sans parents (aucun prérequis “quête”) : bordure bleue */
+.react-flow__node.no-parent-node .node-card {
+  /* garde une bordure bleue discrète sur la carte */
+  border-color: #60a5fa;
+  box-shadow: none; /* on retire l'ombre interne */
+}
+/* Encadrement BLEU autour de la carte (dépasse légèrement) */
+.react-flow__node.no-parent-node .node-card::after{
+  content:'';
+  position:absolute;
+  inset:-6px;                        /* déborde tout autour */
+  border: 3px solid rgba(96,165,250,0.9); /* cadre bleu visible */
+  border-radius: 18px;               /* un peu plus grand que la carte (12px + marge) */
+  pointer-events:none;               /* ne bloque pas les clics */
+  box-shadow: 0 0 12px rgba(96,165,250,0.35);
+}
+
+/* ===========================
+   Achievements (modal & chip)
+   =========================== */
+
+/* Overlay plein écran (fond assombri) */
+.achievements-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000; /* au-dessus de la minimap/graph */
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* Panneau flottant */
+.achievements-modal__panel,
+.achievements-panel {
+  width: min(680px, 96vw);
+  max-height: 80vh;
+  background: #0f1220; /* fond sombre cohérent avec le thème */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+ border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* En-tête du panneau */
+.achievements-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.achievements-modal__title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.achievements-modal__close {
+  appearance: none;
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.achievements-modal__close:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Liste scrollable des achievements */
+.achievements-list {
+  padding: 10px 8px 14px;
+  overflow: auto;
+}
+
+/* Une ligne d’achievement cliquable */
+.achievement-item,
+.achievement-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin: 6px 4px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: transform 0.04s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.achievement-item:hover,
+.achievement-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.achievement-title {
+  font-weight: 600;
+  line-height: 1.2;
+}
+.achievement-count {
+  opacity: 0.7;
+  font-size: 12px;
+}
+
+/* Badge affichant l’achievement sélectionné près des contrôles */
+.selected-achievement,
+.achievement-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(244, 221, 102, 0.4);
+  background: linear-gradient(
+    135deg,
+    rgba(244, 221, 102, 0.15),
+    rgba(244, 221, 102, 0.05)
+  );
+  color: #f4dd66;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.selected-achievement .dot,
+.achievement-chip .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f4dd66;
+  box-shadow: 0 0 0 2px rgba(244, 221, 102, 0.2);
+}
+
+/* Optionnel : dans certains layouts, on veut que le bouton trigger
+   ne rétrécisse pas les contrôles adjacents */
+.achievements-trigger {
+  flex-shrink: 0;
+}
+
+/* Bouton plus visible pour ouvrir la modale Achievements */
+.achievements-trigger--bright{
+  font-weight: 800;
+  letter-spacing: .2px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid #5f89ff;
+  background: linear-gradient(180deg, #1d2a44, #14243a);
+  box-shadow: 0 6px 22px rgba(31, 64, 120, 0.45);
+}
+.achievements-trigger--bright:hover{
+  border-color: #7aa2ff;
+  box-shadow: 0 8px 26px rgba(31, 64, 120, 0.55);
+}
+
+/* Bannière 'Selected achievement' plus visible  décalée à droite via inline left:36 */
+.selected-ach-banner{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 12px;
+  border-radius:12px;
+  color:#fff;
+  background: rgba(15,23,42,0.92);
+  border: 1px solid #7c91b3;
+  backdrop-filter: blur(3px);
+  box-shadow: 0 10px 26px rgba(0,0,0,.45), 0 0 0 2px rgba(124,145,179,0.12) inset;
+}
+.selected-ach-banner .label{
+  opacity:.95;
+  font-weight:700;
+}
+.selected-ach-banner .title{
+  max-width: 40vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.selected-ach-banner .btn-clear-ach{
+  margin-left:auto;
+}
+
+/* Bouton Clear plus contrasté (rose) */
+.btn-clear-ach{
+  background: linear-gradient(180deg, #4a0f2a, #340a1f);
+  border: 1px solid #f472b6; /* rose */
+  color:#ffd6ea;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-weight:700;
+}
+.btn-clear-ach:hover{
+  border-color:#fb82c1;
+  color:#fff;
+  box-shadow: 0 0 0 3px rgba(244,114,182,0.15);
+}
+/* Icône des meta achievements (liste + bannière) */
+.ach-icon{
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.selected-ach-banner .ach-icon{
+  width: 20px;
+  height: 20px;
+  opacity: .95;
+}
+/* Actions dans l'encart PROGRESS */
+.progress-actions{
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+.btn-danger{
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #dc2626;     /* red-600 */
+  background: #7f1d1d;           /* red-900 */
+  color: #fff;
+  cursor: pointer;
+}
+.btn-danger:hover{ filter: brightness(1.1); }
+
+/* --- Language selector (modern popover) --- */
+.lang-switcher{
+  position: fixed;
+  top: 10px;
+  right: 12px;
+  z-index: 1200;
+}
+.lang-menu{ position: relative; }
+.lang-btn{
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #1b2437, #141c2b);
+  border: 1px solid #32425f;
+  color: #e6edf7;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(0,0,0,.35);
+}
+.lang-btn:hover{ border-color:#4a6aa0; }
+.lang-btn .flag{ font-size: 16px; line-height: 1; }
+.lang-btn .code{ font-weight: 800; letter-spacing:.3px; }
+.lang-btn .chev{ opacity:.8; margin-left:2px; }
+
+.lang-popover{
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 240px;
+  background: rgba(15,23,42,0.96);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.45);
+  padding: 6px;
+}
+.lang-item{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: transparent;
+  border: 0;
+  color: #e6edf7;
+  text-align: left;
+  cursor: pointer;
+}
+.lang-item .flag{ font-size: 16px; }
+.lang-item .name{ opacity: .95; }
+.lang-item .code{ opacity: .65; font-size: 12px; font-weight: 700; }
+.lang-item:hover{ background: rgba(255,255,255,0.06); }
+.lang-item.active{
+  background: linear-gradient(180deg, #1d2a44, #14243a);
+  border: 1px solid #5f89ff;
+}

@@ -1,0 +1,61 @@
+{
+  "ui.search.placeholder": "Szukaj zadań (nazwa lub ID)…",
+  "ui.search.clear": "Wyczyść wyszukiwanie",
+
+  "ui.filters.types": "Typy:",
+  "ui.filters.showAllTypes": "Pokaż wszystkie typy",
+  "ui.filters.hideAllTypes": "Ukryj wszystkie typy",
+  "ui.filters.zones": "Strefy:",
+  "ui.filters.showAllZones": "Pokaż wszystkie strefy",
+  "ui.filters.hideAllZones": "Ukryj wszystkie strefy",
+  "ui.filters.repeatables": "Powtarzalne",
+
+  "ui.achievements.show": "🏆 Pokaż osiągnięcia",
+  "ui.achievements.select": "Wybierz osiągnięcie",
+  "ui.achievements.questsCompleted": "ukończonych zadań",
+  "ui.achievements.focus": "Skup",
+  "ui.common.close": "Zamknij",
+
+  "ui.controls.back": "Powrót na start",
+  "ui.controls.unlock": "Odblokuj przeciąganie kart",
+  "ui.controls.lock": "Zablokuj przeciąganie kart",
+
+  "ui.level.desc": "Osiągnij poziom",
+
+  "ui.progress.title": "POSTĘP",
+  "ui.progress.reset": "Resetuj",
+  "ui.progress.resetDesc": "Resetuj postęp",
+  "ui.progress.resetConfirm": "Zresetować postęp aktywnej postaci?",
+  "ui.progress.bulkMarkDone": "Oznaczyć wszystkie {count} zadania „{type}” jako ukończone?",
+  "ui.progress.bulkMarkUndone": "Oznaczyć wszystkie {count} zadania „{type}” jako nieukończone?",
+  "ui.progress.bulkUnmark": "Usuń oznaczenia wszystkich zadań {type}",
+  "ui.progress.bulkMark": "Oznacz wszystkie zadania {type} jako ukończone",
+
+  "ui.help": "Pomoc",
+  "ui.help.open": "Otwórz panel pomocy",
+  "ui.help.hide": "Ukryj panel pomocy",
+
+  "ui.sidebar.information": "Informacje",
+  "ui.sidebar.about": "O tej mapie",
+  "ui.sidebar.about.text": "Interaktywny przepływ zadań dla New World: filtruj po typie/strefie, przesuwaj i powiększaj, a postęp postaci zapisuj lokalnie w przeglądarce.",
+  "ui.sidebar.howto.title": "Jak używać",
+  "ui.sidebar.howto.drag": "Przeciągnij obszar, aby się przesuwać (klik, kółko myszy lub SHIFT+kółko).",
+  "ui.sidebar.howto.zoom": "Użyj CTRL+kółko lub przycisków, aby powiększać.",
+  "ui.sidebar.howto.minimap": "Kliknij minimapę, aby przenieść się w dowolne miejsce.",
+  "ui.sidebar.howto.search": "Wyszukuj zadania w pasku wyszukiwania (nazwa lub ID).",
+  "ui.sidebar.howto.reorganize": "Przeciągaj karty, aby je uporządkować (wyłączone, gdy „Blokada” 🔒 jest włączona).",
+  "ui.sidebar.howto.center": "Gdy się zgubisz, użyj ↖️, aby wycentrować na pierwszej karcie.",
+  "ui.sidebar.howto.copyId": "Kliknij ID karty, aby skopiować.",
+  "ui.sidebar.howto.followEdge": "Kliknij koniec krawędzi, aby podążyć za łączem.",
+  "ui.sidebar.howto.character": "Utwórz postać, by śledzić zadania per postać.",
+  "ui.sidebar.howto.tasks": "Otwórz listę Zadań, by zobaczyć POI i wrogów (linki do nw-buddy / NWDB).",
+
+  "ui.char.newPlaceholder": "Nowa postać…",
+  "ui.char.add": "Dodaj",
+  "ui.char.delete": "Usuń postać",
+  "ui.char.deleteConfirm": "Usunąć postać «{name}»? To usunie zapisany postęp.",
+
+  "ui.card.tasks": "Zadania",
+  "ui.card.markDone": "Oznacz jako ukończone",
+  "ui.card.markUndone": "Oznacz jako nieukończone"
+}

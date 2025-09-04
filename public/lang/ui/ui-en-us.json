@@ -1,0 +1,62 @@
+{
+    "ui.search.placeholder": "Search quests (Name or ID)…",
+    "ui.search.clear": "Clear search",
+
+    "ui.filters.types": "Types:",
+    "ui.filters.showAllTypes": "Show all types",
+    "ui.filters.hideAllTypes": "Hide all types",
+    "ui.filters.zones": "Zones:",
+    "ui.filters.showAllZones": "Show all zones",
+    "ui.filters.hideAllZones": "Hide all zones",
+    "ui.filters.repeatables": "Repeatables",
+
+    "ui.achievements.show": "🏆 Show Achievements",
+    "ui.achievements.select": "Select an achievement",
+    "ui.achievements.questsCompleted": "quests completed",
+    "ui.achievements.focus": "Focus",
+    "ui.common.close": "Close",
+
+    "ui.controls.back": "Back to start",
+    "ui.controls.unlock": "Unlock node dragging",
+    "ui.controls.lock": "Lock node dragging",
+    
+    "ui.level.desc": "Reach level",    
+
+    "ui.progress.title": "PROGRESS",
+    "ui.progress.reset": "Reset",
+    "ui.progress.resetDesc": "Reset progress",
+    "ui.progress.resetConfirm": "Reset progress for the active character?",
+    "ui.progress.bulkMarkDone": "Mark all {count} \"{type}\" quests as completed?",
+    "ui.progress.bulkMarkUndone": "Mark all {count} \"{type}\" quests as not completed?",
+    "ui.progress.bulkUnmark": "Unmark all {type} quests",
+    "ui.progress.bulkMark": "Mark all {type} quests as completed",
+
+    "ui.help": "Help",
+    "ui.help.open": "Open help panel",
+    "ui.help.hide": "Hide help panel",
+
+    "ui.sidebar.information": "Information",
+    "ui.sidebar.about": "About this map",
+    "ui.sidebar.about.text":
+      "Interactive quest flow for New World: filter by type/zone, pan & zoom, and track your character’s progress locally in your browser.",
+    "ui.sidebar.howto.title": "How to use",
+    "ui.sidebar.howto.drag": "Drag the canvas to pan (with mouse click or wheel or SHIFT+wheel)",
+    "ui.sidebar.howto.zoom": "Use the CTRL+wheel or buttons to zoom.",
+    "ui.sidebar.howto.minimap": "You can click on the minimap to move anywhere.",
+    "ui.sidebar.howto.search": "You can search for any quest with the search bar (Name or ID)",
+    "ui.sidebar.howto.reorganize": "Drag cards to reorganize (disabled when “Lock” 🔒 is enabled).",
+    "ui.sidebar.howto.center": "If you are lost, use the ↖️ button to center the view on first card",
+    "ui.sidebar.howto.copyId": "Click a card ID to copy it.",
+    "ui.sidebar.howto.followEdge": "Click an edge end to jump along the link.",
+    "ui.sidebar.howto.character": "Create a character to track quests per character.",
+    "ui.sidebar.howto.tasks": "Open the Tasks dropdown to see POIs and mobs (links to nw-buddy and NWDB on clicks).",
+
+    "ui.char.newPlaceholder": "New character…",
+    "ui.char.add": "Add",
+    "ui.char.delete": "Delete character",
+    "ui.char.deleteConfirm": "Delete character “{name}”? This will remove its saved progress.",
+
+    "ui.card.tasks": "Tasks",
+    "ui.card.markDone": "Mark as completed",
+    "ui.card.markUndone": "Mark as not completed"
+  }

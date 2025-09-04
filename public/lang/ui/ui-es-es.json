@@ -1,0 +1,61 @@
+{
+  "ui.search.placeholder": "Buscar misiones (Nombre o ID)…",
+  "ui.search.clear": "Borrar búsqueda",
+
+  "ui.filters.types": "Tipos:",
+  "ui.filters.showAllTypes": "Mostrar todos los tipos",
+  "ui.filters.hideAllTypes": "Ocultar todos los tipos",
+  "ui.filters.zones": "Zonas:",
+  "ui.filters.showAllZones": "Mostrar todas las zonas",
+  "ui.filters.hideAllZones": "Ocultar todas las zonas",
+  "ui.filters.repeatables": "Repetibles",
+
+  "ui.achievements.show": "🏆 Mostrar logros",
+  "ui.achievements.select": "Selecciona un logro",
+  "ui.achievements.questsCompleted": "misiones completadas",
+  "ui.achievements.focus": "Enfocar",
+  "ui.common.close": "Cerrar",
+
+  "ui.controls.back": "Volver al inicio",
+  "ui.controls.unlock": "Desbloquear arrastre de cartas",
+  "ui.controls.lock": "Bloquear arrastre de cartas",
+
+  "ui.level.desc": "Alcanzar nivel",
+
+  "ui.progress.title": "PROGRESO",
+  "ui.progress.reset": "Reiniciar",
+  "ui.progress.resetDesc": "Reiniciar progreso",
+  "ui.progress.resetConfirm": "¿Reiniciar el progreso del personaje activo?",
+  "ui.progress.bulkMarkDone": "¿Marcar como completadas todas las {count} misiones \"{type}\"?",
+  "ui.progress.bulkMarkUndone": "¿Marcar como no completadas todas las {count} misiones \"{type}\"?",
+  "ui.progress.bulkUnmark": "Quitar marcado de todas las misiones {type}",
+  "ui.progress.bulkMark": "Marcar todas las misiones {type} como completadas",
+
+  "ui.help": "Ayuda",
+  "ui.help.open": "Abrir panel de ayuda",
+  "ui.help.hide": "Ocultar panel de ayuda",
+
+  "ui.sidebar.information": "Información",
+  "ui.sidebar.about": "Acerca de este mapa",
+  "ui.sidebar.about.text": "Flujo de misiones interactivo para New World: filtra por tipo/zona, desplázate y haz zoom, y guarda el progreso de tus personajes localmente en el navegador.",
+  "ui.sidebar.howto.title": "Cómo usarlo",
+  "ui.sidebar.howto.drag": "Arrastra el lienzo para desplazarte (clic del ratón, rueda o MAYÚS+rueda).",
+  "ui.sidebar.howto.zoom": "Usa CTRL+rueda o los botones para hacer zoom.",
+  "ui.sidebar.howto.minimap": "Puedes hacer clic en el minimapa para moverte a cualquier parte.",
+  "ui.sidebar.howto.search": "Busca cualquier misión con la barra de búsqueda (Nombre o ID).",
+  "ui.sidebar.howto.reorganize": "Arrastra las cartas para reorganizarlas (desactivado cuando «Bloquear» 🔒 está activado).",
+  "ui.sidebar.howto.center": "Si te pierdes, usa ↖️ para centrar en la primera carta.",
+  "ui.sidebar.howto.copyId": "Haz clic en el ID de una carta para copiarlo.",
+  "ui.sidebar.howto.followEdge": "Haz clic en el extremo de una arista para saltar por el enlace.",
+  "ui.sidebar.howto.character": "Crea un personaje para seguir las misiones por personaje.",
+  "ui.sidebar.howto.tasks": "Abre el desplegable Tareas para ver POIs y enemigos (enlaces a nw-buddy y NWDB).",
+
+  "ui.char.newPlaceholder": "Nuevo personaje…",
+  "ui.char.add": "Añadir",
+  "ui.char.delete": "Eliminar personaje",
+  "ui.char.deleteConfirm": "¿Eliminar el personaje «{name}»? Esto borrará su progreso guardado.",
+
+  "ui.card.tasks": "Tareas",
+  "ui.card.markDone": "Marcar como completada",
+  "ui.card.markUndone": "Marcar como no completada"
+}

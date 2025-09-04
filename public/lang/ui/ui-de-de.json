@@ -1,0 +1,61 @@
+{
+  "ui.search.placeholder": "Quests suchen (Name oder ID)…",
+  "ui.search.clear": "Suche löschen",
+
+  "ui.filters.types": "Typen:",
+  "ui.filters.showAllTypes": "Alle Typen anzeigen",
+  "ui.filters.hideAllTypes": "Alle Typen ausblenden",
+  "ui.filters.zones": "Zonen:",
+  "ui.filters.showAllZones": "Alle Zonen anzeigen",
+  "ui.filters.hideAllZones": "Alle Zonen ausblenden",
+  "ui.filters.repeatables": "Wiederholbare",
+
+  "ui.achievements.show": "🏆 Erfolge anzeigen",
+  "ui.achievements.select": "Erfolg auswählen",
+  "ui.achievements.questsCompleted": "abgeschlossene Quests",
+  "ui.achievements.focus": "Fokus",
+  "ui.common.close": "Schließen",
+
+  "ui.controls.back": "Zur Startansicht",
+  "ui.controls.unlock": "Verschieben der Karten entsperren",
+  "ui.controls.lock": "Verschieben der Karten sperren",
+
+  "ui.level.desc": "Stufe erreichen",
+
+  "ui.progress.title": "FORTSCHRITT",
+  "ui.progress.reset": "Zurücksetzen",
+  "ui.progress.resetDesc": "Fortschritt zurücksetzen",
+  "ui.progress.resetConfirm": "Fortschritt für den aktiven Charakter zurücksetzen?",
+  "ui.progress.bulkMarkDone": "Alle {count} „{type}“-Quests als abgeschlossen markieren?",
+  "ui.progress.bulkMarkUndone": "Alle {count} „{type}“-Quests als nicht abgeschlossen markieren?",
+  "ui.progress.bulkUnmark": "Markierung bei allen {type}-Quests entfernen",
+  "ui.progress.bulkMark": "Alle {type}-Quests als abgeschlossen markieren",
+
+  "ui.help": "Hilfe",
+  "ui.help.open": "Hilfefenster öffnen",
+  "ui.help.hide": "Hilfefenster ausblenden",
+
+  "ui.sidebar.information": "Informationen",
+  "ui.sidebar.about": "Über diese Karte",
+  "ui.sidebar.about.text": "Interaktiver Quest-Flow für New World: nach Typ/Zone filtern, verschieben & zoomen und den Fortschritt deiner Charaktere lokal im Browser speichern.",
+  "ui.sidebar.howto.title": "Anleitung",
+  "ui.sidebar.howto.drag": "Ziehen, um die Fläche zu verschieben (Mausklick, Rad oder UMSCHALT+Rad).",
+  "ui.sidebar.howto.zoom": "Mit STRG+Mausrad oder den Tasten zoomen.",
+  "ui.sidebar.howto.minimap": "Auf die Minikarte klicken, um irgendwohin zu springen.",
+  "ui.sidebar.howto.search": "Quests über die Suchleiste finden (Name oder ID).",
+  "ui.sidebar.howto.reorganize": "Karten ziehen, um sie neu anzuordnen (deaktiviert, wenn „Sperren“ 🔒 aktiv ist).",
+  "ui.sidebar.howto.center": "Wenn du dich verlierst: ↖️ zentriert auf die erste Karte.",
+  "ui.sidebar.howto.copyId": "Auf die Karten-ID klicken, um sie zu kopieren.",
+  "ui.sidebar.howto.followEdge": "Auf ein Kantenende klicken, um dem Link zu folgen.",
+  "ui.sidebar.howto.character": "Charakter erstellen, um Fortschritt pro Charakter zu verfolgen.",
+  "ui.sidebar.howto.tasks": "„Tasks“ öffnen, um POIs und Gegner zu sehen (Links zu nw-buddy / NWDB).",
+
+  "ui.char.newPlaceholder": "Neuer Charakter…",
+  "ui.char.add": "Hinzufügen",
+  "ui.char.delete": "Charakter löschen",
+  "ui.char.deleteConfirm": "Charakter „{name}“ löschen? Dadurch wird sein gespeicherter Fortschritt entfernt.",
+
+  "ui.card.tasks": "Aufgaben",
+  "ui.card.markDone": "Als abgeschlossen markieren",
+  "ui.card.markUndone": "Als nicht abgeschlossen markieren"
+}

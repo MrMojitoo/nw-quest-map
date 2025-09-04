@@ -1,0 +1,14 @@
+{
+  "lang": "es-mx",
+  "counts": {
+    "OK": 818,
+    "MISSING_DEF": 0,
+    "MISSING_NAME_KEY": 0,
+    "MISSING_LOCALE_ENTRY": 0,
+    "MISSING_HOUSING_DEF": 0,
+    "MISSING_HOUSING_NAME_KEY": 0,
+    "EMPTY_ID": 0,
+    "FALLBACK_ITEMS_CSV": 0
+  },
+  "unresolved_samples": []
+}

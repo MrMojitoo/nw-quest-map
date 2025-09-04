@@ -1,0 +1,56 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]   # change si ta branch par défaut est différente
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Génère public/data/*.json requis par l’app
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas numpy
+      - name: Generate data json
+        run: |
+          python tools/convert_csv_to_json.py \
+            tools/quests.csv \
+            tools/items.csv \
+            tools/objectives_tasks \
+            tools/lang \
+            tools/pointofinterestdefinitions \
+            tools/javelindata_vitalscategories.json \
+            tools/MetaAchievementDataTable.csv \
+            tools/itemdefinitions
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        env:
+          # permet à vite.config.ts de connaître le repo pour BASE
+          GITHUB_REPOSITORY: ${{ github.repository }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
