@@ -1,0 +1,70 @@
+{
+  "hash": "a526af3f",
+  "configHash": "70a3abfb",
+  "lockfileHash": "7e6da8c3",
+  "browserHash": "731fccfc",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "3158c57a",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "fdbd4340",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "fe75e9c6",
+      "needsInterop": true
+    },
+    "zustand": {
+      "src": "../../node_modules/zustand/esm/index.mjs",
+      "file": "zustand.js",
+      "fileHash": "c4021fd6",
+      "needsInterop": false
+    },
+    "zustand/middleware": {
+      "src": "../../node_modules/zustand/esm/middleware.mjs",
+      "file": "zustand_middleware.js",
+      "fileHash": "93b01081",
+      "needsInterop": false
+    },
+    "reactflow": {
+      "src": "../../node_modules/reactflow/dist/esm/index.mjs",
+      "file": "reactflow.js",
+      "fileHash": "05e6158c",
+      "needsInterop": false
+    },
+    "elkjs/lib/elk.bundled.js": {
+      "src": "../../node_modules/elkjs/lib/elk.bundled.js",
+      "file": "elkjs_lib_elk__bundled__js.js",
+      "fileHash": "cbe7b83f",
+      "needsInterop": true
+    },
+    "lucide-react": {
+      "src": "../../node_modules/lucide-react/dist/esm/lucide-react.js",
+      "file": "lucide-react.js",
+      "fileHash": "64618470",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-HRYYKMZ4": {
+      "file": "chunk-HRYYKMZ4.js"
+    },
+    "chunk-TROLLW7E": {
+      "file": "chunk-TROLLW7E.js"
+    },
+    "chunk-K25BQGW3": {
+      "file": "chunk-K25BQGW3.js"
+    },
+    "chunk-PR4QN5HX": {
+      "file": "chunk-PR4QN5HX.js"
+    }
+  }
+}

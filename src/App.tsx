@@ -84,16 +84,18 @@ export default function App() {
  
   // --- Modern language popover ---
   const LANGS = [
-    { code: 'en-us', label: 'EN', name: 'English',  flag: '🇺🇸' },
-    { code: 'de-de', label: 'DE', name: 'Deutsch',  flag: '🇩🇪' },
-    { code: 'es-es', label: 'ES', name: 'Español',  flag: '🇪🇸' },
-    { code: 'es-mx', label: 'MX', name: 'Español (MX)', flag: '🇲🇽' },
-    { code: 'fr-fr', label: 'FR', name: 'Français', flag: '🇫🇷' },
-    { code: 'it-it', label: 'IT', name: 'Italiano', flag: '🇮🇹' },
-    { code: 'pl-pl', label: 'PL', name: 'Polski',   flag: '🇵🇱' },
-    { code: 'pt-br', label: 'PT', name: 'Português (BR)', flag: '🇧🇷' },
+    { code: 'en-us', cc: 'us', label: 'EN', name: 'English' },
+    { code: 'de-de', cc: 'de', label: 'DE', name: 'Deutsch' },
+    { code: 'es-es', cc: 'es', label: 'ES', name: 'Español' },
+    { code: 'es-mx', cc: 'mx', label: 'MX', name: 'Español (MX)' },
+    { code: 'fr-fr', cc: 'fr', label: 'FR', name: 'Français' },
+    { code: 'it-it', cc: 'it', label: 'IT', name: 'Italiano' },
+    { code: 'pl-pl', cc: 'pl', label: 'PL', name: 'Polski' },
+    { code: 'pt-br', cc: 'br', label: 'PT', name: 'Português (BR)' },
   ]
   const currentLang = LANGS.find(l => l.code === lang) ?? LANGS[0]
+  const flagUrlFor = (cc?: string) =>
+    cc ? `https://flagcdn.com/${cc}.svg` : ''
   const [langOpen, setLangOpen] = useState(false)
   const langMenuRef = useRef<HTMLDivElement | null>(null)
   useEffect(() => {
@@ -221,45 +223,56 @@ export default function App() {
 
       <div className="layout">
         <header className="topbar">
-        <div className="brand">
-          <span className="brand-title">New World Quest Map</span>
-          <span className="brand-sub">Quest planner & tracker</span>
-        </div>
-          {/* Modern language selector (popover) */}
-          <div className="lang-switcher" aria-label="Language selector">
-            <div className="lang-menu" ref={langMenuRef}>
-              <button
-                type="button"
-                className="lang-btn"
-                aria-haspopup="menu"
-                aria-expanded={langOpen}
-                onClick={() => setLangOpen(v => !v)}
-              >
-                <span className="flag" aria-hidden="true">{currentLang.flag}</span>
-                <span className="code">{currentLang.label}</span>
-                <span className="chev" aria-hidden="true">▾</span>
-              </button>
-              {langOpen && (
-                <div className="lang-popover" role="menu">
-                  {LANGS.map(opt => (
-                    <button
-                      key={opt.code}
-                      role="menuitemradio"
-                      aria-checked={opt.code === lang}
-                      className={`lang-item ${opt.code === lang ? 'active' : ''}`}
-                      onClick={() => selectLang(opt.code)}
-                    >
-                      <span className="flag" aria-hidden="true">{opt.flag}</span>
-                      <span className="name">{opt.name}</span>
-                      <span className="code">{opt.label}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+          <div className="brand">
+            <span className="brand-title">New World Quest Map</span>
+            <span className="brand-sub">Quest planner & tracker</span>
           </div>
-        <SearchBar />
-        <CharacterTabs />
+
+          {/* CENTRE : Lang + Search (même colonne) */}
+          <div className="topbar-center">
+            <div className="lang-switcher" aria-label="Language selector">
+              <div className="lang-menu" ref={langMenuRef}>
+                <button
+                  type="button"
+                  className="lang-btn"
+                  aria-haspopup="menu"
+                  aria-expanded={langOpen}
+                  aria-label={currentLang.name}
+                  onClick={() => setLangOpen(v => !v)}
+                >
+                  {currentLang.cc && (
+                    <img className="flag-img" src={flagUrlFor(currentLang.cc)} alt={currentLang.label} />
+                  )}
+                  <span className="chev" aria-hidden="true">▾</span>
+                </button>
+                {langOpen && (
+                  <div className="lang-popover" role="menu">
+                    {LANGS.map(opt => (
+                      <button
+                        key={opt.code}
+                        role="menuitemradio"
+                        aria-checked={opt.code === lang}
+                        className={`lang-item ${opt.code === lang ? 'active' : ''}`}
+                        onClick={() => selectLang(opt.code)}
+                      >
+                        {opt.cc && (
+                          <img className="flag-img" src={flagUrlFor(opt.cc)} alt={opt.label} />
+                        )}
+                        <span className="name">{opt.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <SearchBar />
+          </div>
+
+          {/* DROITE : onglets personnage  autres contrôles */}
+          <div className="topbar-right">
+            <CharacterTabs />
+          </div>
         </header>
         <section className="content">
           <Graph quests={data.quests} lang={lang} />
