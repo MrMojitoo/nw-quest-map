@@ -132,7 +132,7 @@ export default function App() {
     'ui.filters.hideAllZones': 'Hide all zones',
     'ui.filters.repeatables': 'Repeatables',
 
-    'ui.achievements.show': 'Show Achievements',
+    'ui.achievements.show': '🏆 Show Achievements',
     'ui.achievements.select': 'Select an achievement',
     'ui.achievements.questsCompleted': 'quests completed',
     'ui.achievements.focus': 'Focus',
