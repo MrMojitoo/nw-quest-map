@@ -56,6 +56,8 @@ export default function Sidebar({ lang = 'en-us' }: { lang?: string }) {
   const { characters, activeId } = useStore()
   const resetProgress = useStore((s:any) => s.resetProgress)
   const active = characters.find((c) => c.id === activeId)
+  const [showResetConfirm, setShowResetConfirm] = useState(false)
+
   // set uniquement des IDs marqués "true" (évite de compter ceux mis à false)
   const completedIds = useMemo(() => {
     const map = active?.completed ?? {}
@@ -174,8 +176,6 @@ export default function Sidebar({ lang = 'en-us' }: { lang?: string }) {
           <ul className="howto-list">
             <li>{t('ui.sidebar.howto.drag')}</li>
             <li>{t('ui.sidebar.howto.zoom')}</li>
-            <li>{t('ui.sidebar.howto.drag')}</li>
-            <li>{t('ui.sidebar.howto.zoom')}</li>
             <li>{t('ui.sidebar.howto.minimap')}</li>
             <li>{t('ui.sidebar.howto.search')}</li>
             <li>{t('ui.sidebar.howto.reorganize')}</li>
@@ -196,11 +196,7 @@ export default function Sidebar({ lang = 'en-us' }: { lang?: string }) {
           </span>
           <button
             className="btn-reset-progress"
-            onClick={() => {
-              if (window.confirm(t('ui.progress.resetConfirm','Reset progress for the active character?'))) {
-                resetProgress()
-              }
-            }}
+            onClick={() => setShowResetConfirm(true)}
             aria-label={t('ui.progress.resetDesc','Reset progress')}
             title={t('ui.progress.resetDesc','Reset progress')}
           >
@@ -256,7 +252,50 @@ export default function Sidebar({ lang = 'en-us' }: { lang?: string }) {
               </div>
             )
           })}
-        </div>      
+        </div>  
+        {/* Reset confirmation overlay — identique à Graph */}
+        {showResetConfirm && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,0.6)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+            }}
+            onClick={() => setShowResetConfirm(false)}
+          >
+            <div
+              style={{
+                background: '#0f172a',
+                color: 'white',
+                border: '1px solid #334155',
+                borderRadius: 8,
+                padding: 16,
+                minWidth: 360,
+                boxShadow: '0 10px 30px rgba(0,0,0,0.45)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 style={{ marginTop: 0, marginBottom: 8 }}>
+                {t('ui.progress.reset','Reset progress')}
+              </h3>
+              <p style={{ margin: 0 }}>
+                {t('ui.progress.resetConfirm','Reset progress for the active character?')}
+              </p>
+              <div style={{ display: 'flex', gap: 8, marginTop: 14, justifyContent: 'flex-end' }}>
+                <button onClick={() => { resetProgress(); setShowResetConfirm(false) }}>
+                  {t('ui.confirm','Confirm')}
+                </button>
+                <button onClick={() => setShowResetConfirm(false)}>
+                  {t('ui.cancel','Cancel')}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}      
       </div>
     </>
   )

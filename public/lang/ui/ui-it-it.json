@@ -57,5 +57,49 @@
 
   "ui.card.tasks": "Attività",
   "ui.card.markDone": "Segna come completata",
-  "ui.card.markUndone": "Segna come non completata"
+  "ui.card.markUndone": "Segna come non completata",
+  "ui.uncheck": "Deseleziona",
+  "ui.check": "Seleziona",
+
+  "ui.filters.byTag": "Filtro attività",
+  "ui.filters.clear": "Cancella filtro",
+  "ui.filters.pvp": "PvP",
+  "ui.filters.expeditions": "Spedizioni",
+
+  "ui.artifacts.drop.title": "Condizioni di bottino",
+  "ui.artifacts.drop.chests": "Casse",
+  "ui.artifacts.drop.seasonPass": "Pass stagionale",
+  "ui.artifacts.drop.doubloons": "Dobloni",
+  "ui.artifacts.drop.quest": "Missione",
+  "ui.artifacts.drop.unknownQuest": "Missione sconosciuta",
+  "ui.artifacts.drop.item": "Oggetto",
+  "ui.artifacts.drop.mob": "Mostro",
+  "ui.artifacts.drop.zone": "Zona",
+  "ui.artifacts.drop.mode": "Modalità di gioco",
+  "ui.artifacts.drop.chance": "Probabilità di drop",
+
+  "ui.artifacts.help.title": "Artefatti — Guida",
+  "ui.artifacts.help.howto": "Come usare questa vista",
+  "ui.artifacts.help.tipMove": "Trascina la mappa per spostarti.",
+  "ui.artifacts.help.tipClick": "Fai clic su un’attività per mostrare quelle correlate; fai clic su un elemento dell’elenco per raggiungerla.",
+  "ui.artifacts.help.tipEdge": "Puoi fare clic sull’estremità di una freccia per saltare all’altra estremità.",
+  "ui.artifacts.help.tipSearch": "Usa la barra di ricerca per andare a un artefatto per nome o ID.",
+  "ui.artifacts.help.tipComplete": "Spunta un drop per segnarlo ottenuto e le attività per segnarle completate. Completare tutte e 3 le attività segna l’artefatto come completamente potenziato.",
+  "ui.artifacts.help.tipProgress": "I progressi sono per personaggio; puoi creare o eliminare personaggi.",
+  "ui.artifacts.help.tipLinks": "Icone/perk/oggetti/mostri/zone rimandano a NWDB / NW-Buddy.",
+  "ui.artifacts.help.tipMap": "Gli artefatti sono disposti per avvicinare le attività fortemente correlate.",
+
+  "ui.artifacts.selected.title": "Attività selezionata",
+  "ui.artifacts.selected.correlated": "Attività correlate",
+  "ui.artifacts.perk": "Perk",
+
+  "ui.artifacts.progress.dropped": "Artefatti ottenuti",
+  "ui.artifacts.progress.byType": "Per tipo di drop",
+  "ui.artifacts.progress.maxed": "Artefatti completamente potenziati",
+
+  "ui.confirm": "Conferma",
+  "ui.cancel": "Annulla",
+  
+  "ui.tabs.quests": "Missioni",
+  "ui.tabs.artifacts": "Artefatti"
 }

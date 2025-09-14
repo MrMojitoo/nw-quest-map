@@ -58,5 +58,59 @@
 
     "ui.card.tasks": "Tasks",
     "ui.card.markDone": "Mark as completed",
-    "ui.card.markUndone": "Mark as not completed"
+    "ui.card.markUndone": "Mark as not completed",
+
+    "ui.tabs.quests": "Quests",
+    "ui.tabs.artifacts": "Artifacts",
+
+    "ui.artifacts.title": "Artifacts",
+    "ui.artifacts.perks.unique": "Unique perk",
+    "ui.artifacts.perks.p2": "Perk 2",
+    "ui.artifacts.perks.p3": "Perk 3",
+    "ui.artifacts.perks.p4": "Perk 4",
+
+    "ui.artifacts.unlock.title": "Unlock quests",
+    "ui.artifacts.unlock.perk": "Perk {n}",
+    "ui.artifacts.related": "Related artifacts",
+    "ui.uncheck": "Uncheck",
+    "ui.check": "Check",
+
+    "ui.filters.byTag": "Task filter",
+    "ui.filters.clear": "Clear filter",
+    "ui.filters.pvp": "PvP",
+    "ui.filters.expeditions": "Expeditions",
+
+    "ui.artifacts.drop.title": "Drop conditions",
+    "ui.artifacts.drop.chests": "Chests",
+    "ui.artifacts.drop.seasonPass": "Season Pass",
+    "ui.artifacts.drop.doubloons": "Doubloons",
+    "ui.artifacts.drop.quest": "Quest",
+    "ui.artifacts.drop.unknownQuest": "Unknown quest",
+    "ui.artifacts.drop.item": "Item",
+    "ui.artifacts.drop.mob": "Mob",
+    "ui.artifacts.drop.zone": "Zone",
+    "ui.artifacts.drop.mode": "Game mode",
+    "ui.artifacts.drop.chance": "Drop chance",
+
+    "ui.artifacts.help.title": "Artifacts — Help",
+    "ui.artifacts.help.howto": "How to use this view",
+    "ui.artifacts.help.tipMove": "Drag the canvas to pan.",
+    "ui.artifacts.help.tipClick": "Click a task to show correlated tasks; click a list entry to navigate.",
+    "ui.artifacts.help.tipEdge": "You can click the end of an arrow to navigate to its other end.",
+    "ui.artifacts.help.tipSearch": "Use the searchbar to jump to an artifact by name or ID.",
+    "ui.artifacts.help.tipComplete": "Tick a drop to mark it as dropped, tick tasks to mark them completed. All 3 tasks completed marks the artifact fully upgraded.",
+    "ui.artifacts.help.tipProgress": "Progress is per character; you can create or delete characters.",
+    "ui.artifacts.help.tipLinks": "Icons/perks/items/mobs/zones link to their NWDB / NW-Buddy pages.",
+    "ui.artifacts.help.tipMap": "Artifacts are laid out so strongly correlated tasks are near each other.",
+
+    "ui.artifacts.selected.title": "Selected task",
+    "ui.artifacts.selected.correlated": "Correlated tasks",
+    "ui.artifacts.perk": "Perk",
+
+    "ui.artifacts.progress.dropped": "Artifacts dropped",
+    "ui.artifacts.progress.byType": "By drop type",
+    "ui.artifacts.progress.maxed": "Artifacts fully upgraded",
+
+    "ui.confirm": "Confirm",
+    "ui.cancel": "Cancel"
   }

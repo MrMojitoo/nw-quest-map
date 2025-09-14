@@ -57,5 +57,49 @@
 
   "ui.card.tasks": "Tarefas",
   "ui.card.markDone": "Marcar como concluída",
-  "ui.card.markUndone": "Marcar como não concluída"
+  "ui.card.markUndone": "Marcar como não concluída",
+  "ui.uncheck": "Desmarcar",
+  "ui.check": "Marcar",
+
+  "ui.filters.byTag": "Filtro de tarefas",
+  "ui.filters.clear": "Limpar filtro",
+  "ui.filters.pvp": "PvP",
+  "ui.filters.expeditions": "Expedições",
+
+  "ui.artifacts.drop.title": "Condições de drop",
+  "ui.artifacts.drop.chests": "Baús",
+  "ui.artifacts.drop.seasonPass": "Passe de Temporada",
+  "ui.artifacts.drop.doubloons": "Dobrões",
+  "ui.artifacts.drop.quest": "Missão",
+  "ui.artifacts.drop.unknownQuest": "Missão desconhecida",
+  "ui.artifacts.drop.item": "Item",
+  "ui.artifacts.drop.mob": "Inimigo",
+  "ui.artifacts.drop.zone": "Zona",
+  "ui.artifacts.drop.mode": "Modo de jogo",
+  "ui.artifacts.drop.chance": "Chance de drop",
+
+  "ui.artifacts.help.title": "Artefatos — Ajuda",
+  "ui.artifacts.help.howto": "Como usar esta visão",
+  "ui.artifacts.help.tipMove": "Arraste o mapa para se mover.",
+  "ui.artifacts.help.tipClick": "Clique em uma tarefa para ver as correlatas; clique em um item da lista para navegar.",
+  "ui.artifacts.help.tipEdge": "Você pode clicar na ponta de uma seta para ir até a outra ponta.",
+  "ui.artifacts.help.tipSearch": "Use a busca para ir a um artefato pelo nome ou ID.",
+  "ui.artifacts.help.tipComplete": "Marque um drop como obtido e as tarefas como concluídas. Concluir as 3 tarefas marca o artefato como totalmente aprimorado.",
+  "ui.artifacts.help.tipProgress": "O progresso é por personagem; você pode criar ou excluir personagens.",
+  "ui.artifacts.help.tipLinks": "Ícones/perks/itens/inimigos/zonas levam ao NWDB / NW-Buddy.",
+  "ui.artifacts.help.tipMap": "Os artefatos são dispostos para aproximar tarefas fortemente correlatas.",
+
+  "ui.artifacts.selected.title": "Tarefa selecionada",
+  "ui.artifacts.selected.correlated": "Tarefas correlatas",
+  "ui.artifacts.perk": "Perk",
+
+  "ui.artifacts.progress.dropped": "Artefatos obtidos",
+  "ui.artifacts.progress.byType": "Por tipo de drop",
+  "ui.artifacts.progress.maxed": "Artefatos totalmente aprimorados",
+
+  "ui.confirm": "Confirmar",
+  "ui.cancel": "Cancelar",
+  
+  "ui.tabs.quests": "Missões",
+  "ui.tabs.artifacts": "Artefatos"
 }

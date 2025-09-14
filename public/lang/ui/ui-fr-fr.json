@@ -57,5 +57,49 @@
 
   "ui.card.tasks": "Tâches",
   "ui.card.markDone": "Marquer comme terminé",
-  "ui.card.markUndone": "Marquer comme non terminé"
+  "ui.card.markUndone": "Marquer comme non terminé",
+  "ui.uncheck": "Décocher",
+  "ui.check": "Cocher",
+
+  "ui.filters.byTag": "Filtre des tâches",
+  "ui.filters.clear": "Effacer le filtre",
+  "ui.filters.pvp": "PvP",
+  "ui.filters.expeditions": "Expéditions",
+
+  "ui.artifacts.drop.title": "Conditions de drop",
+  "ui.artifacts.drop.chests": "Coffres",
+  "ui.artifacts.drop.seasonPass": "Passe de saison",
+  "ui.artifacts.drop.doubloons": "Doublons",
+  "ui.artifacts.drop.quest": "Quête",
+  "ui.artifacts.drop.unknownQuest": "Quête inconnue",
+  "ui.artifacts.drop.item": "Objet",
+  "ui.artifacts.drop.mob": "Mob",
+  "ui.artifacts.drop.zone": "Zone",
+  "ui.artifacts.drop.mode": "Mode de jeu",
+  "ui.artifacts.drop.chance": "Taux de drop",
+
+  "ui.artifacts.help.title": "Artéfacts — Aide",
+  "ui.artifacts.help.howto": "Comment utiliser cette vue",
+  "ui.artifacts.help.tipMove": "Glissez la carte pour vous déplacer.",
+  "ui.artifacts.help.tipClick": "Cliquez une tâche pour afficher les tâches corrélées ; cliquez un élément de la liste pour y aller.",
+  "ui.artifacts.help.tipEdge": "Vous pouvez cliquer sur l’extrémité d’une flèche pour aller à l’autre extrémité.",
+  "ui.artifacts.help.tipSearch": "Utilisez la barre de recherche pour atteindre un artéfact par nom ou ID.",
+  "ui.artifacts.help.tipComplete": "Cochez un drop pour le marquer obtenu, cochez des tâches pour les marquer terminées. Les 3 tâches terminées marquent l’artéfact comme entièrement amélioré.",
+  "ui.artifacts.help.tipProgress": "La progression est par personnage ; vous pouvez créer ou supprimer des personnages.",
+  "ui.artifacts.help.tipLinks": "Icônes/perks/objets/mobs/zones renvoient vers NWDB / NW-Buddy.",
+  "ui.artifacts.help.tipMap": "Les artéfacts sont disposés pour rapprocher les tâches fortement corrélées.",
+
+  "ui.artifacts.selected.title": "Tâche sélectionnée",
+  "ui.artifacts.selected.correlated": "Tâches corrélées",
+  "ui.artifacts.perk": "Perk",
+
+  "ui.artifacts.progress.dropped": "Artéfacts droppés",
+  "ui.artifacts.progress.byType": "Par type de drop",
+  "ui.artifacts.progress.maxed": "Artéfacts entièrement améliorés",
+
+  "ui.confirm": "Confirmer",
+  "ui.cancel": "Annuler",
+  
+  "ui.tabs.quests": "Quêtes",
+  "ui.tabs.artifacts": "Artéfacts"
 }

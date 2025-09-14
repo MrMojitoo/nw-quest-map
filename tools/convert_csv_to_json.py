@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 # Re-génère public/data/quests.json à partir d'un CSV exporté
-import sys, os, json, re, datetime, glob, shutil
+import sys, os, json, re, datetime, glob, shutil, csv
+from collections import defaultdict
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Set
 
+# python .\tools\convert_csv_to_json.py D:\downloadNWB\downloads\S9\S9_extract_quests_20250820.csv .\tools\items.csv .\tools\objectives_tasks .\tools\lang\ .\tools\pointofinterestdefinitions .\tools\javelindata_vitalscategories.json .\tools\MetaAchievementDataTable.csv .\tools\itemdefinitions\ .\tools\territories_map.json
+
 if len(sys.argv) < 2:
-    print("Usage: python tools/convert_csv_to_json.py <QUESTS_CSV> [ITEMS_CSV] [OBJECTIVE_TASKS_CSV] [OBJECTIVES_DIR] [META_ACHIEVEMENTS_CSV]")
+    print("Usage: python tools/convert_csv_to_json.py <QUESTS_CSV> [ITEMS_CSV] [OBJECTIVE_TASKS_CSV] [OBJECTIVES_DIR] [META_ACHIEVEMENTS_CSV] [ITEM DEFINITIONS] [TERRITORIES MAP]")
     sys.exit(1)
 
 csv_path = sys.argv[1]
@@ -170,6 +173,339 @@ def resolve_item_via_defs(iid: str) -> tuple[str, str, str]:
     name = _locale_get(key) if key else iid
     return name, (rec.get("icon") or ""), (rec.get("rarity") or "")
 
+# ---------- Chargement facultatif des artéfacts ----------
+def _norm_col(s: str) -> str:
+    """Nom de colonne normalisé : minuscules + espaces compactés."""
+    return re.sub(r"\s+", " ", str(s)).strip().lower()
+
+def _read_csv_if_exists(path: str) -> pd.DataFrame | None:
+    """Charge un CSV en auto-détectant le séparateur de manière plus robuste et normalise les en-têtes."""
+    try:
+        if not os.path.isfile(path):
+            print(f"[INFO] CSV introuvable: {path}")
+            return None
+        # 1) Auto-détection pandas (engine='python', sep=None) — gère mieux mix , / ;
+        try:
+            df = pd.read_csv(path, encoding="utf-8", low_memory=False, sep=None, engine="python")
+            used = "auto(python)"
+        except Exception as e1:
+            # 2) Fallback sur virgule
+            try:
+                df = pd.read_csv(path, encoding="utf-8", low_memory=False, sep=",")
+                used = ", (fallback)"
+            except Exception as e2:
+                # 3) Fallback sur point-virgule
+                df = pd.read_csv(path, encoding="utf-8", low_memory=False, sep=";")
+                used = "; (fallback)"
+        df.columns = [_norm_col(c) for c in df.columns]
+        cols_preview = ", ".join(df.columns[:8])
+        print(f"[OK] CSV chargé: {path} ({len(df)} lignes) sep={used} | colonnes=[{cols_preview}]")
+        return df
+    except Exception as e:
+        print(f"[WARN] Lecture impossible: {path} ({e})")
+        return None
+
+ARTIFACTS_CSV = os.path.join("tools", "artifacts.csv")
+ARTIFACTS_DROPS_CSV = os.path.join("tools", "artifacts_drops.csv")
+PERKS_JSON = os.path.join("tools", "javelindata_perks.json")
+
+def _maybe_load_artifacts_base() -> pd.DataFrame | None:
+    return _read_csv_if_exists(ARTIFACTS_CSV)
+ 
+def _load_perks_defs() -> dict[str, str]:
+    """
+    Charge tools/javelindata_perks.json (liste d’objets) et retourne:
+      { perkid_lower : name_key_sans_arobase }
+    """
+    fp = PERKS_JSON
+    if not os.path.isfile(fp):
+        print("[INFO] Aucun javelindata_perks.json (perks resteront tels quels si fournis en clair)")
+        return {}
+    try:
+        with open(fp, "r", encoding="utf-8") as f:
+            arr = json.load(f)
+    except Exception as e:
+        print(f"[WARN] Lecture impossible: {os.path.basename(fp)} ({e})")
+        return {}
+    if not isinstance(arr, list):
+        print(f"[WARN] Format inattendu dans {os.path.basename(fp)} (attendu: liste)")
+        return {}
+    out: dict[str, str] = {}
+    for rec in arr:
+        pid = str(rec.get("PerkID") or rec.get("Id") or "").strip()
+        if not pid:
+            continue
+        # ⚠️ Artefacts : le "unique perk" expose son libellé dans SecondaryEffectDisplayName
+        # (ex: "@PerkID_Artifact_Set1_Rapier_Name"). On le préfère si présent.
+        name_raw = str(
+            rec.get("SecondaryEffectDisplayName")
+            or rec.get("Name")
+            or rec.get("DisplayName")
+            or ""
+        ).strip()
+        if name_raw.startswith("@"):
+            name_raw = name_raw[1:].strip()
+        out[pid.lower()] = name_raw
+    print(f"[OK] Perks defs chargés: {len(out)}")
+    return out
+
+def _load_perks_icons() -> dict[str, str]:
+    """
+    Map des icônes de perks à partir de tools/javelindata_perks.json :
+      { perkid_lower : cdn_icon_url }
+    """
+    fp = PERKS_JSON
+    if not os.path.isfile(fp):
+        return {}
+    try:
+        with open(fp, "r", encoding="utf-8") as f:
+            arr = json.load(f)
+    except Exception:
+        return {}
+    if not isinstance(arr, list):
+        return {}
+    out: dict[str, str] = {}
+    for rec in arr:
+        pid = str(rec.get("PerkID") or rec.get("Id") or "").strip()
+        if not pid:
+            continue
+        raw = str(rec.get("IconPath") or "").strip()
+        if not raw:
+            continue
+        # normalise l'URL via le helper déjà utilisé pour les items
+        url = _cdnize_icon(raw)
+        # anti double-prefix & /https:// comme ailleurs
+        url = re.sub(r'(https://cdn\\.nw-buddy\\.de/nw-data/live/)+', 'https://cdn.nw-buddy.de/nw-data/live/', url)
+        url = url.replace('/https://', '/')
+        out[pid.lower()] = url
+    print(f"[OK] Perks icons chargés: {len(out)}")
+    return out
+
+def _maybe_load_artifacts_drops() -> dict[str, dict]:
+    """Lit tools/artifacts_drops.csv avec en-têtes :
+       'Item ID','Type','TargetID','ZoneUI','Game Mode','%Drop'"""
+    drops_df = _read_csv_if_exists(ARTIFACTS_DROPS_CSV)
+    out: dict[str, dict] = {}
+    if drops_df is None:
+        return out
+    def _clean_str(x) -> str:
+        s = str(x).strip() if x is not None else ""
+        s_low = s.lower()
+        return "" if (s == "" or s_low in ("nan", "none", "null") or s == "-") else s
+
+    for _, r in drops_df.iterrows():
+        iid = str(r.get("item id") or r.get("itemid") or "").strip()
+        if not iid:
+            continue
+        typ_raw = str(r.get("type") or "").strip()
+        typ     = typ_raw.lower()
+        target  = str(r.get("targetid") or "").strip()
+        zone_ui = str(r.get("zoneui") or "").strip()
+        mode    = str(r.get("game mode") or r.get("gamemode") or "").strip()
+        raw_drop = str(r.get("%drop") or r.get("drop") or "").strip()
+        # %Drop peut être '2', '2.5', '2,5', '2%' …
+        chance = None
+        if raw_drop:
+            m = re.search(r"[-+]?\d+(?:[.,]\d+)?", raw_drop)
+            if m:
+                try:
+                    chance = float(m.group(0).replace(",", "."))
+                except Exception:
+                    chance = None
+
+        # Mob: traiter 'mob', 'named', 'mobs', 'm1+ boss' comme des cibles à lier
+        MOB_TYPES = {"mob","named","mobs","m1+ boss","raid boss"}
+        # Types dont le TargetID est un ItemID (on veut un badge d'item)
+        ITEM_TYPES = {"10-trial","breaches","influence races","m1+ rewards"}
+        # Type où le TargetID est un nom de quête en EN (à relocaliser)
+        QUEST_TYPES = {"quest"}
+        mob_label = ""
+        mob_id    = ""
+        item_id   = ""
+        item_name = ""
+        item_icon = ""
+        item_rarity = ""
+        quest_title = ""
+        quest_key   = ""
+        if target:
+            if typ in MOB_TYPES:
+                vrec = vitals_by_id.get(target.lower()) if hasattr(target, "lower") else None
+                if vrec and vrec.get("name"):
+                    mob_label = str(vrec["name"]).strip() or str(target).strip()
+                else:
+                    mob_label = str(target).strip()
+                mob_id = str(target).strip()
+            elif typ in ITEM_TYPES:
+                # TargetID = ItemID → badge d'item (nom localisé via itemdefinitions + locale)
+                item_id = str(target).strip()
+                nm, ic, rr, _reason = resolve_item_with_debug(item_id)
+                item_name, item_icon, item_rarity = (nm or item_id), ic, rr
+            elif typ in QUEST_TYPES:
+                # TargetID = titre EN de la quête → retrouver la clé EN et localiser
+                q_loc, q_key = _localize_from_en_value(target)
+                quest_title = q_loc or str(target).strip()
+                quest_key   = q_key or ""
+            else:
+                mob_label = str(target).strip()
+        mob_label = _clean_str(mob_label)
+        mob_id    = _clean_str(mob_id)
+
+        # Zone: si ZoneUI est une clé locale, la passer par _locale_get
+        zone_label = zone_ui
+        if zone_ui:
+            zone_label = _locale_get(zone_ui[1:]) if zone_ui.startswith("@") else (_locale_get(zone_ui) or zone_ui)
+        zone_label = _clean_str(zone_label)
+        zone_tid  = zone_ui.strip() if (zone_ui and zone_ui.strip().isdigit()) else ""
+        zone_icon = ""
+
+        # ✨ NEW: si zone_tid absent, essayer de résoudre via les définitions POI
+        # 1) lookup direct par tag (ZoneUI brut), puis en lower
+        rec = None
+        if not zone_tid and zone_ui:
+            rec = poi_tag_to_def.get(zone_ui) or poi_tag_to_def.get(zone_ui.lower())
+        # 2) fallback: si on a déjà un libellé localisé, tenter la correspondance par nom
+        if not zone_tid and not rec and zone_label:
+            zl = zone_label.strip().lower()
+            for v in poi_tag_to_def.values():
+                name_v = str(v.get("name") or "").strip().lower()
+                if name_v and name_v == zl:
+                    rec = v
+                    break
+        # 3) si trouvé: renseigner tid + icône + (au besoin) le nom
+        if not zone_tid and rec:
+            zone_tid = str(rec.get("territoryId") or "").strip()
+            zone_icon = rec.get("icon") or ""
+            if not zone_label:
+                zone_label = _clean_str(rec.get("name") or "")
+
+        if not zone_tid and zone_ui and zone_ui.strip().isdigit():
+            zone_tid = zone_ui.strip()
+
+        mode = _clean_str(mode)
+
+        out[iid.lower()] = {
+            # ne pas mettre de clés vides: plus simple pour le front
+            **({"type": typ} if typ else {}),           # <-- indispensable pour BADGE_DROP_TYPES
+            **({"mob": mob_label} if mob_label else {}),
+            **({"mobId": mob_id} if mob_id else {}),    # <-- pour construire le lien NWDB
+            # infos d'item si le type est "item-based"
+            **({"itemId": item_id} if item_id else {}),
+            **({"itemName": item_name} if item_name else {}),
+            **({"itemIcon": item_icon} if item_icon else {}),
+            **({"itemRarity": item_rarity} if item_rarity else {}),
+            # info de quête si type 'quest'
+            **({"questTitle": quest_title} if quest_title else {}),
+            **({"questKey": quest_key} if quest_key else {}),
+            **({"zone": zone_label} if zone_label else {}),
+            **({"zoneTid": zone_tid} if zone_tid else {}),
+            **({"zoneIcon": zone_icon} if zone_icon else {}),
+            **({"mode": mode} if mode else {}),
+            **({"chance": chance} if (chance is not None) else {}),
+        }
+    return out
+
+def _localize_text_maybe_at(s: str) -> str:
+    # Si la valeur commence par @, on la résout via la locale (sans @)
+    if not s:
+        return ""
+    s = str(s).strip()
+    if s.startswith("@"):
+        return _locale_get(s[1:])
+    return s
+
+def _artifact_tasks_for(item_id: str, task_index: dict[str, dict]) -> list[dict]:
+    """
+    Mapping voulu :
+      Perk2 <- Task_Perk1_<ItemID>
+      Perk3 <- Task_Perk2_<ItemID>
+      Perk4 <- Task_Perk3_<ItemID>
+    + descriptions générées comme pour les quêtes normales via _collect_desc_texts.
+    """
+    out: list[dict] = []
+    if not item_id:
+        return out
+    base = item_id
+    # Perk → Task index
+    map_perk_to_task = {2: 1, 3: 2, 4: 3}
+    for perk in (2, 3, 4):
+        task_n = map_perk_to_task.get(perk)
+        if task_n is None:
+            continue
+        tid = f"Task_Perk{task_n}_{base}"
+        rec = task_index.get(tid)
+        if not rec:
+            continue
+
+        # Descriptions complètes avec remplacements (POI, items, cibles…), comme pour les quêtes
+        try:
+            descs = _collect_desc_texts(rec, visited=set())
+        except Exception:
+            descs = []
+
+        # Helpers pour champs optionnels propres
+        def _clean(v):
+            if v is None:
+                return None
+            s = str(v).strip()
+            return None if (not s or s.lower() == "nan") else s
+
+        # Nombre (si présent dans l'une des colonnes usuelles)
+        num = None
+        for k in ("NumberToKill", "NumToLoot", "Amount", "Number", "KillEnemyQty", "TargetQty"):
+            if rec.get(k) not in (None, "", float("nan")):
+                try:
+                    num = int(float(rec.get(k)))
+                    break
+                except Exception:
+                    pass
+
+        # Cible, zone, mode (facultatifs — on reste léger car la vraie description est dans 'descriptions')
+        target = _clean(rec.get("KillEnemyType")) or _clean(rec.get("ItemDropVC"))
+        if target:
+            vc = vitals_by_id.get(target) or vitals_by_id.get(str(target).lower())
+            if vc and vc.get("name"):
+                target = vc["name"]
+        # Zone: préfère ZoneUI si présent (clé locale '@...'), sinon Zone / ZoneId
+        zone_ui = _clean(rec.get("ZoneUI"))
+        zone = _clean(rec.get("Zone"))
+        if zone_ui:
+            zone = _locale_get(zone_ui[1:]) if zone_ui.startswith("@") else (_locale_get(zone_ui) or zone_ui)
+        mode = _clean(rec.get("GameMode") or rec.get("GameModeId"))
+ 
+        # Tag(s) de description *stables* (langue-indépendants) pour les filtres front
+        # 1) colonnes usuelles si présentes
+        desc_tags: list[str] = []
+        for k in ("TP_DescriptionTag", "TP DescriptionTag", "DescriptionTag"):
+            v = rec.get(k)
+            if v is None:
+                continue
+            s = str(v).strip()
+            if not s or s.lower() == "nan":
+                continue
+            tag = _canon_tp_tag(s)
+            if tag in ACCEPT_TP_TAGS:
+                desc_tags.append(tag)
+        # 2) fallback: scan de toutes les colonnes pour y détecter des tags
+        if not desc_tags:
+            desc_tags = _extract_tp_tags_from_row(rec)
+        # 3) dédupe + choisit un principal pour compat
+        desc_tags = sorted(set(desc_tags))
+        desc_tag = desc_tags[0] if desc_tags else None
+
+        out.append({
+            "taskId": tid,
+            "perk": perk,
+            **({ "number": num } if (num is not None) else {}),
+            **({ "target": target } if target else {}),
+            **({ "zone": zone } if zone else {}),
+            **({ "mode": mode } if mode else {}),
+            **({ "descriptions": descs } if descs else {}),
+            **({"descTags": desc_tags} if desc_tags else {}),
+            **({"descTag": desc_tag} if desc_tag else {}),
+        })
+    return out
+
+
 # ---------- Housing item definitions (javelindata_housingitems.json) ----------
 def load_housing_item_definitions(path_or_dir: str | None) -> dict[str, dict]:
     """
@@ -287,16 +623,74 @@ def resolve_item_with_debug(iid: str):
         return iid, (rec.get("icon") or ""), (rec.get("rarity") or ""), "MISSING_LOCALE_ENTRY"
     return txt, (rec.get("icon") or ""), (rec.get("rarity") or ""), ""
 
+############################################
+# TP_DescriptionTag → détection robuste
+############################################
+# Liste blanche des tags que l'on accepte pour les filtres (canonisés)
+ACCEPT_TP_TAGS: Set[str] = {
+    # PvP
+    "objective_kill_arena",
+    "objective_kill_ctf",
+    "objective_kill_opr",
+    # Expeditions / Trials / Raids
+    "objective_kill_bnbp",
+    "objective_kill_depths",
+    "objective_kill_dynasty",
+    "objective_kill_ennead",
+    "objective_kill_empyean",   # canonique pour Empyrean
+    "objective_kill_genesis",
+    "objective_kill_glacialtarn",
+    "objective_kill_lazarus",
+    "objective_kill_savagedivide",
+    "objective_kill_starstone",
+    "objective_kill_tempest",
+    "objective_kill_hatchery",
+    "objective_kill_runeforge",
+    "objective_kill_in_ck_raid",
+    "objective_kill_sandworm",
+}
+# Variantes → tag canonique (ex: inclusions Empyrean)
+TP_TAG_CANON: Dict[str, str] = {
+    "objective_kill_forged": "objective_kill_empyean",
+    "objective_kill_named_empyean": "objective_kill_empyean",
+}
+_TP_RE = re.compile(r"objective_kill_[a-z0-9_]+", re.IGNORECASE)
+
+def _canon_tp_tag(s: str) -> str:
+    s = (s or "").strip()
+    low = s.lower()
+    return TP_TAG_CANON.get(low, low)
+
+def _extract_tp_tags_from_row(row: dict) -> list[str]:
+    """Scanne toutes les valeurs texte de la ligne pour extraire les tags."""
+    found: Set[str] = set()
+    for v in row.values():
+        if not isinstance(v, str):
+            continue
+        txt = v.strip()
+        if not txt:
+            continue
+        # matches explicites 'objective_kill_xxx'
+        for m in _TP_RE.findall(txt):
+            tag = _canon_tp_tag(m)
+            if tag in ACCEPT_TP_TAGS:
+                found.add(tag)
+        # exact match complet (si la colonne contient uniquement la clé)
+        tag2 = _canon_tp_tag(txt)
+        if tag2 in ACCEPT_TP_TAGS:
+            found.add(tag2)
+    # tri pour stabilité
+    return sorted(found)
 
 ############################################
 # Chargement des ObjectiveTasks (fusion)
 ############################################
 
-# 2ᵉ/3ᵉ arguments optionnels
 items_csv_path = sys.argv[2] if len(sys.argv) >= 3 and sys.argv[2] else None
 # Peut être un CSV unique OU un dossier contenant des ObjectiveTasksDataManager_*.csv
 objective_tasks_path = sys.argv[3] if len(sys.argv) >= 4 and sys.argv[3] else "ObjectiveTasksDataManager.csv"
 meta_csv_path = sys.argv[7] if len(sys.argv) >= 8 and sys.argv[7] else None
+territory_map_path = sys.argv[8] if len(sys.argv) >= 9 and sys.argv[8] else None
 
 
 
@@ -394,6 +788,108 @@ def _build_en_reverse(loc: Dict[str, str]):
             # ne remplace pas si déjà présent (1er match conserve la clé)
             _en_rev_exact.setdefault(s, k)
             _en_rev_lower.setdefault(s.lower(), k)
+ 
+############################################
+# TerritoryID → Libellé
+############################################
+
+# Dictionnaire { "16": "UI_TERRITORY_BRIMSTONESANDS", ... } ; la valeur peut
+# être soit une clé de locale (sans @), soit déjà un nom lisible.
+territory_id_to_locale_key: Dict[str, str] = {}
+
+def _load_territory_map(path_hint: str | None) -> Dict[str, str]:
+    """
+    Charge un mapping TerritoryID -> clé (ou nom). Cherche d'abord path_hint,
+    sinon essaie 'tools/territories_map.json' puis 'tools/territories.json'.
+    """
+    candidates = []
+    if path_hint:
+        candidates.append(path_hint)
+    candidates += ["tools/territories_map.json", "tools/territories.json"]
+    for p in candidates:
+        if p and os.path.isfile(p):
+            data = _try_load_json(p)
+            out: Dict[str, str] = {}
+            for k, v in (data or {}).items():
+                tid = str(k).strip()
+                if not tid:
+                    continue
+                # Accepte soit chaîne brute, soit objet { "key": "...", ... }
+                if isinstance(v, str):
+                    out[tid] = v.lstrip('@').strip()
+                elif isinstance(v, dict):
+                    key = str(v.get("key") or v.get("locale") or v.get("name") or "").strip()
+                    if key:
+                        out[tid] = key.lstrip('@')
+            if out:
+                print(f"[OK] Territory map chargé: {len(out)} ids depuis {p}")
+                return out
+    print("[INFO] Aucun territory map externe trouvé (remplacement {territoryID} en best effort).")
+    return {}
+
+# charge au démarrage
+territory_id_to_locale_key = _load_territory_map(territory_map_path)
+
+_TERRITORY_COL_RE = re.compile(r'territory\s*id', re.IGNORECASE)
+
+def _extract_territory_id(row: dict) -> str:
+    """
+    Récupère un TerritoryID numérique à partir de la ligne ObjectiveTasks.
+    - Cherche d'abord toute colonne contenant 'territory' et 'id'
+    - Sinon essaie via le POITag -> POI definition (territoryId)
+    """
+    # 1) colonnes explicites
+    for k, v in row.items():
+        if not isinstance(k, str):
+            continue
+        if not _TERRITORY_COL_RE.search(k):
+            continue
+        n = to_int_safe(v)
+        if n is not None:
+            return str(n)
+    # 2) fallback via POI
+    poi_tag = str(row.get('POITag') or '').strip()
+    if poi_tag:
+        for t in [x.strip() for x in re.split(r'[,\|\s]+', poi_tag) if x.strip()]:
+            rec = poi_tag_to_def.get(t) or poi_tag_to_def.get(t.lower())
+            if rec and rec.get("territoryId") not in (None, ''):
+                return str(rec.get("territoryId")).strip()
+    return ""
+
+def _territory_name_from_row(row: dict) -> str:
+    """
+    Convertit le TerritoryID de 'row' en nom:
+      - si present dans la table externe: résout via _locale_get
+      - sinon: tente le nom du POI
+      - sinon: renvoie l'ID (pour débogage)
+    """
+    tid = _extract_territory_id(row)
+    if not tid:
+        return ""
+    key = territory_id_to_locale_key.get(tid)
+    if key:
+        # si la clé n'existe pas dans la locale, _locale_get renvoie la clé brute
+        name = _locale_get(key)
+        return name if name else key
+    # fallback: nom du POI s'il y en a un
+    poi_tag = str(row.get('POITag') or '').strip()
+    if poi_tag:
+        for t in [x.strip() for x in re.split(r'[,\|\s]+', poi_tag) if x.strip()]:
+            rec = poi_tag_to_def.get(t) or poi_tag_to_def.get(t.lower())
+            if rec and rec.get("name"):
+                return str(rec.get("name"))
+    # dernier recours: afficher l'ID
+    return tid
+
+def _extract_target_amount_from_row(row: dict) -> int | None:
+    """
+    Déduit la quantité cible depuis les colonnes usuelles des ObjectiveTasks.
+    """
+    for col in ("TargetQty", "KillEnemyQty", "NumberToKill", "NumToLoot", "Amount", "Number"):
+        n = to_int_safe(row.get(col))
+        if n is not None and n > 0:
+            return n
+    return None
 
 
 # ---------- Helpers: recursive collection of TP_DescriptionTag ----------
@@ -446,6 +942,15 @@ def _apply_placeholders(txt: str, row: dict) -> str:
     if not isinstance(txt, str) or not txt:
         return txt
     out = txt
+
+    # {targetAmount} — si présent dans le texte de base
+    if '{targetAmount}' in out:
+        qty = _extract_target_amount_from_row(row)
+        # Évite le double "50x" si {targetName} est aussi présent (le badge VC affiche déjà la quantité)
+        repl = ""
+        if qty is not None and '{targetName}' not in out:
+            repl = f"{qty}x"
+        out = out.replace('{targetAmount}', str(repl))    
 
     # {POITags}
     poi_tag = str(row.get('POITag') or '').strip()
@@ -532,6 +1037,11 @@ def _apply_placeholders(txt: str, row: dict) -> str:
         vc_url = f"https://nwdb.info/db/creature/{vc_id}" if vc_id else ""
         token = f"{{{{VC::name={vc_name}::qty={qty_str}::named={named}::id={vc_id}::url={vc_url}}}}}"
         out = out.replace('{targetName}', token)
+    # {territoryID} -> nom de territoire localisé (via table externe)
+    if '{territoryID}' in out:
+        terr_name = _territory_name_from_row(row)
+        # si on ne trouve rien, remplace par chaîne vide pour éviter d'afficher le placeholder brut
+        out = out.replace('{territoryID}', terr_name or "")
     return out
 
 def _collect_desc_texts(row: dict, visited: set[str]) -> list[str]:
@@ -907,6 +1417,10 @@ def _generate_for_locale(locale_file: str, is_default: bool=False):
     quests: list[dict] = []
     edges: list[tuple] = []
     lang = _lang_key_from_path(locale_file)
+    # Utilisé plus bas par la section ARTIFACTS
+    # (timestamp ISO et alias de langue pour les chemins de sortie)
+    now_str = datetime.datetime.utcnow().isoformat()+"Z"
+    current_lang = lang
     localized_q_count = 0    
     # Stats debug items pour cette langue
     item_debug_counts = {
@@ -1173,6 +1687,308 @@ def _generate_for_locale(locale_file: str, is_default: bool=False):
     with open(meta_out, "w", encoding="utf-8") as mf:
         json.dump(meta_min, mf, ensure_ascii=False)
     print(f"[OK] Écrit {quests_out} et {meta_out} (lang={lang})")
+
+    # ---------- (3) ARTIFACTS ----------
+    artifacts_df = _maybe_load_artifacts_base()
+    if artifacts_df is not None and len(artifacts_df) > 0:
+        drops_map = _maybe_load_artifacts_drops()
+        perks_icons_map = _load_perks_icons()
+        perks_defs = _load_perks_defs()
+        artifacts: list[dict] = []
+        # Compteurs debug
+        _seen_total = len(artifacts_df)
+        _seen_with_id = 0
+        _skipped_no_id = 0
+        _row_errors = 0
+
+        # Index de corrélations
+        by_drop_mob: dict[str, list[str]]  = defaultdict(list)
+        by_drop_zone: dict[str, list[str]] = defaultdict(list)
+        by_drop_mode: dict[str, list[str]] = defaultdict(list)
+        by_task_target: dict[str, list[str]] = defaultdict(list)
+        by_task_zone: dict[str, list[str]]   = defaultdict(list)
+        by_task_mode: dict[str, list[str]]   = defaultdict(list)
+
+        # --- Helpers pour contraindre les corrélations sur cibles génériques ---
+        GENERIC_TARGETS = {
+            "ancient", "ancient guardian",
+            "angryearth", "angry earth",
+            "corrupted",
+            "lost",
+            "beast", "feral beast",
+            "human"
+        }
+        _POI_NAME_RE = re.compile(r"\{\{POI::[^}]*name=([^:}]+)")
+        _QTY_RE = re.compile(r"\bqty\s*=\s*[-+]?\d+(?:[.,]\d+)?", re.I)
+        _NUM_RE = re.compile(r"\d+")
+        def _norm_key(s: str) -> str:
+            return re.sub(r"\s+", " ", (s or "")).strip().lower()
+        def _extract_zonekey_from_desc_list(descs: list[str]) -> str:
+            # 1) si la zone apparaît dans un token {{POI::...name=XYZ}}
+            for d in (descs or []):
+                m = _POI_NAME_RE.search(d)
+                if m:
+                    return _norm_key(m.group(1))
+            # 2) fallback rudimentaire: texte de type " … in Elysian Wilds"
+            for d in (descs or []):
+                m = re.search(r"\bin\s+([A-Za-z' \-\u00C0-\u017F]+)$", d)
+                if m:
+                    return _norm_key(m.group(1))
+            return ""
+        def _generic_desc_signature(descs: list[str] | None) -> str:
+            """
+            Produit une 'signature' stable de la description pour les cibles génériques :
+            - prend la 1ʳᵉ description non vide
+            - supprime qty=XX et les chiffres bruts (pour ignorer les quantités)
+            - normalise espaces + casse
+            """
+            if not descs:
+                return ""
+            for raw in descs:
+                s = str(raw or "")
+                if not s.strip():
+                    continue
+                s = _QTY_RE.sub("qty=", s)     # neutralise la quantité
+                s = _NUM_RE.sub("", s)         # enlève chiffres isolés
+                return _norm_key(s)
+            return ""
+
+
+        for _, row in artifacts_df.iterrows():
+            # artifacts.csv : "Item ID","Item Type Name","Icon Path","Perk1"…"Perk4"
+            item_id   = str(row.get("item id") or row.get("itemid") or "").strip()
+            if not item_id:
+                continue
+            try:
+                item_id = (
+                    str(row.get("item id") or
+                        row.get("itemid")   or
+                        row.get("Item ID")  or
+                        row.get("ItemID")   or
+                        row.get("ITEM ID")  or
+                        row.get("item_id")  or "")
+                ).strip()
+            except Exception:
+                item_id = ""
+            if not item_id:
+                _skipped_no_id += 1
+                continue
+            _seen_with_id += 1
+            type_name = _localize_text_maybe_at(str(row.get("item type name") or row.get("itemtypename") or row.get("type") or ""))
+            icon_path = str(row.get("icon path") or row.get("icon") or "").strip()
+            icon_url = _cdnize_icon(icon_path)
+            # Anti double-prefix (ex : .../nw-data/live/https://...) + normalisation douce
+            icon_url = re.sub(r'(https://cdn\.nw-buddy\.de/nw-data/live/)+',
+                              'https://cdn.nw-buddy.de/nw-data/live/', icon_url)
+            icon_url = icon_url.replace('/https://', '/')
+            # Perks via PerkID -> Name (@key) -> locale
+            def _perk_label(perk_id: str, is_unique: bool = False) -> str:
+                if not perk_id:
+                    return ""
+                pid_l = perk_id.lower()
+                key = perks_defs.get(pid_l, "")
+                # Uniquement pour le "unique perk" (Perk1) :
+                # si l'ID sans suffixe n'est pas trouvé, retenter avec 'Perk'
+                if not key and is_unique and not pid_l.endswith("perk"):
+                    key = perks_defs.get((perk_id + "Perk").lower(), "")
+                if key:
+                    return _locale_get(key)
+                # fallback: si déjà un @ dans le CSV
+                return _localize_text_maybe_at(perk_id)
+            
+            # ID « fiable » pour lier vers NW-Buddy (essaie l’ID brut, puis +“Perk” pour les uniques)
+            def _perk_id_for_link(perk_id: str, is_unique: bool=False) -> str:
+                if not perk_id:
+                    return ""
+                pid_l = str(perk_id).lower()
+                if (pid_l in perks_defs) or (pid_l in perks_icons_map):
+                    return str(perk_id)
+                if is_unique and (not pid_l.endswith("perk")):
+                    cand = str(perk_id) + "Perk"
+                    cl = cand.lower()
+                    if (cl in perks_defs) or (cl in perks_icons_map):
+                        return cand
+                return str(perk_id)
+
+            def _perk_icon(perk_id: str, is_unique: bool = False) -> str:
+                if not perk_id:
+                    return ""
+                pid_l = perk_id.lower()
+                url = perks_icons_map.get(pid_l, "")
+                if not url and is_unique and not pid_l.endswith("perk"):
+                    url = perks_icons_map.get((perk_id + "Perk").lower(), "")
+                return url
+            p1 = _perk_label(str(row.get("perk1") or ""), is_unique=True)
+            p2 = _perk_label(str(row.get("perk2") or ""), is_unique=False)
+            p3 = _perk_label(str(row.get("perk3") or ""), is_unique=False)
+            p4 = _perk_label(str(row.get("perk4") or ""), is_unique=False)
+            i1 = _perk_icon(str(row.get("perk1") or ""), is_unique=True)
+            i2 = _perk_icon(str(row.get("perk2") or ""), is_unique=False)
+            i3 = _perk_icon(str(row.get("perk3") or ""), is_unique=False)
+            i4 = _perk_icon(str(row.get("perk4") or ""), is_unique=False)
+            # IDs pour liens NW-Buddy
+            id1 = _perk_id_for_link(str(row.get('perk1') or ''), True)
+            id2 = _perk_id_for_link(str(row.get('perk2') or ''), False)
+            id3 = _perk_id_for_link(str(row.get('perk3') or ''), False)
+            id4 = _perk_id_for_link(str(row.get('perk4') or ''), False)
+
+            # Nom affiché (via itemdefinitions si possible)
+            disp_name, _, _ = resolve_item_via_defs(item_id)
+            if not disp_name:
+                disp_name = item_id
+
+            # Drop
+            drec = drops_map.get(item_id.lower(), {})
+            drop = dict(drec) if drec else {}
+            # corrélations par drop
+            if drop:
+                mob_key  = str(drop.get("mob")  or "").strip().lower()
+                zone_key = str(drop.get("zone") or "").strip().lower()
+                mode_key = str(drop.get("mode") or "").strip().lower()
+                if mob_key:  by_drop_mob[mob_key].append(item_id)
+                if zone_key: by_drop_zone[zone_key].append(item_id)
+                if mode_key: by_drop_mode[mode_key].append(item_id)
+
+            # Tâches pour perks 2/3/4
+            unlock_tasks = _artifact_tasks_for(item_id, task_index)
+
+            # helper: normaliser la "base" de description comme côté front
+            def _normalize_desc_base(descs):
+                try:
+                    if not descs:
+                        return ""
+                    d = str(descs[0] or "").lower()
+                    if not d:
+                        return ""
+                    d = re.sub(r"qty=\d+", "qty=*", d)
+                    d = re.sub(r"\s+", " ", d).strip()
+                    return d
+                except Exception:
+                    return ""
+
+
+            # corrélation par target/zone/mode de tâche
+            for t in unlock_tasks:
+                tgt  = str(t.get("target") or "").strip().lower()
+                zone = str(t.get("zone")   or "").strip().lower()
+                mode = str(t.get("mode")   or "").strip().lower()
+
+                if tgt:
+                    if tgt in GENERIC_TARGETS:
+                        if zone:
+                            # générique + zone => corrélation stricte par zone
+                            by_task_target[f"{tgt}@@zone:{zone}"].append(item_id)
+                        else:
+                            # générique + pas de zone => corrélation par base de description
+                            base = _normalize_desc_base(t.get("descriptions"))
+                            key  = f"{tgt}@@desc:{base}" if base else tgt
+                            by_task_target[key].append(item_id)
+                    else:
+                        # non générique => clé simple par target
+                        by_task_target[tgt].append(item_id)
+
+                if zone:
+                    by_task_zone[zone].append(item_id)
+                if mode:
+                    by_task_mode[mode].append(item_id)
+
+            artifacts.append({
+                "item_id": item_id,
+                "name": disp_name,
+                "type": type_name,
+                "icon": icon_url,
+                "perks": {
+                    "unique": p1,
+                    "p2": p2 or None,
+                    "p3": p3 or None,
+                    "p4": p4 or None
+                },
+                "perks_icons": {
+                    "unique": i1 or "",
+                    "p2": i2 or "",
+                    "p3": i3 or "",
+                    "p4": i4 or ""
+                },
+                "perks_ids": {
+                    "unique": id1 or "",
+                    "p2": id2 or "",
+                    "p3": id3 or "",
+                    "p4": id4 or "",
+                },
+                "drop": drop if drop else None,
+                "quests": unlock_tasks
+            })
+
+            # (optionnel) debug par ligne — trop verbeux, à commenter si besoin
+            # print(f"[DEBUG] artifacts.csv: lignes={_seen_total}, avec_item_id={_seen_with_id}, "
+            #       f"sans_item_id={_skipped_no_id}, émis={len(artifacts)}")
+
+        # Dédoublonnage strict par item_id (les CSV peuvent contenir des doublons)
+        _uniq: dict[str, dict] = {}
+        for a in artifacts:
+            k = a["item_id"].lower()
+            if k in _uniq:
+                # Merge minimal : compléter drop/quests si manquants
+                if not _uniq[k].get("drop") and a.get("drop"):
+                    _uniq[k]["drop"] = a["drop"]
+                if a.get("quests"):
+                    seenq = { json.dumps(q, sort_keys=True)
+                              for q in _uniq[k].get("quests", []) }
+                    for q in a["quests"]:
+                        s = json.dumps(q, sort_keys=True)
+                        if s not in seenq:
+                            _uniq[k].setdefault("quests", []).append(q)
+            else:
+                _uniq[k] = a
+        artifacts = list(_uniq.values())
+
+        # Liens de corrélation (basique) : mêmes mobs de drop + mêmes cibles de tâches
+        related_map: dict[str, list[dict]] = defaultdict(list)
+        def _add_related(bucket: dict[str, list[str]], kind: str):
+            for _, ids in bucket.items():
+                if len(ids) < 2:
+                    continue
+                ids_norm = list(dict.fromkeys([i for i in ids if i]))  # unique
+                for i in range(len(ids_norm)):
+                    for j in range(i+1, len(ids_norm)):
+                        a, b = ids_norm[i], ids_norm[j]
+                        related_map[a].append({"to": b, "kind": kind})
+                        related_map[b].append({"to": a, "kind": kind})
+        # Drops
+        _add_related(by_drop_mob,  "same_drop_mob")
+        _add_related(by_drop_zone, "same_drop_zone")
+        _add_related(by_drop_mode, "same_drop_mode")
+       # Tasks
+        _add_related(by_task_target, "same_task_target")
+        _add_related(by_task_zone,   "same_task_zone")
+        _add_related(by_task_mode,   "same_task_mode")
+
+        # Ajoute "related" dans les artéfacts
+        for a in artifacts:
+            rel = related_map.get(a["item_id"], [])
+            if rel:
+                a["related"] = rel
+
+        artifacts.sort(key=lambda x: (x.get("type",""), x.get("name",""), x["item_id"]))
+        art_payload = {
+            "generated_at": now_str,
+            "artifact_count": len(artifacts),
+            "artifacts": artifacts
+        }
+
+        art_out_dir = os.path.join("public", "data", current_lang)
+        os.makedirs(art_out_dir, exist_ok=True)
+        art_out = os.path.join(art_out_dir, "artifacts.json")
+        with open(art_out, "w", encoding="utf-8") as f:
+            json.dump(art_payload, f, ensure_ascii=False, indent=2)
+        if is_default:
+            # copie racine
+            with open(os.path.join("public", "data", "artifacts.json"), "w", encoding="utf-8") as f:
+                json.dump(art_payload, f, ensure_ascii=False, indent=2)
+        print(f"[OK] artifacts.json ({current_lang}) : {len(artifacts)} items (source: {ARTIFACTS_CSV})")
+    else:
+        print("[INFO] Pas d'artifacts.csv détecté — artifacts.json ignoré pour cette langue.")
+    
 
     # --- Debug items non résolus ---
     debug_out = {

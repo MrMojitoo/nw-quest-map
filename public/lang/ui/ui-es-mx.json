@@ -57,5 +57,49 @@
 
   "ui.card.tasks": "Tareas",
   "ui.card.markDone": "Marcar como completada",
-  "ui.card.markUndone": "Marcar como no completada"
+  "ui.card.markUndone": "Marcar como no completada",
+  "ui.uncheck": "Desmarcar",
+  "ui.check": "Marcar",
+
+  "ui.filters.byTag": "Filtro de tareas",
+  "ui.filters.clear": "Borrar filtro",
+  "ui.filters.pvp": "PvP",
+  "ui.filters.expeditions": "Expediciones",
+
+  "ui.artifacts.drop.title": "Condiciones de botín",
+  "ui.artifacts.drop.chests": "Cofres",
+  "ui.artifacts.drop.seasonPass": "Pase de temporada",
+  "ui.artifacts.drop.doubloons": "Doblones",
+  "ui.artifacts.drop.quest": "Misión",
+  "ui.artifacts.drop.unknownQuest": "Misión desconocida",
+  "ui.artifacts.drop.item": "Objeto",
+  "ui.artifacts.drop.mob": "Enemigo",
+  "ui.artifacts.drop.zone": "Zona",
+  "ui.artifacts.drop.mode": "Modo de juego",
+  "ui.artifacts.drop.chance": "Probabilidad de botín",
+
+  "ui.artifacts.help.title": "Artefactos — Ayuda",
+  "ui.artifacts.help.howto": "Cómo usar esta vista",
+  "ui.artifacts.help.tipMove": "Arrastra el mapa para moverte.",
+  "ui.artifacts.help.tipClick": "Haz clic en una tarea para ver las tareas correlacionadas; haz clic en un elemento de la lista para ir a él.",
+  "ui.artifacts.help.tipEdge": "Puedes hacer clic en la punta de una flecha para ir al otro extremo.",
+  "ui.artifacts.help.tipSearch": "Usa la barra de búsqueda para ir a un artefacto por nombre o ID.",
+  "ui.artifacts.help.tipComplete": "Marca un drop como obtenido y marca las tareas como completadas. Completar las 3 tareas marca el artefacto como totalmente mejorado.",
+  "ui.artifacts.help.tipProgress": "El progreso es por personaje; puedes crear o borrar personajes.",
+  "ui.artifacts.help.tipLinks": "Íconos/perks/objetos/enemigos/zonas enlazan a NWDB / NW-Buddy.",
+  "ui.artifacts.help.tipMap": "Los artefactos están acomodados para que las tareas correlacionadas queden cerca entre sí.",
+
+  "ui.artifacts.selected.title": "Tarea seleccionada",
+  "ui.artifacts.selected.correlated": "Tareas correlacionadas",
+  "ui.artifacts.perk": "Perk",
+
+  "ui.artifacts.progress.dropped": "Artefactos obtenidos",
+  "ui.artifacts.progress.byType": "Por tipo de botín",
+  "ui.artifacts.progress.maxed": "Artefactos mejorados al máximo",
+
+  "ui.confirm": "Confirmar",
+  "ui.cancel": "Cancelar",
+  
+  "ui.tabs.quests": "Misiones",
+  "ui.tabs.artifacts": "Artefactos"
 }

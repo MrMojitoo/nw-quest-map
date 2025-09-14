@@ -1,0 +1,72 @@
+Item ID,Type,TargetID,ZoneUI,Game Mode,%Drop
+Artifact_Set1_HeavyHead,PvP Tracks,,,PvP Tracks,
+Artifact_Set1_HeavyChest,M1+ boss,dryad_siren,talesofexpeditions_chapter_07,M1+,20%
+Artifact_Set1_HeavyHands,M1+ boss,isabella_dg_shattermtn_phase2_00,talesofexpeditions_chapter_06,M1+,20%
+Artifact_Set1_HeavyLegs,PvP Tracks,,,PvP Tracks,
+Artifact_Set1_HeavyFeet,PvP Tracks,,,PvP Tracks,
+Artifact_Set1_MediumHead,Chests,chestfirstlightrevampbeastlandst5,firstlight,,10%
+Artifact_Set1_MediumChest,PvP Tracks,,,PvP Tracks,
+Artifact_Set1_MediumHands,Named,fl_dryad_beast_named_09fl08,ui_poi_ancient_lighthouse_40008,,20%
+Artifact_Set1_MediumLegs,Quest,The End of New Eden,,,
+Artifact_Set1_MediumFeet,Named,fl_megaflora_razorlotus_named_09fl02a,ui_poi_fire_plant_40073,,20%
+Artifact_Set1_LightHead,Breaches,darknessrewardcontainermajor1l65,,,10%
+Artifact_Set1_LightChest,Named,fl_hercyne_corvid_named_09fl10,ui_poi_haunted_village_40047,,20%
+Artifact_Set1_LightHands,Named,fl_megaflora_razorlotus_named_09fl02b,ui_poi_ice_plant_40074,,20%
+Artifact_Set1_LightLegs,OPR/CTF,,,OPR/CTF,20%
+Artifact_Set1_LightFeet,OPR/CTF,,,OPR/CTF,20%
+Artifact_Set1_1hLongsword,M1+ boss,dynasty_empress,talesofexpeditions_chapter_02,M1+,20%
+Artifact_Set1_1hThrowingAxe,M1+ boss,naga_angryearth,talesofexpeditions_chapter_01,M1+,20%
+Artifact_Set1_2hWarhammer,M1+ boss,torso_boss,talesofexpeditions_chapter_03,M1+,20%
+Artifact_Set1_2hGreatAxe,Breaches,darknessrewardcontainermajor1l65,,,10%
+Artifact_Set1_2hBow,Named,fl_gorilla_ice_elite_named_09fl12,ui_area_firstlight_12,,20%
+Artifact_Set1_2hMusket,Named,fl_ancientguardian_mage_named_elite_09fl06,ui_poi_ancient_ruins_40054,,20%
+Artifact_Set1_1hRoundShield,Mobs,fl_mammoth_ice_elite_09fl01,ui_poi_beastlands_40064,,20%
+Artifact_Set1_1hKiteShield,PvP Tracks,,,PvP Tracks,
+Artifact_Set1_1hTowerShield,M1+ boss,anubianguardian_horus_boss,dungeon_brimstonesands00_title,M1+,20%
+Artifact_Set1_2hStaffFire,M1+ boss,evil_knight_fire_champion_dg_greatcleave_01,dungeon_greatcleave01_title,M1+,20%
+Artifact_Set1_2hStaffLife,PvP Tracks,,,PvP Tracks,
+Artifact_Set1_2hSpear,Named,desert_scorpion_named_04,ui_poi_beast_den_30416,,20%
+Artifact_Set1_1hRapier,Named,fl_mammoth_named_elite_09fl12,ui_area_firstlight_12,,20%
+Artifact_Set1_1hGauntletIce,M1+ boss,icegolem,talesofexpeditions_chapter_09,M1+,20%
+Artifact_Set1_1hGauntletVoid,Named,fl_gorilla_melee_elite_named_09fl12,ui_area_firstlight_12,,20%
+Artifact_Set1_2hBlunderbuss,PvP Tracks,,,PvP Tracks,
+Artifact_Set1_2hGreatSword,PvP Tracks,,,PvP Tracks,
+Artifact_Set1_1hFlail,Named,fl_barbary_lion_elite_named_09fl01,ui_poi_beastlands_40064,,20%
+Artifact_Set1_Earring1,M1+ boss,fl_mammoth_boss_dg_firstlight_01,dungeon_firstlight01_title,M1+,20%
+Artifact_Set1_Ring1,M1+ boss,ancientguardian_heavy_boss_named_dg_everfall_00,talesofexpeditions_chapter_04,M1+,20%
+Artifact_Set1_Amulet1,M1+ boss,damned_longswordsman_commander_named_dg_restless_00,talesofexpeditions_chapter_05,M1+,20%
+Artifact_Set1_Amulet2,PvP Tracks,,,PvP Tracks,
+Artifact_Set2_HeavyChest,Doubloons,,,,
+Artifact_Set2_HeavyHands,Named,swamp_dryad_beast_named_elite_05wc10,ui_poi_arena_reekwater_dryad,PvE Arena,20%
+Artifact_Set2_HeavyLegs,PvP Tracks,,,PvP Tracks,
+Artifact_Set2_MediumChest,Named,spriggan_forest,ui_poi_arena_spriggan,PvE Arena,20%
+Artifact_Set2_MediumHands,Doubloons,,,,
+Artifact_Set2_MediumLegs,Raid boss,hercyne_echidna,raid_cutlasskeys00_title,Raid,20%
+Artifact_Set2_LightHead,PvP Tracks,,,PvP Tracks,
+Artifact_Set2_LightFeet,Mobs,,ui_poi_varangian_elite_30335,,20%
+Artifact_Set2_MediumHead,PvP Tracks,,,PvP Tracks,
+Artifact_Set2_LightChest,M1+ Rewards,mutatorrewardcontainerdiff1t1,,M1+,10%
+Artifact_Set2_LightHands,PvP Tracks,,,PvP Tracks,
+Artifact_Set2_HeavyFeet,PvP Tracks,,,PvP Tracks,
+Artifact_Set2_1hThrowingAxe,Named,ancient_amalgam_named_16bs11b,ui_poi_ancientwall_elite_30430,,20%
+Artifact_Set2_2hWarhammer,Raid boss,hercyne_typhon,raid_cutlasskeys00_title,Raid,20%
+Artifact_Set2_2hGreatAxe,10-Trial,trial_s5_bonusbox,trial_runeforge_title,10-Trial,20%
+Artifact_Set2_2hBow,Named,swamp_dryad_tendril_named_elite_05wc10,ui_poi_ae_elite_50119,,20%
+Artifact_Set2_2hMusket,OPR/CTF,,,OPR/CTF,20%
+Artifact_Set2_2hStaffFire,Named,corrupted_ogre_named_07sm02b_elite,ui_poi_uppermine_40420,,20%
+Artifact_Set2_2hStaffLife,PvP Tracks,,,PvP Tracks,
+Artifact_Set2_2hSpear,Named,undead_siren,ui_poi_arena_siren,PvE Arena,20%
+Artifact_Set2_1hRapier,M1+ boss,naga_fire,dungeon_greatcleave01_title,M1+,20%
+Artifact_Set2_1hGauntletIce,Named,fl_gorilla_ice_elite_named_09fl01,ui_poi_beastlands_40064,,
+Artifact_Set2_1hGauntletVoid,Breaches,darknessrewardcontainermajor1l65,,,10%
+Artifact_Set2_2hGreatSword,PvP Tracks,,,PvP Tracks,
+Artifact_Set2_1hFlail,Solo Trials,,,Solo Trials,
+Artifact_Set2_2hBlunderbuss,OPR/CTF,,,OPR/CTF,20%
+Artifact_Set2_1hLongsword,M1+ Rewards,mutatorrewardcontainerdiff1t1,,M1+,10%
+Artifact_Set2_1hTowerShield,M1+ Rewards,mutatorrewardcontainerdiff1t1,,M1+,10%
+Artifact_Set2_Earring1,Influence Races,influencerewardcontainerl65,,Influence Races,10%
+Artifact_Set2_Ring1,Raid boss,hercyne_broodmother,raid_cutlasskeys00_title,Raid,20%
+Artifact_Set2_Amulet1,Named,dynasty_maiden_named_08qp08,ui_area_ebonscale00_palace,,20%
+Artifact_Set3_MediumHead,Influence Races,influencerewardcontainerl65,,Influence Races,10%
+Artifact_Set3_2hWarhammer,OPR/CTF,,,OPR/CTF,20%
+Artifact_Set3_2hGreatSword,Season Pass,,,,

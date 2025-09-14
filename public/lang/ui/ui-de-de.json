@@ -57,5 +57,49 @@
 
   "ui.card.tasks": "Aufgaben",
   "ui.card.markDone": "Als abgeschlossen markieren",
-  "ui.card.markUndone": "Als nicht abgeschlossen markieren"
+  "ui.card.markUndone": "Als nicht abgeschlossen markieren",
+  "ui.uncheck": "Deaktivieren",
+  "ui.check": "Aktivieren",
+
+  "ui.filters.byTag": "Aufgabenfilter",
+  "ui.filters.clear": "Filter löschen",
+  "ui.filters.pvp": "PvP",
+  "ui.filters.expeditions": "Expeditionen",
+
+  "ui.artifacts.drop.title": "Drop-Bedingungen",
+  "ui.artifacts.drop.chests": "Truhen",
+  "ui.artifacts.drop.seasonPass": "Season-Pass",
+  "ui.artifacts.drop.doubloons": "Dublonen",
+  "ui.artifacts.drop.quest": "Quest",
+  "ui.artifacts.drop.unknownQuest": "Unbekannte Quest",
+  "ui.artifacts.drop.item": "Gegenstand",
+  "ui.artifacts.drop.mob": "Mob",
+  "ui.artifacts.drop.zone": "Zone",
+  "ui.artifacts.drop.mode": "Spielmodus",
+  "ui.artifacts.drop.chance": "Drop-Chance",
+
+  "ui.artifacts.help.title": "Artefakte — Hilfe",
+  "ui.artifacts.help.howto": "So verwendest du diese Ansicht",
+  "ui.artifacts.help.tipMove": "Ziehe die Karte, um dich zu bewegen.",
+  "ui.artifacts.help.tipClick": "Klicke auf eine Aufgabe, um verknüpfte Aufgaben anzuzeigen; klicke auf einen Listeneintrag, um zu ihr zu springen.",
+  "ui.artifacts.help.tipEdge": "Du kannst auf das Ende eines Pfeils klicken, um zum anderen Ende zu wechseln.",
+  "ui.artifacts.help.tipSearch": "Nutze die Suche, um nach Artefaktname oder -ID zu springen.",
+  "ui.artifacts.help.tipComplete": "Markiere einen Drop als erhalten und Aufgaben als abgeschlossen. Sind alle 3 Aufgaben erledigt, gilt das Artefakt als vollständig aufgewertet.",
+  "ui.artifacts.help.tipProgress": "Fortschritt ist pro Charakter; du kannst Charaktere erstellen oder löschen.",
+  "ui.artifacts.help.tipLinks": "Icons/Perks/Gegenstände/Mobs/Zonen verlinken auf NWDB / NW-Buddy.",
+  "ui.artifacts.help.tipMap": "Artefakte sind so angeordnet, dass stark verknüpfte Aufgaben nahe beieinander liegen.",
+
+  "ui.artifacts.selected.title": "Ausgewählte Aufgabe",
+  "ui.artifacts.selected.correlated": "Verknüpfte Aufgaben",
+  "ui.artifacts.perk": "Perk",
+
+  "ui.artifacts.progress.dropped": "Erhaltene Artefakte",
+  "ui.artifacts.progress.byType": "Nach Droptyp",
+  "ui.artifacts.progress.maxed": "Artefakte vollständig aufgewertet",
+
+  "ui.confirm": "Bestätigen",
+  "ui.cancel": "Abbrechen",
+  
+  "ui.tabs.quests": "Quests",
+  "ui.tabs.artifacts": "Artefakte"
 }

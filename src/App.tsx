@@ -3,6 +3,7 @@ import Graph from './components/Graph'
 import Sidebar from './components/Sidebar'
 import CharacterTabs from './components/CharacterTabs'
 import SearchBar from './components/SearchBar'
+import Artifacts from './components/Artifacts'
 import useStore from './store'
 import './styles.css'
 
@@ -29,6 +30,13 @@ type Data = {
   quest_count: number
   edge_count: number
   quests: Quest[]
+}
+
+type Artifact = {
+  item_id: string
+  name: string
+  icon?: string
+  type?: string
 }
 
 // Contexte de locale (partagé à toute l'app)
@@ -83,6 +91,8 @@ export default function App() {
   }, [lang])
  
   // --- Modern language popover ---
+  const [tab, setTab] = useState<'quests'|'artifacts'>('quests')
+
   const LANGS = [
     { code: 'en-us', cc: 'us', label: 'EN', name: 'English' },
     { code: 'de-de', cc: 'de', label: 'DE', name: 'Deutsch' },
@@ -210,6 +220,21 @@ export default function App() {
       .catch(e => setError(String(e)))
       .finally(() => setLoading(false))
   }, [lang])
+ 
+  // Charge les artéfacts (lazy quand on ouvre l’onglet)
+  const [artifacts, setArtifacts] = useState<Artifact[] | null>(null)
+  const [artifactsErr, setArtifactsErr] = useState<string | null>(null)
+  useEffect(() => {
+    if (tab !== 'artifacts') return
+    setArtifacts(null); setArtifactsErr(null)
+    fetch(withBase(`data/${lang}/artifacts.json`))
+      .then(r => r.json())
+      .then((json) => setArtifacts(json?.artifacts ?? []))
+      .catch(e => setArtifactsErr(String(e)))
+  }, [tab, lang])
+
+  const openArtifacts = () => setTab('artifacts')
+  const openQuests = () => setTab('quests')
 
   const activeCharacter = useStore(s => s.characters.find(c => c.id === s.activeId))
 
@@ -227,7 +252,14 @@ export default function App() {
             <span className="brand-title">New World Quest Map</span>
             <span className="brand-sub">Quest planner & tracker</span>
           </div>
-
+          <nav className="tabs">
+            <button className={`tab tab-quests ${tab==='quests'?'active':''}`} onClick={openQuests}>
+              {t('ui.tabs.quests','Quests')}
+            </button>
+            <button className={`tab tab-artifacts ${tab==='artifacts'?'active':''}`} onClick={openArtifacts}>
+              {t('ui.tabs.artifacts','Artifacts')}
+            </button>
+          </nav>
           {/* CENTRE : Lang + Search (même colonne) */}
           <div className="topbar-center">
             <div className="lang-switcher" aria-label="Language selector">
@@ -275,8 +307,14 @@ export default function App() {
           </div>
         </header>
         <section className="content">
-          <Graph quests={data.quests} lang={lang} />
-          <Sidebar lang={lang} />
+          {tab === 'quests' ? (
+            <>
+              <Graph quests={data.quests} lang={lang} />
+              <Sidebar lang={lang} />
+            </>
+          ) : (
+            <Artifacts lang={lang} artifacts={artifacts} error={artifactsErr} />
+          )}
         </section>
         <footer className="footer">
           <div className="muted footer-right">

@@ -57,5 +57,49 @@
 
   "ui.card.tasks": "Zadania",
   "ui.card.markDone": "Oznacz jako ukończone",
-  "ui.card.markUndone": "Oznacz jako nieukończone"
+  "ui.card.markUndone": "Oznacz jako nieukończone",
+  "ui.uncheck": "Odznacz",
+  "ui.check": "Zaznacz",
+
+  "ui.filters.byTag": "Filtr zadań",
+  "ui.filters.clear": "Wyczyść filtr",
+  "ui.filters.pvp": "PvP",
+  "ui.filters.expeditions": "Wyprawy",
+
+  "ui.artifacts.drop.title": "Warunki dropu",
+  "ui.artifacts.drop.chests": "Skrzynie",
+  "ui.artifacts.drop.seasonPass": "Przepustka sezonowa",
+  "ui.artifacts.drop.doubloons": "Dublony",
+  "ui.artifacts.drop.quest": "Zadanie",
+  "ui.artifacts.drop.unknownQuest": "Nieznane zadanie",
+  "ui.artifacts.drop.item": "Przedmiot",
+  "ui.artifacts.drop.mob": "Przeciwnik",
+  "ui.artifacts.drop.zone": "Strefa",
+  "ui.artifacts.drop.mode": "Tryb gry",
+  "ui.artifacts.drop.chance": "Szansa na drop",
+
+  "ui.artifacts.help.title": "Artefakty — Pomoc",
+  "ui.artifacts.help.howto": "Jak korzystać z tego widoku",
+  "ui.artifacts.help.tipMove": "Przeciągnij mapę, aby przesuwać widok.",
+  "ui.artifacts.help.tipClick": "Kliknij zadanie, aby zobaczyć powiązane; kliknij element listy, aby przejść.",
+  "ui.artifacts.help.tipEdge": "Możesz kliknąć koniec strzałki, aby przejść na jej drugi koniec.",
+  "ui.artifacts.help.tipSearch": "Użyj wyszukiwarki, aby przejść do artefaktu po nazwie lub ID.",
+  "ui.artifacts.help.tipComplete": "Zaznacz drop jako zdobyty i zadania jako ukończone. 3 ukończone zadania oznaczają artefakt jako w pełni ulepszony.",
+  "ui.artifacts.help.tipProgress": "Postęp jest per postać; możesz tworzyć lub usuwać postacie.",
+  "ui.artifacts.help.tipLinks": "Ikony/perki/przedmioty/przeciwnicy/strefy prowadzą do NWDB / NW-Buddy.",
+  "ui.artifacts.help.tipMap": "Artefakty rozmieszczono tak, by silnie powiązane zadania były blisko siebie.",
+
+  "ui.artifacts.selected.title": "Wybrane zadanie",
+  "ui.artifacts.selected.correlated": "Powiązane zadania",
+  "ui.artifacts.perk": "Perk",
+
+  "ui.artifacts.progress.dropped": "Zdobyte artefakty",
+  "ui.artifacts.progress.byType": "Według typu dropu",
+  "ui.artifacts.progress.maxed": "Artefakty w pełni ulepszone",
+
+  "ui.confirm": "Potwierdź",
+  "ui.cancel": "Anuluj",
+  
+  "ui.tabs.quests": "Zadania",
+  "ui.tabs.artifacts": "Artefakty"
 }
