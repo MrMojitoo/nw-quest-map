@@ -1133,7 +1133,7 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
         </div>
       )}
       <div
-        style={{ position: 'absolute', left: 60, bottom: 40, zIndex: 7 }}
+        style={{ position: 'absolute', left: 60, bottom: 70, zIndex: 7 }}
       >
       <button
         className="btn-achievements"
@@ -1238,7 +1238,7 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
           nodeComponent={MiniMapNode}      // <— rendu custom fiable
         />
         {/* Custom lock that only affects node dragging */}
-        <Controls showInteractive={false}>
+        <Controls showInteractive={false} style={{ bottom: 20 }}>
           <ControlButton
             className={`rf-lock-btn ${lockNodes ? 'locked' : 'unlocked'}`}
             onClick={() => setLockNodes(v => !v)}

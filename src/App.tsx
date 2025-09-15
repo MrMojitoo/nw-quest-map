@@ -317,8 +317,36 @@ export default function App() {
           )}
         </section>
         <footer className="footer">
-          <div className="muted footer-right">
-            Updated data on {prettyGeneratedAt}
+          {/* Socials card (replace hrefs with your links) */}
+          <div className="footer-socials" role="group" aria-label="Social links">
+            <a className="social discord" href="https://discord.gg/f5BBnn5nmR" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+              <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+                <path fill="currentColor" d="M20.317 4.369A18.07 18.07 0 0 0 16.558 3c-.173.31-.37.73-.508 1.06a16.34 16.34 0 0 0-4.1 0C11.812 3.73 11.62 3.31 11.44 3a18.123 18.123 0 0 0-3.761 1.369C4.66 7.2 3.91 10.94 4.18 14.63A18.3 18.3 0 0 0 8.06 16c.31-.42.59-.86.84-1.32-.46-.17-.9-.38-1.32-.61.11-.08.22-.16.33-.24 2.54 1.19 5.3 1.19 7.82 0 .11.08.22.16.33.24-.42.23-.86.44-1.32.61.25.46.53.9.84 1.32 1.41-.3 2.77-.81 4.05-1.49.33-3.93-.57-7.62-3.34-10.26ZM9.5 13.1c-.74 0-1.35-.68-1.35-1.51 0-.83.6-1.51 1.35-1.51s1.36.68 1.35 1.51c0 .83-.6 1.51-1.35 1.51Zm5 0c-.74 0-1.35-.68-1.35-1.51 0-.83.6-1.51 1.35-1.51s1.35.68 1.35 1.51c0 .83-.6 1.51-1.35 1.51Z"/>
+              </svg>
+            </a>
+            <a className="social youtube" href="https://www.youtube.com/@MrMojitoTV" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path fill="currentColor" d="M23.5 7.2a4.8 4.8 0 0 0-3.4-3.4C17.9 3.3 12 3.3 12 3.3s-5.9 0-8.1.5A4.8 4.8 0 0 0 .5 7.2 50.5 50.5 0 0 0 0 12a50.5 50.5 0 0 0 .5 4.8 4.8 4.8 0 0 0 3.4 3.4c2.2.5 8.1.5 8.1.5s5.9 0 8.1-.5a4.8 4.8 0 0 0 3.4-3.4A50.5 50.5 0 0 0 24 12a50.5 50.5 0 0 0-.5-4.8ZM9.75 15.02V8.98L15.5 12l-5.75 3.02Z"/>
+              </svg>
+            </a>
+            <a className="social twitch" href="https://www.twitch.tv/mrmojitotv" target="_blank" rel="noopener noreferrer" aria-label="Twitch">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path fill="currentColor" d="M4 3h16l-1.5 10.5-4 3.5H11l-3 3H6v-3H2V5.5L4 3Zm2 2v9.5h3v3l3-3h4.5L18.5 5H6Zm7 1.5h2V11h-2V6.5Zm-4 0h2V11H9V6.5Z"/>
+              </svg>
+            </a>
+
+            <a className="social sheets" href="https://docs.google.com/spreadsheets/d/yourSheetId" target="_blank" rel="noopener noreferrer" aria-label="Google Sheets">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path fill="currentColor" d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/>
+                <path fill="currentColor" d="M14 3v6h6z"/>
+                <rect x="8" y="10" width="8" height="8" rx="1" ry="1" fill="none" stroke="#ffffff" stroke-width="1.6"/>
+                <path d="M12 10v8M8 14h8" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </a>
+            <span className="social-by">by&nbsp;<b>MrMojitoTV</b></span>
+          </div>
+          <div className="footer-right muted">
+            {t('ui.footer.updated','Updated data on {date}', { date: prettyGeneratedAt })}
           </div>
         </footer>
       </div>

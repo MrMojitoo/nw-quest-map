@@ -1480,7 +1480,7 @@ export default function Artifacts({ lang, artifacts, error }:{
             selectionOnDrag={false}
           >
             <Background variant={BackgroundVariant.Dots} />
-            <Controls showInteractive={false} position="bottom-left" />
+            <Controls showInteractive={false} position="bottom-left" style={{ bottom: 20 }}/>
           </ReactFlow>
         </div>
       </div>

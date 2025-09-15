@@ -420,6 +420,55 @@ body { background: linear-gradient(180deg, #0b0f14, #0d1117); color: var(--text)
 .toggle:hover{ border-color:#2a3b56; opacity: .9; }
 
 
+/* ===================== MOBILE ===================== */
+/* Layout : sidebar en tiroir, progress centré, topbar compacte */
+@media (max-width: 900px){
+  .content { grid-template-columns: 1fr; }
+  .graph { border-right: none; }
+
+  /* Sidebar transformée en drawer fixé à droite */
+  .sidebar{
+    position: fixed;
+    top: 56px;          /* sous la topbar */
+    right: 0;
+    bottom: 32px;       /* au-dessus du footer */
+    width: min(92vw, 380px);
+    max-width: 92vw;
+    background: var(--panel);
+    border-left: 1px solid var(--border);
+    box-shadow: -16px 0 30px rgba(0,0,0,.35);
+    z-index: 44;
+  }
+  .sidebar-collapsed .sidebar{
+    transform: translateX(110%);
+    transition: transform .18s ease;
+    width: min(92vw, 380px);
+    padding: 0;
+  }
+  /* Poignée de la sidebar : en haut à droite, indépendante de la largeur */
+  .sidebar-handle{
+    top: 64px;
+    right: 12px;
+    border-right: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  /* Progress dock : prend toute la largeur utile, centré */
+  .progress-dock{
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px){
+  /* Topbar compacte : sous-titre masqué, champs serrés */
+  .brand-sub{ display: none; }
+  .tabs { gap:6px; padding:3px; }
+  .tab { padding:6px 12px; font-size:13px; }
+}
+
 .node-card { background: #0f172a; border: 1px solid var(--border); border-radius: 12px; color: var(--text); padding: 8px; min-width: 220px; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
 .node-card { max-width: 300px; cursor: grab;} 
 /* nécessaire pour l’overlay + isolation peinture pour limiter les repaints */
@@ -667,6 +716,7 @@ input.search__input:focus{
   display:inline-flex;
   align-items:center;
   gap:8px;
+  bottom:20px;
   padding:10px 14px;
   border-radius:999px;
   font-weight:800;
@@ -1121,6 +1171,77 @@ input.search__input:focus{
   border-radius: 18px;               /* un peu plus grand que la carte (12px + marge) */
   pointer-events:none;               /* ne bloque pas les clics */
   box-shadow: 0 0 12px rgba(96,165,250,0.35);
+}
+
+/* =========================
+   Footer — socials  updated
+   ========================= */
+/* On redéfinit .footer à la fin pour prendre le dessus (cascade) */
+.footer{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border);
+  background: rgba(17,24,38,0.8);
+}
+.footer-left{ opacity: .85; }
+
+/* Carte socials à droite (élargissement visuel du footer) */
+.footer-socials{
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--panel, #0b1220);
+  border: 1px solid var(--border, #1f2a3a);
+  box-shadow: 0 10px 22px rgba(0,0,0,.35), inset 0 -1px 0 rgba(255,255,255,.04);
+  z-index: 10;
+}
+.footer .social{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: #0e1726;
+  border: 1px solid #23324a;
+  color: #cfd9ee;
+  transition: transform .12s ease, filter .15s ease, box-shadow .15s ease;
+}
+.footer .social svg{ width:20px; height:20px; }
+.footer .social.discord svg{ width:30px; height:30px; transform: translateY(2px);}
+
+.footer .social:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.07);
+  box-shadow: 0 6px 14px rgba(0,0,0,.28);
+}
+/* teintes par service (légères) */
+.footer .social.discord{ color:#8ea1e1; }
+.footer .social.youtube{ color:#ff4d4d; }
+.footer .social.twitch{  color:#a970ff; }
+.footer .social.sheets{  color:#34a853; }
+
+ 
+/* Petit label “by MrMojitoTV” à droite des icônes */
+.footer .social-by{
+  margin-left: 6px;
+  color: var(--text);
+  opacity: .9;
+  white-space: nowrap;
+}
+.footer .social-by b{ color:#fff; }
+
+@media (max-width: 720px){
+  /* Laisse de la place au bloc socials qui flotte dans le footer */
+  .footer{ padding-bottom: 56px; }
+  .footer-socials{ left: 6px; bottom: 6px; }
 }
 
 /* ===========================
