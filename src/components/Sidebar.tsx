@@ -67,9 +67,11 @@ export default function Sidebar({ lang = 'en-us' }: { lang?: string }) {
     return new Set(ids)
   }, [active])
   const [quests, setQuests] = useState<Quest[]>([])
+
+  const SIDEBAR_KEY = 'sidebarCollapsed_quests_v2'
   const [collapsed, setCollapsed] = useState<boolean>(() => {
-    try { return localStorage.getItem('sidebarCollapsed') === '1' } catch { return false }
-  })
+    try { return localStorage.getItem(SIDEBAR_KEY) === '1' } catch { return false }
+  })  
 
   useEffect(() => {
     let cancelled = false
@@ -106,7 +108,7 @@ export default function Sidebar({ lang = 'en-us' }: { lang?: string }) {
     const root = document.documentElement
     if (collapsed) root.classList.add(cls)
     else root.classList.remove(cls)
-    try { localStorage.setItem('sidebarCollapsed', collapsed ? '1' : '0') } catch {}
+    try { localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0') } catch {}
   }, [collapsed])
 
 

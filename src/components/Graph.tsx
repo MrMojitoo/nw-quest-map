@@ -1135,7 +1135,14 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
       <div
         style={{ position: 'absolute', left: 60, bottom: 40, zIndex: 7 }}
       >
-      <button className="button" onClick={() => setShowAchModal(true)}>{t('ui.achievements.show','🏆 Show Achievements')}</button>
+      <button
+        className="btn-achievements"
+        onClick={() => setShowAchModal(true)}
+        aria-label={t('ui.achievements.show','Show Achievements')}
+        title={t('ui.achievements.show','Show Achievements')}
+      >
+        <span>{t('ui.achievements.show','Show Achievements')}</span>
+      </button>
       </div>   
       <div style={{ position: 'absolute', zIndex: 5, display:'flex', gap:8, padding:8, alignItems:'center', flexWrap:'wrap', maxWidth:'80vw' }}>
         {/* Row 2: Types */}

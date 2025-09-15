@@ -637,15 +637,16 @@ export default function Artifacts({ lang, artifacts, error }:{
   const [showTaskZone, setShowTaskZone]     = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   // --- Sidebar Help (même logique que Sidebar.tsx) ---
+  const SIDEBAR_KEY = 'sidebarCollapsed_artifacts_v1'
   const [helpCollapsed, setHelpCollapsed] = useState<boolean>(() => {
-    try { return localStorage.getItem('sidebarCollapsed') === '1' } catch { return false }
+    try { return localStorage.getItem(SIDEBAR_KEY) === '1' } catch { return false }
   })
   useEffect(() => {
     const cls = 'sidebar-collapsed'
     const root = document.documentElement
     if (helpCollapsed) root.classList.add(cls)
     else root.classList.remove(cls)
-    try { localStorage.setItem('sidebarCollapsed', helpCollapsed ? '1' : '0') } catch {}
+    try { localStorage.setItem(SIDEBAR_KEY, helpCollapsed ? '1' : '0') } catch {}
   }, [helpCollapsed])
   const rfRef = useRef<ReactFlowInstance | null>(null)
   const viewInitRef = useRef(false)

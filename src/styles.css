@@ -662,6 +662,38 @@ input.search__input:focus{
   fill: transparent !important;
 }
 
+/* --- Big gold CTA for Achievements --- */
+.btn-achievements{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:999px;
+  font-weight:800;
+  letter-spacing:.2px;
+  font-size:14px;
+  background: linear-gradient(180deg,#fcd34d,#f59e0b);
+  color:#111;
+  border:1px solid #fde68a;
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.35),
+    inset 0 -2px 0 rgba(0,0,0,.18),
+    0 0 0 2px rgba(255,255,255,.06);
+  cursor:pointer;
+}
+.btn-achievements .trophy{ filter: drop-shadow(0 1px 0 rgba(255,255,255,.35)); }
+.btn-achievements:hover{ filter: brightness(1.05); transform: translateY(-1px); }
+.btn-achievements:active{ transform: translateY(0); }
+.btn-achievements:focus-visible{
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,.85),
+    0 0 0 6px rgba(250,204,21,.35);
+}
+@media (max-width: 720px){
+  .btn-achievements{ padding:8px 12px; font-size:13px; }
+}
+
 /* --- Améliore la netteté après transforms (zoom/pan) --- */
 .react-flow__renderer,
 .react-flow__nodes,
