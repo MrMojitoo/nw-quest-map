@@ -284,8 +284,8 @@ body { background: linear-gradient(180deg, #0b0f14, #0d1117); color: var(--text)
 }
 .progress-dock{
   position: fixed;
-  right: 12px;
-  bottom: 40px;              /* au-dessus du footer */
+  right: 0px;
+  bottom: 32px;              /* au-dessus du footer */
   width: var(--progress-dock-w);
   max-width: calc(100vw - 24px);
   background: var(--panel);
@@ -641,6 +641,36 @@ select { background: #0c1524; color: var(--text); border: 1px solid var(--border
   align-items:center;
   gap:8px;
 }
+
+.data-io{ display:flex; gap:8px; align-items:center; }
+.data-io input[type="file"]{ display:none; }
+ 
+/* --- Compact, modern icon-only buttons for Import/Export --- */
+.icon-btn{
+  appearance:none;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  width:32px; height:32px;
+  padding:6px;
+  border-radius:10px;
+  display:inline-flex; align-items:center; justify-content:center;
+  line-height:0;
+  cursor:pointer;
+  transition: transform .06s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+.icon-btn svg{ width:18px; height:18px; }
+.icon-btn:hover{ border-color:#33507e; background: rgba(255,255,255,0.08); transform: translateY(-1px); }
+.icon-btn:active{ transform: translateY(0); }
+.icon-btn:focus-visible{
+  outline:none;
+  box-shadow: 0 0 0 3px rgba(70,166,255,0.22);
+}
+@media (max-width:640px){
+  .icon-btn{ width:28px; height:28px; padding:5px; }
+  .icon-btn svg{ width:16px; height:16px; }
+}
+
 .search{
   position: relative;
   display: block;

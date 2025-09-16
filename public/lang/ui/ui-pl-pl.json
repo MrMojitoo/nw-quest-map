@@ -101,5 +101,13 @@
   "ui.cancel": "Anuluj",
   
   "ui.tabs.quests": "Zadania",
-  "ui.tabs.artifacts": "Artefakty"
+  "ui.tabs.artifacts": "Artefakty",
+  
+  "ui.data.export": "Eksportuj",
+  "ui.data.exportTitle": "Pobierz swoje dane (wszystkie postacie)",
+  "ui.data.import": "Importuj",
+  "ui.data.importTitle": "Importuj z pliku JSON",
+  "ui.data.import.ok": "Import zakończony powodzeniem!",
+  "ui.data.import.err": "Import nieudany: nieprawidłowy plik.",
+  "ui.footer.updated": "Dane zaktualizowano {date}"
 }

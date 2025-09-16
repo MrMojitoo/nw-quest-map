@@ -127,6 +127,53 @@ export default function App() {
     setLangOpen(false)
   }
 
+  
+  // ----- Import / Export handlers -----
+  const fileInputRef = useRef<HTMLInputElement|null>(null)
+  const onExportClick = () => {
+    const exp = (useStore.getState().exportData?.() as any) ?? {
+      format: 'nwqm-export-v1',
+      exportedAt: new Date().toISOString(),
+      activeId: useStore.getState().activeId,
+      characters: useStore.getState().characters,
+    }
+    const blob = new Blob([JSON.stringify(exp, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    const ts = new Date().toISOString().replace(/[:T]/g,'-').slice(0,16)
+    a.href = url
+    a.download = `nwqm-progress-${ts}.json`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const onImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0]
+    if (!f) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        const json = JSON.parse(String(reader.result || '{}'))
+        const res = useStore.getState().importData
+          ? useStore.getState().importData(json, 'merge') // merge par défaut (sécurisant)
+          : (useStore.setState(() => {
+              // Fallback ultra-minimal si l’action n’existe pas
+              const characters = Array.isArray((json as any)?.characters)
+                ? (json as any).characters
+                : (json as any)?.state?.characters
+              const activeId = (json as any)?.activeId ?? (json as any)?.state?.activeId ?? null
+              if (!Array.isArray(characters)) throw new Error('no characters array')
+              return { characters, activeId, completedVersion: Date.now() }
+            }), { ok: true })
+        alert(res?.ok ? t('ui.data.import.ok','Import successful!') : (t('ui.data.import.err','Import failed: invalid file.') + (res?.reason ? `\n${res.reason}` : '')))
+      } catch {
+        alert(t('ui.data.import.err','Import failed: invalid file.'))
+      } finally {
+        e.target.value = '' // permet de réimporter le même fichier
+      }
+    }
+    reader.readAsText(f)
+  }
 
   // --- Dictionnaire UI (tes textes d’interface) ---
   // Valeurs EN par défaut (fallback si un fichier UI/<lang>.json n’est pas fourni)
@@ -182,6 +229,13 @@ export default function App() {
     'ui.sidebar.howto.followEdge': 'Click an edge end to jump along the link.',
     'ui.sidebar.howto.character': 'Create a character to track quests per character.',
     'ui.sidebar.howto.tasks': 'Open the Tasks dropdown to see POIs and mobs (links to nw-buddy and NWDB on clicks).',
+    // Data I/O
+    'ui.data.export': 'Export',
+    'ui.data.exportTitle': 'Download your data (all characters)',
+    'ui.data.import': 'Import',
+    'ui.data.importTitle': 'Import from a JSON file',
+    'ui.data.import.ok': 'Import successful!',
+    'ui.data.import.err': 'Import failed: invalid file.',
 
     'ui.char.newPlaceholder': 'New character…',
     'ui.char.add': 'Add',
@@ -304,6 +358,37 @@ export default function App() {
           {/* DROITE : onglets personnage  autres contrôles */}
           <div className="topbar-right">
             <CharacterTabs />
+            <div className="data-io" role="group" aria-label="Data import/export">
+
+              <button
+                className="icon-btn"
+                onClick={onExportClick}
+                title={t('ui.data.exportTitle','Download your data (all characters)')}
+                aria-label={t('ui.data.export','Export')}
+              >
+                {/* download icon */}
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.42L11 12.6V4a1 1 0 0 1 1-1ZM5 18a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Z"/>
+                </svg>
+              </button>
+              <label
+                className="icon-btn"
+                title={t('ui.data.importTitle','Import from a JSON file')}
+                aria-label={t('ui.data.import','Import')}
+              >
+                {/* upload icon */}
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M12 3a1 1 0 0 1 .7.29l4 4a1 1 0 1 1-1.4 1.42L13 6.41V14a1 1 0 1 1-2 0V6.41L8.7 8.71A1 1 0 0 1 7.3 7.29l4-4A1 1 0 0 1 12 3ZM5 18a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Z"/>
+                </svg>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="application/json"
+                  onChange={onImportFile}
+                  hidden
+                />
+              </label>
+            </div>            
           </div>
         </header>
         <section className="content">

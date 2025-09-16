@@ -112,5 +112,12 @@
     "ui.artifacts.progress.maxed": "Artifacts fully upgraded",
 
     "ui.confirm": "Confirm",
-    "ui.cancel": "Cancel"
+    "ui.cancel": "Cancel",
+    "ui.data.export": "Export",
+    "ui.data.exportTitle": "Download your data (all characters)",
+    "ui.data.import": "Import",
+    "ui.data.importTitle": "Import from a JSON file",
+    "ui.data.import.ok": "Import successful!",
+    "ui.data.import.err": "Import failed: invalid file.",
+    "ui.footer.updated": "Updated data on {date}"
   }

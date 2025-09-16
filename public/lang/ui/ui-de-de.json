@@ -101,5 +101,13 @@
   "ui.cancel": "Abbrechen",
   
   "ui.tabs.quests": "Quests",
-  "ui.tabs.artifacts": "Artefakte"
+  "ui.tabs.artifacts": "Artefakte",
+
+  "ui.data.export": "Exportieren",
+  "ui.data.exportTitle": "Lade deine Daten herunter (alle Charaktere)",
+  "ui.data.import": "Importieren",
+  "ui.data.importTitle": "Aus einer JSON-Datei importieren",
+  "ui.data.import.ok": "Import erfolgreich!",
+  "ui.data.import.err": "Import fehlgeschlagen: ungültige Datei.",
+  "ui.footer.updated": "Daten aktualisiert am {date}"
 }

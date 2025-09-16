@@ -101,5 +101,13 @@
   "ui.cancel": "Cancelar",
   
   "ui.tabs.quests": "Missões",
-  "ui.tabs.artifacts": "Artefatos"
+  "ui.tabs.artifacts": "Artefatos",
+  
+  "ui.data.export": "Exportar",
+  "ui.data.exportTitle": "Baixar seus dados (todos os personagens)",
+  "ui.data.import": "Importar",
+  "ui.data.importTitle": "Importar de um arquivo JSON",
+  "ui.data.import.ok": "Importação concluída com sucesso!",
+  "ui.data.import.err": "Falha na importação: arquivo inválido.",
+  "ui.footer.updated": "Dados atualizados em {date}"
 }
