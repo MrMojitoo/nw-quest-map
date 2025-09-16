@@ -229,6 +229,7 @@ export default function App() {
     'ui.sidebar.howto.followEdge': 'Click an edge end to jump along the link.',
     'ui.sidebar.howto.character': 'Create a character to track quests per character.',
     'ui.sidebar.howto.tasks': 'Open the Tasks dropdown to see POIs and mobs (links to nw-buddy and NWDB on clicks).',
+    "ui.sidebar.howto.backup": "You can backup your progress data using the Import/Export buttons.",
     // Data I/O
     'ui.data.export': 'Export',
     'ui.data.exportTitle': 'Download your data (all characters)',
