@@ -175,6 +175,17 @@ export default function Sidebar({ lang = 'en-us' }: { lang?: string }) {
 
         <h4 className="sidebar-subtitle">{t('ui.sidebar.howto.title','How to use')}</h4>
         <div className="section">
+          {/* CTA vidéo */}
+          <div className="help-cta">
+            <a className="help-cta__btn"
+               href="https://youtu.be/1GjaU6r_jpE"
+               target="_blank" rel="noopener noreferrer">
+              <svg className="yt-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M23.5 7.2a4.8 4.8 0 0 0-3.4-3.4C17.9 3.3 12 3.3 12 3.3s-5.9 0-8.1.5A4.8 4.8 0 0 0 .5 7.2 50.5 50.5 0 0 0 0 12a50.5 50.5 0 0 0 .5 4.8 4.8 4.8 0 0 0 3.4 3.4c2.2.5 8.1.5 8.1.5s5.9 0 8.1-.5a4.8 4.8 0 0 0 3.4-3.4A50.5 50.5 0 0 0 24 12a50.5 50.5 0 0 0-.5-4.8ZM9.75 15.02V8.98L15.5 12l-5.75 3.02Z"/>
+              </svg>
+              {t('ui.help.demo','Watch the demo video')}
+            </a>
+          </div>
           <ul className="howto-list">
             <li>{t('ui.sidebar.howto.drag')}</li>
             <li>{t('ui.sidebar.howto.zoom')}</li>

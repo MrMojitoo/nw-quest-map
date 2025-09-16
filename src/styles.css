@@ -1589,8 +1589,8 @@ input.search__input:focus{
 /* ——— Panel "Selected / Correlated tasks" (onglet Artifacts) ——— */
 .art-sidepanel{
   position: fixed; 
-  right: calc(var(--progress-dock-w) + 24px); 
-  bottom: 40px; 
+  right: calc(var(--progress-dock-w) + 0px); 
+  bottom: 32px; 
   z-index: 8;
   width: min(380px, 42vw);
   max-height: 48%;
@@ -1652,3 +1652,53 @@ input.search__input:focus{
 .progress-breakdown > summary::-webkit-details-marker{ display:none }
 .progress-breakdown .breakdown-list{ display:grid; gap:6px }
 .progress-breakdown .progress-row .progress-label .muted{ opacity:.7; font-size:12px }
+
+.help-link{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 10px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  text-decoration: none;
+}
+.help-link:hover{ border-color:#2a3b56; background: rgba(255,255,255,0.08); }
+.help-link svg{ width:16px; height:16px; }
+
+/* ===== CTA "Watch the demo video" ===== */
+.help-cta{
+  display:flex;
+  justify-content:center;
+  margin: 8px 0 10px;
+}
+.help-cta__btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;   /* texte centré */
+  gap:10px;
+  padding:10px 14px;        /* plus large */
+  min-width: 70%;           /* un peu large, mais pas full-width */
+  text-align:center;        /* texte centré */
+  font-weight: 800;         /* gras */
+  letter-spacing:.2px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  text-decoration:none;
+  transition: transform .06s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+.help-cta__btn:hover{
+  border-color:#2a3b56;
+  background: rgba(255,255,255,0.08);
+  transform: translateY(-1px);
+}
+.help-cta__btn:active{ transform: translateY(0); }
+.help-cta__btn:focus-visible{
+  outline:none;
+  box-shadow: 0 0 0 3px rgba(70,166,255,0.22);
+}
+.help-cta__btn .yt-icon{ width:18px; height:18px; display:block; }
+@media (max-width: 640px){
+  .help-cta__btn{ min-width: 100%; }
+}

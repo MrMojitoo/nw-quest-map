@@ -1497,6 +1497,17 @@ export default function Artifacts({ lang, artifacts, error }:{
       <aside className="sidebar" aria-hidden={helpCollapsed}>
         <h3 className="sidebar-title">{t('ui.artifacts.help.title','Artifacts — Help')}</h3>
         <h4 className="sidebar-subtitle">{t('ui.artifacts.help.howto','How to use this view')}</h4>
+        {/* CTA vidéo */}
+        <div className="help-cta">
+          <a className="help-cta__btn"
+             href="https://youtu.be/1GjaU6r_jpE"
+             target="_blank" rel="noopener noreferrer">
+            <svg className="yt-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M23.5 7.2a4.8 4.8 0 0 0-3.4-3.4C17.9 3.3 12 3.3 12 3.3s-5.9 0-8.1.5A4.8 4.8 0 0 0 .5 7.2 50.5 50.5 0 0 0 0 12a50.5 50.5 0 0 0 .5 4.8 4.8 4.8 0 0 0 3.4 3.4c2.2.5 8.1.5 8.1.5s5.9 0 8.1-.5a4.8 4.8 0 0 0 3.4-3.4A50.5 50.5 0 0 0 24 12a50.5 50.5 0 0 0-.5-4.8ZM9.75 15.02V8.98L15.5 12l-5.75 3.02Z"/>
+            </svg>
+            {t('ui.help.demo','Watch the demo video')}
+          </a>
+        </div>
         <ul className="howto-list">
           <li>{t('ui.artifacts.help.tipMove','You can drag the canvas to pan (with mouse click)')}</li>
           <li>{t('ui.artifacts.help.tipClick','Click a task to show correlated tasks (selected task shows white, correlated tasks show pink); click a list entry to navigate to it.')}</li>

@@ -1116,7 +1116,7 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
       {selectedAch && (
         <div
           className="selected-ach-banner"
-          style={{ position: 'absolute', left: 60, bottom: 80, zIndex: 7, maxWidth: '46vw' }}
+          style={{ position: 'absolute', left: 60, bottom: 120, zIndex: 7, maxWidth: '46vw' }}
         >
           <span className="label">🏆 Selected:</span>
           {!!(selectedAch as any)?.icon && (
