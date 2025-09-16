@@ -109,5 +109,8 @@
   "ui.data.importTitle": "Importar desde un archivo JSON",
   "ui.data.import.ok": "¡Importación exitosa!",
   "ui.data.import.err": "Error en la importación: archivo no válido.",
-  "ui.footer.updated": "Datos actualizados el {date}"
+  "ui.footer.updated": "Datos actualizados el {date}",
+
+  "ui.sidebar.howto.backup": "Puedes respaldar tus datos de progreso con los botones Importar/Exportar."
+
 }

@@ -109,5 +109,7 @@
   "ui.data.importTitle": "Importuj z pliku JSON",
   "ui.data.import.ok": "Import zakończony powodzeniem!",
   "ui.data.import.err": "Import nieudany: nieprawidłowy plik.",
-  "ui.footer.updated": "Dane zaktualizowano {date}"
+  "ui.footer.updated": "Dane zaktualizowano {date}",
+
+  "ui.sidebar.howto.backup": "Możesz wykonać kopię zapasową swoich danych postępów, korzystając z przycisków Importuj/Eksportuj."
 }

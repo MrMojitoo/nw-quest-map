@@ -1506,6 +1506,7 @@ export default function Artifacts({ lang, artifacts, error }:{
           <li>{t('ui.artifacts.help.tipProgress','Your progress is tracked per character, you can make a new character or delete it')}</li>
           <li>{t('ui.artifacts.help.tipLinks','You can click on artifacts icons/perks/items/mobs/zones to go to their related nw-buddy/nwdb pages.')}</li>
           <li>{t('ui.artifacts.help.tipMap','FYI the artifacts are mapped so that the most correlated tasks are close to each other when possible')}</li>
+          <li>{t('ui.sidebar.howto.backup')}</li>
         </ul>
       </aside>
 

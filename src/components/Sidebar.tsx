@@ -186,6 +186,7 @@ export default function Sidebar({ lang = 'en-us' }: { lang?: string }) {
             <li>{t('ui.sidebar.howto.followEdge')}</li>
             <li>{t('ui.sidebar.howto.character')}</li>
             <li>{t('ui.sidebar.howto.tasks')}</li>
+            <li>{t('ui.sidebar.howto.backup')}</li> 
           </ul>
         </div>
       </aside>
