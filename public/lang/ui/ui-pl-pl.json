@@ -111,5 +111,31 @@
   "ui.data.import.err": "Import nieudany: nieprawidłowy plik.",
   "ui.footer.updated": "Dane zaktualizowano {date}",
 
-  "ui.sidebar.howto.backup": "Możesz wykonać kopię zapasową swoich danych postępów, korzystając z przycisków Importuj/Eksportuj."
+  "ui.sidebar.howto.backup": "Możesz wykonać kopię zapasową swoich danych postępów, korzystając z przycisków Importuj/Eksportuj.",
+  
+  "ui.controls.reset": "Zresetuj pozycje",
+  "ui.confirm.reset.quests": "Zresetować pozycje zadań? Spowoduje to usunięcie wszystkich ręcznych przesunięć.",
+  "ui.confirm.reset.artifacts": "Zresetować pozycje artefaktów? Spowoduje to usunięcie wszystkich ręcznych przesunięć.",
+
+  "ui.help.demo": "Obejrzyj film demonstracyjny",
+  "ui.help.artifacts.reorder": "Przeciągnij karty, aby zmienić ich układ (wyłączone, gdy „Zablokuj” 🔒 jest aktywne).",
+  "ui.help.artifacts.multiselect": "Przytrzymaj prawy przycisk myszy, aby zaznaczyć wiele kart i przenieść je razem.",
+  "ui.help.graph.reorder": "Przeciągnij karty, aby zmienić ich układ (wyłączone, gdy „Zablokuj” 🔒 jest aktywne).",
+  "ui.help.graph.multiselect": "Przytrzymaj prawy przycisk myszy, aby zaznaczyć wiele kart i przenieść je razem.",
+
+  "ui.filters.byDrop": "Filtr dropu",
+  "ui.filters.any": "Dowolny typ dropu",
+  "ui.filters.byStatus": "Status",
+  "ui.filters.status.all": "Wszystkie",
+  "ui.filters.status.finished": "Ukończone",
+  "ui.filters.status.not_finished": "Nieukończone",
+  "ui.filters.status.dropped": "Z dropem",
+  "ui.filters.status.not_dropped": "Bez dropu",
+  "ui.filters.status.ongoing": "W trakcie",
+  "ui.filters.status.not_started": "Nierozpoczęte",
+
+  "ui.artifacts.perks.unique": "Unikalny perk",
+  "ui.artifacts.perks.p2": "Perk 2",
+  "ui.artifacts.perks.p3": "Perk 3",
+  "ui.artifacts.perks.p4": "Perk 4"
 }

@@ -111,5 +111,31 @@
   "ui.data.import.err": "Falha na importação: arquivo inválido.",
   "ui.footer.updated": "Dados atualizados em {date}",
 
-  "ui.sidebar.howto.backup": "Você pode fazer backup dos seus dados de progresso usando os botões Importar/Exportar."
+  "ui.sidebar.howto.backup": "Você pode fazer backup dos seus dados de progresso usando os botões Importar/Exportar.",
+  
+  "ui.controls.reset": "Redefinir posições",
+  "ui.confirm.reset.quests": "Redefinir as posições das missões? Isso removerá todos os seus movimentos manuais.",
+  "ui.confirm.reset.artifacts": "Redefinir as posições dos artefatos? Isso removerá todos os seus movimentos manuais.",
+
+  "ui.help.demo": "Assistir ao vídeo de demonstração",
+  "ui.help.artifacts.reorder": "Arraste as cartas para reorganizá-las (desativado quando “Bloquear” 🔒 está ativado).",
+  "ui.help.artifacts.multiselect": "Mantenha o botão direito pressionado para selecionar várias cartas e movê-las juntas.",
+  "ui.help.graph.reorder": "Arraste as cartas para reorganizá-las (desativado quando “Bloquear” 🔒 está ativado).",
+  "ui.help.graph.multiselect": "Mantenha o botão direito pressionado para selecionar várias cartas e movê-las juntas.",
+
+  "ui.filters.byDrop": "Filtro de drop",
+  "ui.filters.any": "Qualquer tipo de drop",
+  "ui.filters.byStatus": "Status",
+  "ui.filters.status.all": "Todos",
+  "ui.filters.status.finished": "Concluídas",
+  "ui.filters.status.not_finished": "Não concluídas",
+  "ui.filters.status.dropped": "Com drop",
+  "ui.filters.status.not_dropped": "Sem drop",
+  "ui.filters.status.ongoing": "Em andamento",
+  "ui.filters.status.not_started": "Não iniciadas",
+
+  "ui.artifacts.perks.unique": "Perk único",
+  "ui.artifacts.perks.p2": "Perk 2",
+  "ui.artifacts.perks.p3": "Perk 3",
+  "ui.artifacts.perks.p4": "Perk 4"
 }

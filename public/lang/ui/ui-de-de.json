@@ -111,5 +111,31 @@
   "ui.data.import.err": "Import fehlgeschlagen: ungültige Datei.",
   "ui.footer.updated": "Daten aktualisiert am {date}",
 
-  "ui.sidebar.howto.backup": "Du kannst deine Fortschrittsdaten mit den Import-/Export-Schaltflächen."
+  "ui.sidebar.howto.backup": "Du kannst deine Fortschrittsdaten mit den Import-/Export-Schaltflächen.",
+  
+  "ui.controls.reset": "Positionen zurücksetzen",
+  "ui.confirm.reset.quests": "Quest-Positionen zurücksetzen? Dadurch werden alle deine manuellen Verschiebungen entfernt.",
+  "ui.confirm.reset.artifacts": "Artefakt-Positionen zurücksetzen? Dadurch werden alle deine manuellen Verschiebungen entfernt.",
+
+  "ui.help.demo": "Demo-Video ansehen",
+  "ui.help.artifacts.reorder": "Karten ziehen, um sie neu anzuordnen (deaktiviert, wenn „Sperren“ 🔒 aktiv ist).",
+  "ui.help.artifacts.multiselect": "Zum Mehrfachauswählen Rechtsklick gedrückt halten und Karten gemeinsam verschieben.",
+  "ui.help.graph.reorder": "Karten ziehen, um sie neu anzuordnen (deaktiviert, wenn „Sperren“ 🔒 aktiv ist).",
+  "ui.help.graph.multiselect": "Zum Mehrfachauswählen Rechtsklick gedrückt halten und Karten gemeinsam verschieben.",
+
+  "ui.filters.byDrop": "Drop-Filter",
+  "ui.filters.any": "Alle Drop-Typen",
+  "ui.filters.byStatus": "Status",
+  "ui.filters.status.all": "Alle",
+  "ui.filters.status.finished": "Abgeschlossen",
+  "ui.filters.status.not_finished": "Nicht abgeschlossen",
+  "ui.filters.status.dropped": "Gedroppt",
+  "ui.filters.status.not_dropped": "Nicht gedroppt",
+  "ui.filters.status.ongoing": "In Bearbeitung",
+  "ui.filters.status.not_started": "Nicht gestartet",
+
+  "ui.artifacts.perks.unique": "Einzigartiger Perk",
+  "ui.artifacts.perks.p2": "Perk 2",
+  "ui.artifacts.perks.p3": "Perk 3",
+  "ui.artifacts.perks.p4": "Perk 4"
 }

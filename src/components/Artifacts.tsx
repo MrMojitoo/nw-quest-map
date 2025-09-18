@@ -1913,6 +1913,8 @@ export default function Artifacts({ lang, artifacts, error }:{
         </div>
         <ul className="howto-list">
           <li>{t('ui.artifacts.help.tipMove','You can drag the canvas to pan (with mouse click)')}</li>
+          <li>{t('ui.help.artifacts.reorder','Drag cards to rearrange them (disabled when “Lock” 🔒 is on).')}</li>
+          <li>{t('ui.help.artifacts.multiselect','Hold right-click to select multiple cards and move them together.')}</li>
           <li>{t('ui.artifacts.help.tipClick','Click a task to show correlated tasks (selected task shows white, correlated tasks show pink); click a list entry to navigate to it.')}</li>
           <li>{t('ui.artifacts.help.tipEdge','You can click on the end of an arrow to navigate to its other end')}</li>
           <li>{t('ui.artifacts.help.tipSearch','Use the searchbar to navigate to an artifact, by artifact name or ID.')}</li>

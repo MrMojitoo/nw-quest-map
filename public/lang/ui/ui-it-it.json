@@ -111,5 +111,31 @@
   "ui.data.import.err": "Importazione non riuscita: file non valido.",
   "ui.footer.updated": "Dati aggiornati il {date}",
 
-  "ui.sidebar.howto.backup": "Puoi eseguire il backup dei tuoi dati di progresso usando i pulsanti Importa/Esporta."
+  "ui.sidebar.howto.backup": "Puoi eseguire il backup dei tuoi dati di progresso usando i pulsanti Importa/Esporta.",
+  
+  "ui.controls.reset": "Reimposta posizioni",
+  "ui.confirm.reset.quests": "Reimpostare le posizioni delle missioni? Questo rimuoverà tutti i tuoi spostamenti manuali.",
+  "ui.confirm.reset.artifacts": "Reimpostare le posizioni degli artefatti? Questo rimuoverà tutti i tuoi spostamenti manuali.",
+
+  "ui.help.demo": "Guarda il video dimostrativo",
+  "ui.help.artifacts.reorder": "Trascina le schede per riordinarle (disattivato quando «Blocca» 🔒 è attivo).",
+  "ui.help.artifacts.multiselect": "Tieni premuto il tasto destro per selezionare più schede e spostarle insieme.",
+  "ui.help.graph.reorder": "Trascina le schede per riordinarle (disattivato quando «Blocca» 🔒 è attivo).",
+  "ui.help.graph.multiselect": "Tieni premuto il tasto destro per selezionare più schede e spostarle insieme.",
+
+  "ui.filters.byDrop": "Filtro drop",
+  "ui.filters.any": "Qualsiasi tipo di drop",
+  "ui.filters.byStatus": "Stato",
+  "ui.filters.status.all": "Tutti",
+  "ui.filters.status.finished": "Completate",
+  "ui.filters.status.not_finished": "Non completate",
+  "ui.filters.status.dropped": "Droppate",
+  "ui.filters.status.not_dropped": "Non droppate",
+  "ui.filters.status.ongoing": "In corso",
+  "ui.filters.status.not_started": "Non avviate",
+
+  "ui.artifacts.perks.unique": "Perk unico",
+  "ui.artifacts.perks.p2": "Perk 2",
+  "ui.artifacts.perks.p3": "Perk 3",
+  "ui.artifacts.perks.p4": "Perk 4"
 }

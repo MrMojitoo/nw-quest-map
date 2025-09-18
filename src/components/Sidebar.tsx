@@ -192,6 +192,7 @@ export default function Sidebar({ lang = 'en-us' }: { lang?: string }) {
             <li>{t('ui.sidebar.howto.minimap')}</li>
             <li>{t('ui.sidebar.howto.search')}</li>
             <li>{t('ui.sidebar.howto.reorganize')}</li>
+            <li>{t('ui.help.graph.multiselect')}</li>
             <li>{t('ui.sidebar.howto.center')}</li>
             <li>{t('ui.sidebar.howto.copyId')}</li>
             <li>{t('ui.sidebar.howto.followEdge')}</li>

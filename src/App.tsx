@@ -224,6 +224,7 @@ export default function App() {
     'ui.sidebar.howto.minimap': 'You can click on the minimap to move anywhere.',
     'ui.sidebar.howto.search': 'You can search for any quest with the search bar (Name or ID)',
     'ui.sidebar.howto.reorganize': 'Drag cards to reorganize (disabled when “Lock” 🔒 is enabled).',
+    'ui.help.graph.multiselect' : 'Hold right-click to select multiple cards and move them together.',
     'ui.sidebar.howto.center': 'If you are lost, use the ↖️ button to center the view on first card',
     'ui.sidebar.howto.copyId': 'Click a card ID to copy it.',
     'ui.sidebar.howto.followEdge': 'Click an edge end to jump along the link.',
