@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useRef, useCallback } from 'react'
 import ReactFlow, { MiniMap, Controls, ControlButton, Background, BackgroundVariant, Node, Edge, MarkerType, Position, useReactFlow, ReactFlowProvider,
   applyNodeChanges, type NodeChange } from 'reactflow'
 import { getZoneByIdPrefix } from '../utils/zones'
@@ -204,6 +204,8 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
   const isCompleted = useStore(s => s.isCompleted)
   const resetProgress = useStore(s => s.resetProgress)
   const completedVersion = useStore(s => s.completedVersion)
+  const setManyNodePos = useStore(s => s.setManyNodePos)
+  const resetLayoutPos = useStore(s => s.resetLayoutPos)
   const activeId = active?.id ?? 'default'
 
   // ---- Filtres (par type et par zone) ----
@@ -251,9 +253,16 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
   }, [allZones])
 
   const reactFlow = useReactFlow()
+  const paneRef = useRef<HTMLDivElement | null>(null)
+  // Sélection multiple (marquee au clic droit)
+  const [marquee, setMarquee] = useState<null | { start:{x:number;y:number}, end:{x:number;y:number} }>(null)
+  const startPt = useRef<{x:number;y:number} | null>(null)
+  const preventCtx = useRef(false)
   // Résultat layouté (ELK étant async)
   const [rfNodes, setRfNodes] = React.useState<Node[]>([])
   const [rfEdges, setRfEdges] = React.useState<Edge[]>([])
+  // Permet de forcer un re-layout à la demande (ex: Reset)
+  const [layoutEpoch, setLayoutEpoch] = React.useState(0)
   // --- Lock: disable node dragging only (keep panning/zoom) ---
   const [lockNodes, setLockNodes] = React.useState(false)
   // Positions manuelles (drag utilisateur) conservées par id
@@ -263,6 +272,7 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
 
   // UI pour le modal de confirmation
   const [showResetConfirm, setShowResetConfirm] = React.useState(false)
+  const [showResetPosConfirm, setShowResetPosConfirm] = React.useState(false)
 
   // --- Achievements UI state ---
   const [achievements, setAchievements] = React.useState<MetaAchievement[]>([])
@@ -270,6 +280,26 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
   const [selectedAch, setSelectedAch] = React.useState<MetaAchievement | null>(null)
   // on conserve le dernier rectangle calculé pour le node "box"
   const [achRect, setAchRect] = React.useState<{ x:number; y:number; w:number; h:number } | null>(null)
+
+
+  // Ré-applique les positions sauvegardées (store) en dernier.
+  // Effet idempotent : ne change rien si les positions sont déjà à jour.
+  const savedQuestPos = useStore(s => s.layoutPos.quests)
+  React.useEffect(() => {
+    if (!rfNodes.length) return
+    setRfNodes(prev => {
+      let changed = false
+      const next = prev.map(n => {
+        const p = savedQuestPos[n.id]
+        if (!p) return n
+        const same = n.position?.x === p.x && n.position?.y === p.y
+        if (same) return n
+        changed = true
+        return { ...n, position: { x: p.x, y: p.y } }
+      })
+      return changed ? next : prev
+    })
+  }, [savedQuestPos, rfNodes.length])
 
   React.useEffect(() => {
     // reset pour éviter d’afficher l’ancienne liste pendant le refetch
@@ -343,16 +373,63 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
       return
     }
     setRfNodes((nds) => applyNodeChanges(changes, nds))
-    // Persiste la position pendant le drag pour survivre aux relayouts/filters
+    // Persistance locale + store (batch)
+    const batch: Record<string, {x:number;y:number}> = {}
     changes.forEach((ch) => {
       if (ch.type === 'position' && 'position' in ch && ch.position) {
-        setUserPos((prev) => ({
-          ...prev,
-          [ch.id]: { x: ch.position.x, y: ch.position.y },
-        }))
+        batch[ch.id] = { x: ch.position.x, y: ch.position.y }
       }
     })
+    if (Object.keys(batch).length) {
+      setUserPos((prev) => ({ ...prev, ...batch }))
+      try { setManyNodePos?.('quests', batch) } catch {}
+    }
   }, [lockNodes])
+
+  // --- Marquee (clic droit) : sélectionne/ désélectionne des nœuds ---
+  const updateSelectionFromRect = useCallback((rect:{x1:number;y1:number;x2:number;y2:number}) => {
+    const { x1, y1, x2, y2 } = rect
+    const minX = Math.min(x1,x2), maxX = Math.max(x1,x2)
+    const minY = Math.min(y1,y2), maxY = Math.max(y1,y2)
+    const nodes = reactFlow.getNodes()
+    setRfNodes(prev => prev.map(n => {
+      const x = n.positionAbsolute?.x ?? n.position.x
+      const y = n.positionAbsolute?.y ?? n.position.y
+      const w = n.width ?? 200
+      const h = n.height ?? 120
+      const inside = x + w >= minX && x <= maxX && y + h >= minY && y <= maxY
+      return inside ? { ...n, selected: true } : { ...n, selected: false }
+    }))
+  }, [reactFlow, setRfNodes])
+
+
+  // Démarre le "marquee" UNIQUEMENT au clic droit MAINTENU
+  const onPaneMouseDown = useCallback((e: React.MouseEvent) => {
+    if (e.button !== 2) return;             // uniquement clic droit
+    e.preventDefault();                     // évite le menu contextuel
+    preventCtx.current = true;
+    const startScreen = { x: e.clientX, y: e.clientY };
+    const startFlow = reactFlow.screenToFlowPosition(startScreen);
+    startPt.current = startFlow;
+    setMarquee({ start: startScreen, end: startScreen });
+    const onMove = (ev: MouseEvent) => {
+      const endScreen = { x: ev.clientX, y: ev.clientY };
+      setMarquee(m => (m ? { ...m, end: endScreen } : m));
+      const a = startPt.current;
+      if (!a) return;
+      const b = reactFlow.screenToFlowPosition(endScreen);
+      updateSelectionFromRect({ x1: a.x, y1: a.y, x2: b.x, y2: b.y });
+   };
+    const onUp = () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      startPt.current = null;
+      setMarquee(null);                      // le rectangle disparaît
+      setTimeout(() => { preventCtx.current = false; }, 0);
+    };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+  }, [reactFlow, updateSelectionFromRect]);
 
   const base = useMemo(() => {
     // applique les filtres sélectionnés
@@ -874,7 +951,7 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
       }
     })()
     return () => { cancelled = true }
-  }, [base])
+  }, [base, layoutEpoch])
 
   // --- Helpers Achievements ---
   const removeAchBoxNode = React.useCallback(() => {
@@ -1218,6 +1295,10 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
         onNodesChange={onNodesChange}
         onEdgeClick={handleEdgeClick}
         onNodeDragStop={handleNodeDragStop}
+        onMouseDown={onPaneMouseDown}         /* démarre la sélection au clic droit */
+        onContextMenu={(e)=>{                 /* bloque le menu contextuel si on vient de faire un drag au bouton droit */
+          if (preventCtx.current) e.preventDefault();
+        }}
         /* Améliore l’ergonomie de déplacement */
         panOnDrag={true}
         nodesDraggable={!lockNodes}
@@ -1229,13 +1310,32 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
         onlyRenderVisibleElements={true}
         defaultEdgeOptions={{ interactionWidth: 24 }}
       >
+        {/* Overlay visuel de la sélection rectangulaire */}
+        {marquee && (
+          <div
+            style={{
+              position: 'fixed',
+              left: Math.min(marquee.start.x, marquee.end.x),
+              top: Math.min(marquee.start.y, marquee.end.y),
+              width: Math.abs(marquee.end.x - marquee.start.x),
+              height: Math.abs(marquee.end.y - marquee.start.y),
+              border: '1px dashed #f59e0b',           /* orange */
+              background: 'rgba(245,158,11,0.12)',
+              pointerEvents: 'none',
+              zIndex: 9,
+            }}
+          />
+        )}
         <MiniMap
           className="minimap--white-viewport"
-          style={{ backgroundColor: '#0b0f14' }}
-          maskColor="rgba(0,0,0,0.15)"   // masque plus léger → bordure visible
+          position="bottom-right"
+          style={{ backgroundColor:'#0b0f14', right: 0, bottom: 0 }}
+          maskColor="rgba(0,0,0,0.15)"
           nodeStrokeColor="#e2e8f0"
           nodeBorderRadius={2}
-          nodeComponent={MiniMapNode}      // <— rendu custom fiable
+          /* Rendu custom + fallback couleur par zone (évite le blanc) */
+          nodeComponent={MiniMapNode}
+          nodeColor={(n)=> getZoneByIdPrefix(String(n.id)).color}
         />
         {/* Custom lock that only affects node dragging */}
         <Controls showInteractive={false} style={{ bottom: 20 }}>
@@ -1272,8 +1372,69 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
             ↖️
           </ControlButton>          
         </Controls>
+        {/* Reset Graph (à gauche de la minimap, en bas-droite) */}
+        <div style={{ position: 'absolute', right: 205, bottom: 5, zIndex: 7 }}>
+          <button
+            className="btn-reset-graph btn-reset-graph--quests"
+            onClick={() => setShowResetPosConfirm(true)}
+            title={t('ui.controls.reset','Reset positions')}
+          >
+            <span className="icon">↺</span>
+            {t('ui.controls.reset','Reset positions')}
+          </button>
+        </div>
         <Background variant={BackgroundVariant.Dots} gap={16} size={1} />
       </ReactFlow>
+      {/* Reset positions (quests) — modal de confirmation */}
+      {showResetPosConfirm && (
+        <div
+          onClick={() => setShowResetPosConfirm(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.6)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: '#0f172a',
+              color: 'white',
+              border: '1px solid #334155',
+              borderRadius: 8,
+              padding: 16,
+              minWidth: 360,
+              boxShadow: '0 10px 30px rgba(0,0,0,0.45)',
+            }}
+          >
+            <h3 style={{ marginTop: 0, marginBottom: 8 }}>
+              {t('ui.controls.reset','Reset positions')}
+            </h3>
+            <p style={{ margin: 0 }}>
+              {t('ui.confirm.reset.quests','Reset quest positions? This removes all your manual moves.')}
+            </p>
+            <div style={{ display: 'flex', gap: 8, marginTop: 14, justifyContent: 'flex-end' }}>
+              <button
+                onClick={() => {
+                  try { (useStore.getState() as any).resetLayoutPos?.('quests') } catch {}
+                  setUserPos({})
+                  setLayoutEpoch(e => e + 1)
+                  setShowResetPosConfirm(false)
+                }}
+              >
+                {t('ui.confirm','Confirm')}
+              </button>
+              <button onClick={() => setShowResetPosConfirm(false)}>
+                {t('ui.cancel','Cancel')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}      
       {/* Modal Achievements */}
       {showAchModal && (
         <div

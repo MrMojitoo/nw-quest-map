@@ -6,10 +6,17 @@ type Character = {
   name: string
   completed: Record<string, boolean>
 }
+ 
+type LayoutPos = {
+  quests: Record<string, { x: number; y: number }>
+  artifacts: Record<string, { x: number; y: number }>
+}
+
 
 type State = {
   characters: Character[]
   activeId: string | null
+  layoutPos: LayoutPos
   
   addCharacter: (name: string) => void
   setActive: (id: string) => void
@@ -19,6 +26,12 @@ type State = {
   resetProgress: () => void
   batchSetCompleted: (questIds: string[], completed: boolean) => void
   completedVersion: number
+  /** Définir la position d'un nœud */
+  setNodePos: (view: 'quests'|'artifacts', id: string, pos: { x: number; y: number }) => void
+  /** Définir plusieurs positions d'un coup */
+  setManyNodePos: (view: 'quests'|'artifacts', updates: Record<string, { x: number; y: number }>) => void
+  /** Réinitialiser toutes les positions d'une vue */
+  resetLayoutPos: (view: 'quests'|'artifacts') => void
   /** Export all user data (all characters) into a portable payload */
   exportData: () => ExportPayload
   /** Import user data payload (merge by default, or 'replace') */
@@ -30,6 +43,8 @@ type ExportPayload = {
   exportedAt: string
   activeId: string | null
   characters: Character[]
+  /** Positions manuelles (incluses dans l'export) */
+  layoutPos: LayoutPos
 }
 
 const genId = () => 'c_' + Math.random().toString(36).slice(2, 9)
@@ -39,6 +54,7 @@ const useStore = create<State>()(
     (set, get) => ({
       characters: [{ id: 'default', name: 'Default', completed: {} }],
       activeId: 'default',
+      layoutPos: { quests: {}, artifacts: {} },
 
       addCharacter: (name) =>
         set((s) => {
@@ -118,13 +134,37 @@ const useStore = create<State>()(
 
       completedVersion: 0,
 
+      setNodePos: (view, id, pos) =>
+        set((s) => ({
+          layoutPos: {
+            ...s.layoutPos,
+            [view]: {
+              ...s.layoutPos[view],
+              [id]: { x: Math.round(pos.x), y: Math.round(pos.y) },
+            },
+          },
+        })),
+
+      setManyNodePos: (view, updates) =>
+        set((s) => {
+          const next = { ...s.layoutPos[view] }
+          for (const [id, p] of Object.entries(updates)) {
+            next[id] = { x: Math.round(p.x), y: Math.round(p.y) }
+          }
+          return { layoutPos: { ...s.layoutPos, [view]: next } }
+        }),
+
+      resetLayoutPos: (view) =>
+        set((s) => ({ layoutPos: { ...s.layoutPos, [view]: {} } })),
+
       exportData: () => {
-        const { characters, activeId } = get()
+        const { characters, activeId, layoutPos } = get()
         return {
           format: 'nwqm-export-v1',
           exportedAt: new Date().toISOString(),
           activeId,
           characters,
+          layoutPos,
         }
       },
 
@@ -142,7 +182,18 @@ const useStore = create<State>()(
             normalized.activeId && nextChars.some(c => c.id === normalized.activeId)
               ? normalized.activeId
               : (prev.activeId ?? nextChars[0]?.id ?? null)
-          set({ characters: nextChars, activeId: nextActive, completedVersion: Date.now() })
+          const nextLayout =
+            normalized.layoutPos
+              ? (strategy === 'replace'
+                  ? sanitizeLayoutPos(normalized.layoutPos)
+                  : mergeLayoutPos(prev.layoutPos, normalized.layoutPos))
+              : prev.layoutPos
+          set({
+            characters: nextChars,
+            activeId: nextActive,
+            layoutPos: nextLayout,
+            completedVersion: Date.now(),
+          })
           return { ok: true }
         } catch (e) {
           return { ok: false, reason: String(e) }
@@ -154,18 +205,30 @@ const useStore = create<State>()(
 )
  
 // -------- helpers (non exportés) --------
-function normalizePayload(input: any): { activeId: string|null; characters: Character[] } | null {
+function normalizePayload(input: any): { activeId: string|null; characters: Character[]; layoutPos?: Partial<LayoutPos> } | null {
   // Notre format d’export
   if (input && input.format === 'nwqm-export-v1' && Array.isArray(input.characters)) {
-    return { activeId: input.activeId ?? null, characters: sanitizeCharacters(input.characters) }
+    return {
+      activeId: input.activeId ?? null,
+      characters: sanitizeCharacters(input.characters),
+      layoutPos: input.layoutPos,
+    }
   }
   // Format "persist" de zustand: { state: { characters, activeId } }
   if (input && input.state && Array.isArray(input.state.characters)) {
-    return { activeId: input.state.activeId ?? null, characters: sanitizeCharacters(input.state.characters) }
+    return {
+      activeId: input.state.activeId ?? null,
+      characters: sanitizeCharacters(input.state.characters),
+      layoutPos: input.state.layoutPos,
+    }
   }
   // Fallback brut: { characters, activeId }
   if (input && Array.isArray(input.characters)) {
-    return { activeId: input.activeId ?? null, characters: sanitizeCharacters(input.characters) }
+    return {
+      activeId: input.activeId ?? null,
+      characters: sanitizeCharacters(input.characters),
+      layoutPos: input.layoutPos,
+    }
   }
   return null
 }
@@ -206,5 +269,34 @@ function mergeCharacters(oldChars: Character[], incomingRaw: any[]): Character[]
   return out
 }
 const normalizeName = (s: string) => String(s || '').trim().toLowerCase()
+ 
+// --- helpers positions ---
+function sanitizeLayoutPos(input: Partial<LayoutPos> | undefined | null): LayoutPos {
+  const qp = coercePosMap((input as any)?.quests)
+  const ap = coercePosMap((input as any)?.artifacts)
+  return { quests: qp, artifacts: ap }
+}
+
+function mergeLayoutPos(base: LayoutPos, inc?: Partial<LayoutPos> | null): LayoutPos {
+  if (!inc) return base
+  const add = sanitizeLayoutPos(inc)
+  return {
+    quests: { ...base.quests, ...add.quests },
+    artifacts: { ...base.artifacts, ...add.artifacts },
+  }
+}
+
+function coercePosMap(obj: any): Record<string, { x: number; y: number }> {
+  const out: Record<string, { x: number; y: number }> = {}
+  if (obj && typeof obj === 'object') {
+    for (const [id, v] of Object.entries(obj)) {
+      const x = Math.round(Number((v as any)?.x))
+      const y = Math.round(Number((v as any)?.y))
+      if (Number.isFinite(x) && Number.isFinite(y)) out[String(id)] = { x, y }
+    }
+  }
+  return out
+}
+
 
 export default useStore

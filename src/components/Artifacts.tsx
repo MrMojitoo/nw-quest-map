@@ -2,8 +2,8 @@ import React, { useContext, useMemo, useState, useRef, useCallback, useEffect } 
 import useStore from '../store'
 import { LocaleContext } from '../App'
 import ReactFlow, {
-  Background, BackgroundVariant, Controls,
-  Edge, MarkerType, Node, Position, Handle, ReactFlowInstance
+  Background, BackgroundVariant, Controls, MiniMap, ControlButton,
+  Edge, MarkerType, Node, Position, Handle, ReactFlowInstance, NodeChange, applyNodeChanges
 } from 'reactflow' 
 import 'reactflow/dist/style.css'
 
@@ -96,6 +96,17 @@ const typeColor = (type: string): string => {
   }
   return map[k] ?? '#94a3b8' // fallback neutre
 }
+
+// --- Types locaux pour le filtre de statut ---
+type StatusFilter =
+  | 'all'
+  | 'finished'
+  | 'not_finished'
+  | 'dropped'
+  | 'not_dropped'
+  | 'ongoing'
+  | 'not_started'
+
 
 // === Token renderer (même logique que dans NodeCard) =========================
 // Tokens supportés par le convert :
@@ -263,6 +274,7 @@ function extractZoneKeyFromDesc(descs?: string[] | null): string {
   return ''
 }
 
+
 // --- Cartes / nodes ---
 function DropCard({ id, data }: { id: string; data: Artifact }) {
   const { t } = useContext(LocaleContext)
@@ -282,28 +294,13 @@ function DropCard({ id, data }: { id: string; data: Artifact }) {
     isChests || isQuestType || isBasicLabelOnly || isItemBased ||
     isValidVal(d.mob) || isValidVal(d.zone) || isValidVal(d.mode) || (d.chance!=null)
   if (!hasAny) return null
-  // palette selon le type (type est en minuscule côté convert)
-  const DROP_COLORS: Record<string,string> = {
-    'pvp tracks':     '#dc2626', // Rouge
-    'm1+ boss':       '#ec4899', // Rose
-    'chests':         '#9ca3af', // Gris
-    'named':          '#f59e0b', // Orange
-    'quest':          '#facc15', // Jaune
-    'breaches':       '#8b5cf6', // Violet
-    'opr/ctf':        '#166534', // Vert foncé
-    'mobs':           '#3b82f6', // Bleu
-    'doubloons':      '#14b8a6', // Turquoise
-    'm1+ rewards':    '#f9a8d4', // Rose clair
-    'raid boss':      '#86efac', // Vert clair
-    '10-trial':       '#bbf7d0', // Vert très clair
-    'solo trials':    '#ffffff', // Blanc
-    'influence races':'#fda4af', // Rouge clair
-    'season pass':    '#374151', // Gris foncé
-  }
-  const topBorder = DROP_COLORS[typeKey] || '#dc2626'
+  const topBorder = typeColor(typeKey)
   const done = isCompleted(id) // id === `drop::<item_id>`
   return (
-    <div className={`art-card node-card${done ? ' is-done' : ''}`} style={{ width: 260, borderTop: `3px solid ${topBorder}` }}>
+    <div
+      className={`art-card node-card${done ? ' is-done' : ''}`}
+      style={{ width: 260, borderTop: `3px solid ${topBorder}`, ['--dropcolor' as any]: topBorder }}
+    >
       {/* Handles invisibles pour edges (haut/bas pour vertical, gauche/droite pour corrélations) */}
       <Handle type="target" position={Position.Top}    id="t" style={{ opacity: 0 }} />
       {/* Bas en source pour lier Perk2 -> Perk3 -> Perk4 en BOTTOM -> TOP */}
@@ -320,7 +317,7 @@ function DropCard({ id, data }: { id: string; data: Artifact }) {
         onPointerDown={(e)=>e.stopPropagation()}
         onClick={(e)=>{ e.stopPropagation(); toggleQuest(id) }}
         aria-pressed={done}
-        style={{ position:'absolute', top:8, right:8 }}
+        style={{ position:'absolute', top:5, right:5 }}
       />
       <div className="drop-title">
         {t('ui.artifacts.drop.title','Drop conditions')}
@@ -437,15 +434,25 @@ function ArtifactCard({ id, data }: { id: string; data: Artifact }) {
   const isCompleted = useStore(s => s.isCompleted)
   const toggleQuest = useStore(s => s.toggleQuest)
   const a = data
-  // état “maxed” = art coché OU les 3 tasks cochées
-  const q0 = isCompleted(`quest::${a.item_id}::0`)
-  const q1 = isCompleted(`quest::${a.item_id}::1`)
-  const q2 = isCompleted(`quest::${a.item_id}::2`)
-  const autoAllTasks = q0 && q1 && q2
-  const artDone = isCompleted(`art::${a.item_id}`)
-  const isDone = artDone || autoAllTasks
+  // État “maxed” = seulement si l'artéfact est coché manuellement
+  const artDone  = isCompleted(`art::${a.item_id}`)
+  const isDone   = artDone
+  // état "Ongoing" (débuté manuellement)
+  const isOngoing = isCompleted(`ongoing::${a.item_id}`)
+  // états de complétion pour colorer les badges de perks
+  const dropDone = isCompleted(`drop::${a.item_id}`)
+  const idxForPerk = (n: number) => (a.quests || []).findIndex(q => (q as any)?.perk === n)
+  const p2Idx = idxForPerk(2), p3Idx = idxForPerk(3), p4Idx = idxForPerk(4)
+  const p2Done = isCompleted(`quest::${a.item_id}::${p2Idx >= 0 ? p2Idx : 0}`)
+  const p3Done = isCompleted(`quest::${a.item_id}::${p3Idx >= 0 ? p3Idx : 1}`)
+  const p4Done = isCompleted(`quest::${a.item_id}::${p4Idx >= 0 ? p4Idx : 2}`)
+  // Teinte cohérente par type de drop (propagée à la carte/tâches via CSS var)
+  const tint = (data as any)?.tint ?? typeColor(String(a?.drop?.type || ''))
   return (
-    <div className={`art-card node-card${isDone ? ' is-done' : ''}`} style={{ width: 260 }}>
+    <div
+      className={`art-card node-card${isDone ? ' is-done' : ''}`}
+      style={{ width: 260, ['--dropcolor' as any]: tint, border: '2px solid #ef4444' }}
+    >
       {/* Handles : top target (depuis drop), bottom source (vers quests), left/right pour liens croisés si besoin */}
       <Handle type="target" position={Position.Top}    id="t" style={{ opacity: 0 }} />
       <Handle type="source" position={Position.Bottom} id="b" style={{ opacity: 0 }} />
@@ -462,8 +469,29 @@ function ArtifactCard({ id, data }: { id: string; data: Artifact }) {
           onPointerDown={(e)=>e.stopPropagation()}
           onClick={(e)=>{ e.stopPropagation(); toggleQuest(`art::${a.item_id}`) }}
           aria-pressed={isDone}
-          style={{ position:'absolute', top:8, right:8 }}
+          style={{ position:'absolute', top:5, right:5, borderColor: '#8dfd77ff' }}
         />
+        {/* Bouton "Ongoing" (débuté) — icône dédiée + teinte jaune */}
+        <button
+          className="check-toggle"
+          title={isOngoing ? t('ui.ongoing.unset','Unset ongoing') : t('ui.ongoing.set','Mark as ongoing')}
+          onMouseDown={(e)=>e.stopPropagation()}
+          onPointerDown={(e)=>e.stopPropagation()}
+          onClick={(e)=>{ e.stopPropagation(); toggleQuest(`ongoing::${a.item_id}`) }}
+          aria-pressed={isOngoing}
+          aria-label={isOngoing ? t('ui.ongoing.on','Ongoing (on)') : t('ui.ongoing.off','Ongoing (off)')}
+          style={{
+            position:'absolute',
+            top:5, right:30,
+            background: isOngoing ? 'linear-gradient(180deg, #facc15, #eab308)' : null,
+            borderColor: isOngoing ? '#fde68a' : '#facc15',
+            color: isOngoing ? '#111' : '#facc15',
+            fontSize: 12
+          }}
+        >
+          {/* Icône “en cours” */}
+          {isOngoing ? '⏳' : null}
+        </button>
         <div className="art-icon">
           {a.icon ? (
             <a href={`https://www.nw-buddy.de/items/${a.item_id}`} target="_blank" rel="noreferrer">
@@ -479,44 +507,48 @@ function ArtifactCard({ id, data }: { id: string; data: Artifact }) {
       <div className="art-perks">
         {a?.perks?.unique && (
           a?.perks_ids?.unique
-            ? <a className="art-badge" href={`https://www.nw-buddy.de/perks/${a.perks_ids.unique}`} target="_blank" rel="noreferrer">
+            ? <a className="art-badge" href={`https://www.nw-buddy.de/perks/${a.perks_ids.unique}`} target="_blank" rel="noreferrer"
+                 style={dropDone ? { background:'#04271eff', color:'#fff' } : undefined}>
                 {isValidVal(a?.perks_icons?.unique) && <img className="reward-icon" src={String(a.perks_icons!.unique)} alt="" loading="lazy" decoding="async" fetchPriority="low" />}
                 {t('ui.artifacts.perks.unique','Unique perk')}: {a.perks.unique}
               </a>
-            : <span className="art-badge">
+            : <span className="art-badge" style={dropDone ? { background:'#064e3b', color:'#fff' } : undefined}>
                 {isValidVal(a?.perks_icons?.unique) && <img className="reward-icon" src={String(a.perks_icons!.unique)} alt="" loading="lazy" decoding="async" fetchPriority="low" />}
                 {t('ui.artifacts.perks.unique','Unique perk')}: {a.perks.unique}
               </span>
         )}
         {a?.perks?.p2 && (
           a?.perks_ids?.p2
-            ? <a className="art-badge" href={`https://www.nw-buddy.de/perks/${a.perks_ids.p2}`} target="_blank" rel="noreferrer">
+            ? <a className="art-badge" href={`https://www.nw-buddy.de/perks/${a.perks_ids.p2}`} target="_blank" rel="noreferrer"
+                 style={p2Done ? { background:'#04271eff', color:'#fff' } : undefined}>
                 {isValidVal(a?.perks_icons?.p2) && <img className="reward-icon" src={String(a.perks_icons!.p2)} alt="" loading="lazy" decoding="async" fetchPriority="low" />}
                 {t('ui.artifacts.perks.p2','Perk 2')}: {a.perks.p2}
               </a>
-            : <span className="art-badge">
+            : <span className="art-badge" style={p2Done ? { background:'#064e3b', color:'#fff' } : undefined}>
                 {isValidVal(a?.perks_icons?.p2) && <img className="reward-icon" src={String(a.perks_icons!.p2)} alt="" loading="lazy" decoding="async" fetchPriority="low" />}
                 {t('ui.artifacts.perks.p2','Perk 2')}: {a.perks.p2}
               </span>
         )}
         {a?.perks?.p3 && (
           a?.perks_ids?.p3
-            ? <a className="art-badge" href={`https://www.nw-buddy.de/perks/${a.perks_ids.p3}`} target="_blank" rel="noreferrer">
+            ? <a className="art-badge" href={`https://www.nw-buddy.de/perks/${a.perks_ids.p3}`} target="_blank" rel="noreferrer"
+                 style={p3Done ? { background:'#04271eff', color:'#fff' } : undefined}>
                 {isValidVal(a?.perks_icons?.p3) && <img className="reward-icon" src={String(a.perks_icons!.p3)} alt="" loading="lazy" decoding="async" fetchPriority="low" />}
                 {t('ui.artifacts.perks.p3','Perk 3')}: {a.perks.p3}
               </a>
-            : <span className="art-badge">
+            : <span className="art-badge" style={p3Done ? { background:'#064e3b', color:'#fff' } : undefined}>
                 {isValidVal(a?.perks_icons?.p3) && <img className="reward-icon" src={String(a.perks_icons!.p3)} alt="" loading="lazy" decoding="async" fetchPriority="low" />}
                 {t('ui.artifacts.perks.p3','Perk 3')}: {a.perks.p3}
               </span>
         )}
         {a?.perks?.p4 && (
           a?.perks_ids?.p4
-            ? <a className="art-badge" href={`https://www.nw-buddy.de/perks/${a.perks_ids.p4}`} target="_blank" rel="noreferrer">
+            ? <a className="art-badge" href={`https://www.nw-buddy.de/perks/${a.perks_ids.p4}`} target="_blank" rel="noreferrer"
+                 style={p4Done ? { background:'#04271eff', color:'#fff' } : undefined}>
                 {isValidVal(a?.perks_icons?.p4) && <img className="reward-icon" src={String(a.perks_icons!.p4)} alt="" loading="lazy" decoding="async" fetchPriority="low" />}
                 {t('ui.artifacts.perks.p4','Perk 4')}: {a.perks.p4}
               </a>
-            : <span className="art-badge">
+            : <span className="art-badge" style={p4Done ? { background:'#064e3b', color:'#fff' } : undefined}>
                 {isValidVal(a?.perks_icons?.p4) && <img className="reward-icon" src={String(a.perks_icons!.p4)} alt="" loading="lazy" decoding="async" fetchPriority="low" />}
                 {t('ui.artifacts.perks.p4','Perk 4')}: {a.perks.p4}
               </span>
@@ -533,8 +565,12 @@ function QuestCard({ id, data }: { id: string; data: { perk?: number; number?: n
   const toggleQuest = useStore(s => s.toggleQuest)
   const q = data
   const done = isCompleted(id) // id === `quest::<item_id>::<i>`
+  // Utilise la même teinte que l'artéfact parent si dispo dans l'id
+  const parts = id.split('::')   // quest::<item_id>::<i>
+  const parentId = parts.length > 1 ? parts[1] : ''
+  const qTint = (data as any)?.tint ?? '#2563eb'
   return (
-    <div className={`art-card node-card${done ? ' is-done' : ''}`} style={{ width: 260, borderLeft: '3px solid #2563eb' }}>
+    <div className={`art-card node-card${done ? ' is-done' : ''}`} style={{ width: 260 }}>
       {/* Handles : top target (depuis artifact), left/right pour liens croisés entre tasks */}
       <Handle type="target" position={Position.Top}    id="t" style={{ opacity: 0 }} />
       <Handle type="source" position={Position.Bottom} id="b" style={{ opacity: 0 }} />
@@ -562,7 +598,7 @@ function QuestCard({ id, data }: { id: string; data: { perk?: number; number?: n
         onPointerDown={(e)=>e.stopPropagation()}
         onClick={(e)=>{ e.stopPropagation(); toggleQuest(id) }}
         aria-pressed={done}
-        style={{ position:'absolute', top:8, right:8 }}
+        style={{ position:'absolute', top:5, right:5 }}
       />
       <div style={{fontWeight:700, marginBottom:6}}>
         {t('ui.artifacts.unlock.perk','Perk {n}',{ n: q.perk ?? '?' })}
@@ -650,12 +686,52 @@ export default function Artifacts({ lang, artifacts, error }:{
   }, [helpCollapsed])
   const rfRef = useRef<ReactFlowInstance | null>(null)
   const viewInitRef = useRef(false)
+  const [lockNodes, setLockNodes] = useState(false)
+  // Marquee (sélection rectangulaire au clic droit)
+  const [marquee, setMarquee] = useState<null | { start:{x:number;y:number}, end:{x:number;y:number} }>(null)
+  const startPt = useRef<{x:number;y:number} | null>(null)
+  const preventCtx = useRef(false)
+  // === État contrôlé pour les nodes/edges ===
+  const [rfNodes, setRfNodes] = useState<Node[]>([])
+  const [rfEdges, setRfEdges] = useState<Edge[]>([])
+  // Persistance vers le store
+  const setManyNodePos = useStore(s => s.setManyNodePos)
+  const resetLayoutPos = useStore(s => s.resetLayoutPos)
   // Progress / per-character completion
   const isCompleted      = useStore(s => s.isCompleted)
   const toggleQuest      = useStore(s => s.toggleQuest)
   const completedVersion = useStore(s => s.completedVersion)
   const resetProgress    = useStore(s => s.resetProgress)
   const [showResetConfirm, setShowResetConfirm] = useState(false)
+  const [showResetPosConfirm, setShowResetPosConfirm] = useState(false)
+ 
+  // --- Couleurs MiniMap (par rareté de l'artéfact) ---
+  const artById = useMemo(() => {
+    const m = new Map<string, Artifact>()
+    for (const a of (artifacts ?? [])) m.set(a.item_id, a)
+    return m
+  }, [artifacts])
+
+  const miniColorById = useCallback((id: string) => {
+    // ids: "drop::<artId>" | "art::<artId>" | "quest::<artId>::<idx>"
+    const parts = String(id || '').split('::')
+    const artId = parts[1] ?? id
+    const a = artById.get(artId)
+    return typeColor(String(a?.drop?.type || ''))
+  }, [artById])
+
+  const MiniMapNode = useCallback((props: any) => {
+    const { id, x, y, width, height, selected } = props
+    const fill = miniColorById(String(id))
+    return (
+      <rect
+        x={x} y={y} width={width} height={height} rx={2} ry={2}
+        fill={fill}
+        stroke={selected ? '#f59e0b' : '#e5e7eb'}
+        strokeWidth={selected ? 2 : 1}
+      />
+    )
+  }, [miniColorById])
 
   // Retourne un libellé localisé à partir des TIDs "jeu" (ex: dungeon_* / objective_*)
   const labelFromLocale = useCallback((tid: string, fallback: string) => {
@@ -735,6 +811,26 @@ export default function Artifacts({ lang, artifacts, error }:{
   useEffect(() => {
     if (selectedTag && !presentTags.some(t => t.key === selectedTag)) setSelectedTag(null)
   }, [presentTags, selectedTag])
+
+  // --- Drop filter (par type de drop) ---
+  const [selectedDrop, setSelectedDrop] = useState<string | null>(null)
+  // Types de drop présents (dédoublonnés) pour alimenter le dropdown
+  const presentDropTypes = useMemo(() => {
+    const set = new Set<string>()
+    for (const a of (artifacts ?? [])) {
+      const type = String((a as any)?.drop?.type ?? '').trim()
+      if (type) set.add(type)
+    }
+    return Array.from(set).sort((a,b)=>a.localeCompare(b))
+  }, [artifacts])
+  // Si le type choisi disparaît (chgt de dataset), on nettoie
+  useEffect(() => {
+    if (selectedDrop && !presentDropTypes.includes(selectedDrop)) setSelectedDrop(null)
+  }, [presentDropTypes, selectedDrop])
+ 
+  // --- Status filter (Finished / Dropped / Ongoing / Not started, etc.) ---
+  const [selectedStatus, setSelectedStatus] = useState<StatusFilter>('all')
+
   
   const focusNode = (id: string) => {
     const inst = rfRef.current
@@ -786,12 +882,8 @@ export default function Artifacts({ lang, artifacts, error }:{
   }, [dedupArtifacts, completedVersion])
   const maxedCount = useMemo(() => {
     return dedupArtifacts.reduce((acc, a) => {
-      const q0 = isCompleted(`quest::${a.item_id}::0`)
-      const q1 = isCompleted(`quest::${a.item_id}::1`)
-      const q2 = isCompleted(`quest::${a.item_id}::2`)
-      const allTasks = q0 && q1 && q2
-      const artDone  = isCompleted(`art::${a.item_id}`)
-      return acc + ((artDone || allTasks) ? 1 : 0)
+      const artDone = isCompleted(`art::${a.item_id}`)
+      return acc + (artDone ? 1 : 0)
     }, 0)
   }, [dedupArtifacts, completedVersion])
 
@@ -811,6 +903,33 @@ export default function Artifacts({ lang, artifacts, error }:{
     // (A.1) Filtre exclusif : ne garder que les artéfacts qui matchent le tag sélectionné
     if (selectedTag) {
       arts = arts.filter(a => artifactTags.get(a.item_id)?.has(selectedTag))
+    }
+    // (A.2) Filtre “Drop filter” : ne garder que les artéfacts avec le type de drop choisi
+    if (selectedDrop) {
+      arts = arts.filter(a =>
+        String((a as any)?.drop?.type ?? '').trim() === selectedDrop
+      )
+    }
+    // (A.3) Filtre “Status filter”
+    if (selectedStatus !== 'all') {
+      arts = arts.filter(a => {
+        const artId = a.item_id
+        const artDone   = isCompleted(`art::${artId}`)
+        const dropDone  = isCompleted(`drop::${artId}`)
+        const ongoing   = isCompleted(`ongoing::${artId}`)
+        const qs = Array.isArray(a.quests) ? a.quests : []
+        const anyTaskDone = qs.some((_, i) => isCompleted(`quest::${artId}::${i}`))
+        const notStarted = !artDone && !ongoing && !anyTaskDone
+        switch (selectedStatus) {
+          case 'finished':     return artDone
+          case 'not_finished': return !artDone
+          case 'dropped':      return dropDone
+          case 'not_dropped':  return !dropDone
+          case 'ongoing':      return ongoing
+          case 'not_started':  return notStarted
+          default:             return true
+        }
+      })
     }
 
     // 1) Ordre “intelligent” : rapproche les artéfacts fortement reliés
@@ -956,6 +1075,7 @@ export default function Artifacts({ lang, artifacts, error }:{
         (d.chance != null)
       ))
       if (hasDrop) {
+        const tint = typeColor(dType)
         nodes.push({
           id: `drop::${idArt}`,
           type: 'artifactDrop',
@@ -970,7 +1090,7 @@ export default function Artifacts({ lang, artifacts, error }:{
       nodes.push({
         id: `art::${idArt}`,
         type: 'artifact',
-        data: a,
+        data: { ...a, tint: typeColor(dType) },
         position: { x, y },
         sourcePosition: Position.Right,
         targetPosition: Position.Left,
@@ -1009,7 +1129,7 @@ export default function Artifacts({ lang, artifacts, error }:{
         nodes.push({
           id: qid,
           type: 'artifactQuest',
-          data: { perk: q.perk, number: q.number, target: q.target, zone: q.zone, mode: q.mode, descriptions: q.descriptions },
+          data: { perk: q.perk, number: q.number, target: q.target, zone: q.zone, mode: q.mode, descriptions: q.descriptions, tint: typeColor(dType) },
           position: { x, y },
           sourcePosition: Position.Right,
           targetPosition: Position.Top,
@@ -1285,8 +1405,77 @@ export default function Artifacts({ lang, artifacts, error }:{
     result.nodes = styledNodes
     result.edges = Array.from(new Map(filteredEdges.map(e => [e.id, e])).values())
     return result
-  }, [artifacts, showDropMob, showDropZone, showTaskTarget, showTaskZone, selectedId, artifactTags, presentTags, selectedTag])
+  }, [artifacts, showDropMob, showDropZone, showTaskTarget, showTaskZone, selectedId, artifactTags, presentTags, selectedTag, selectedDrop, selectedStatus, completedVersion])
 
+  // 1) Injecter le layout calculé dans l'état contrôlé
+  useEffect(() => { setRfNodes(layoutedNodes) }, [layoutedNodes])
+  useEffect(() => { setRfEdges(layoutedEdges) }, [layoutedEdges])
+  // 2) Puis appliquer (idempotent) les positions sauvegardées
+  const savedArtPos = useStore(s => s.layoutPos.artifacts)
+  useEffect(() => {
+    if (!rfNodes.length) return
+    setRfNodes(prev => {
+      let changed = false
+      const next = prev.map(n => {
+        const p = savedArtPos[n.id]
+        if (!p) return n
+        const same = n.position?.x === p.x && n.position?.y === p.y
+        if (same) return n
+        changed = true
+        return { ...n, position: { x: p.x, y: p.y } }
+      })
+      return changed ? next : prev
+    })
+  }, [savedArtPos, rfNodes.length])
+
+  // Applique les changements émis par React Flow (drag en direct) sans persistance
+  const onNodesChange = useCallback((changes: NodeChange[]) => {
+    if (lockNodes) {
+      const nonMove = changes.filter(ch => ch.type !== 'position' && ch.type !== 'dimensions')
+      if (nonMove.length === 0) return
+      setRfNodes(nds => applyNodeChanges(nonMove, nds))
+      return
+    }
+    setRfNodes(nds => applyNodeChanges(changes, nds))
+  }, [lockNodes])
+
+  // Démarre la sélection rectangulaire AU CLIC DROIT MAINTENU
+  const onPaneMouseDown = useCallback((e: React.MouseEvent) => {
+    if (e.button !== 2) return               // clic droit uniquement
+    e.preventDefault()
+    preventCtx.current = true
+    const startScreen = { x: e.clientX, y: e.clientY }
+    const startFlow   = rfRef.current!.screenToFlowPosition(startScreen)
+    startPt.current = startFlow
+    setMarquee({ start: startScreen, end: startScreen })
+    const onMove = (ev: MouseEvent) => {
+      const endScreen = { x: ev.clientX, y: ev.clientY }
+      setMarquee(m => m ? ({ ...m, end: endScreen }) : m)
+      const a = startPt.current
+      if (!a) return
+      const b = rfRef.current!.screenToFlowPosition(endScreen)
+      const x1 = Math.min(a.x, b.x), x2 = Math.max(a.x, b.x)
+      const y1 = Math.min(a.y, b.y), y2 = Math.max(a.y, b.y)
+      // mettre à jour la sélection sur l'état contrôlé (nodes={rfNodes})
+      setRfNodes(prev => prev.map(n => {
+        const x = (n as any).positionAbsolute?.x ?? n.position.x
+        const y = (n as any).positionAbsolute?.y ?? n.position.y
+        const w = n.width ?? 200
+        const h = n.height ?? 120
+        const inside = x + w >= x1 && x <= x2 && y + h >= y1 && y <= y2
+        return inside ? { ...n, selected: true } : { ...n, selected: false }
+      }))
+    }
+    const onUp = () => {
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseup', onUp)
+      startPt.current = null
+      setMarquee(null)                        // l’overlay disparaît
+      setTimeout(() => { preventCtx.current = false }, 0)
+    }
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mouseup', onUp)
+  }, [])  
 
   // ---- Vue initiale: centrer/zoomer sur l'artéfact le plus à gauche ----
   useEffect(() => {
@@ -1382,7 +1571,7 @@ export default function Artifacts({ lang, artifacts, error }:{
       {/* Colonne principale (graph) */}
       <div className="graph" style={{ position:'relative' }}>
         {/* Dropdown de filtre (overlay en haut-gauche, au-dessus du graph) */}
-        {presentTags.length > 0 && (
+        {(presentTags.length > 0 || presentDropTypes.length > 0 || true) && (
           <div
             style={{
               position:'absolute', top:8, left:8, zIndex:6,
@@ -1394,7 +1583,102 @@ export default function Artifacts({ lang, artifacts, error }:{
               display:'flex', alignItems:'center', gap:10
             }}
           >
-            <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+
+          <div style={{display:'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap'}}>
+            {/* --- Drop filter (même style/badge que le Task filter) --- */}
+            <div style={{display:'flex', alignItems:'center', gap:10}}>
+              <span
+                style={{
+                  fontWeight:800,
+                  fontSize:13,
+                  padding:'4px 10px',
+                  borderRadius:999,
+                  background:'#0b1220',
+                  border:'1px solid #1f2937',
+                  color:'#e5e7eb',
+                  letterSpacing:.3
+                }}
+                title={t('ui.filters.byDrop','Drop filter')}
+              >
+                {t('ui.filters.byDrop','Drop filter')}
+              </span>
+              <select
+                id="artifact-drop-filter"
+                value={selectedDrop ?? ''}
+                onChange={(e)=> setSelectedDrop(e.target.value ? e.target.value : null)}
+                style={{
+                  padding:'8px 12px',
+                  borderRadius:10,
+                  background:'#0f172a',
+                  color:'#e5e7eb',
+                  border:'1px solid #334155',
+                  minWidth: 260,
+                  fontWeight:600
+                }}
+              >
+                <option value="">{t('ui.filters.any','Any drop type')}</option>
+                {presentDropTypes.map(dt => (
+                  <option key={dt} value={dt}>{dt}</option>
+                ))}
+              </select>
+              {selectedDrop && (
+                <button
+                  onClick={()=>setSelectedDrop(null)}
+                  title={t('ui.filters.clear','Clear filter')}
+                  style={{
+                    padding:'6px 10px',
+                    borderRadius:999,
+                    border:'1px solid #7f1d1d',
+                    background:'#991b1b',
+                    color:'#fff',
+                    fontWeight:700
+                  }}
+                >
+                  {t('ui.filters.clear','Clear filter')}
+                </button>
+              )}
+            </div>
+            {/* --- Status filter --- */}
+            <div style={{display:'flex', alignItems:'center', gap:10}}>
+              <span
+                style={{
+                  fontWeight:800, fontSize:13, padding:'4px 10px', borderRadius:999,
+                  background:'#0b1220', border:'1px solid #1f2937', color:'#e5e7eb', letterSpacing:.3
+                }}
+                title={t('ui.filters.byStatus','Status filter')}
+              >
+                {t('ui.filters.byStatus','Status')}
+              </span>
+              <select
+                id="artifact-status-filter"
+                value={selectedStatus}
+                onChange={(e)=> setSelectedStatus(e.target.value as StatusFilter)}
+                style={{
+                  padding:'8px 12px', borderRadius:10, background:'#0f172a', color:'#e5e7eb',
+                  border:'1px solid #334155', minWidth: 200, fontWeight:600
+                }}
+              >
+                <option value="all">{t('ui.filters.status.all','All')}</option>
+                <option value="finished">{t('ui.filters.status.finished','Finished')}</option>
+                <option value="not_finished">{t('ui.filters.status.not_finished','Not finished')}</option>
+                <option value="dropped">{t('ui.filters.status.dropped','Dropped')}</option>
+                <option value="not_dropped">{t('ui.filters.status.not_dropped','Not dropped')}</option>
+                <option value="ongoing">{t('ui.filters.status.ongoing','Ongoing')}</option>
+                <option value="not_started">{t('ui.filters.status.not_started','Not started')}</option>
+              </select>
+              {selectedStatus !== 'all' && (
+                <button
+                  onClick={()=>setSelectedStatus('all')}
+                  title={t('ui.filters.clear','Clear filter')}
+                  style={{
+                    padding:'6px 10px', borderRadius:999,
+                    border:'1px solid #7f1d1d', background:'#991b1b', color:'#fff', fontWeight:700
+                  }}
+                >
+                  {t('ui.filters.clear','Clear')}
+                </button>
+              )}
+            </div>
               <span
                 style={{
                   fontWeight:800,
@@ -1459,14 +1743,15 @@ export default function Artifacts({ lang, artifacts, error }:{
             </div>
           </div>
         )}
-        <div style={{width:'100%', height:'100%', border:'1px solid #1f2937', borderRadius:12}}>
+        <div style={{width:'100%', height:'100%', border:'1px solid #1f2937', borderRadius:12, position:'relative'}}>
           <ReactFlow
-            nodes={layoutedNodes}
-            edges={layoutedEdges}
+            nodes={rfNodes}
+            edges={rfEdges}
             nodeTypes={nodeTypes}
             minZoom={MIN_ZOOM}
             maxZoom={MAX_ZOOM}
-            defaultEdgeOptions={{ type: 'smoothstep' }}
+            defaultEdgeOptions={{ type: 'smoothstep', interactionWidth: 24 }}
+            onlyRenderVisibleElements={true}
             onInit={(inst) => { rfRef.current = inst }}
             onNodeClick={(_, node)=> {
               if (node.type !== 'artifactQuest') { setSelectedId(null); return }
@@ -1474,14 +1759,132 @@ export default function Artifacts({ lang, artifacts, error }:{
             }}
             onEdgeClick={onEdgeClick}
             nodesConnectable={false}
-            nodesDraggable={false}
-            elementsSelectable={false}
+            nodesDraggable={!lockNodes}
+            elementsSelectable={true}
             selectNodesOnDrag={false}
             selectionOnDrag={false}
+            onNodesChange={onNodesChange}
+            onNodeDragStop={(_, node) => {
+              if (lockNodes) return
+              try {
+                const selected = (rfRef.current?.getNodes() ?? []).filter(n => n.selected)
+                if (selected.length > 1) {
+                  const updates: Record<string, {x:number;y:number}> = {}
+                  for (const n of selected) updates[n.id] = { x: n.position.x, y: n.position.y }
+                  useStore.getState().setManyNodePos('artifacts', updates)
+                } else {
+                  useStore.getState().setManyNodePos('artifacts', { [node.id]: { x: node.position.x, y: node.position.y } })
+                }
+              } catch {}
+            }}
+            onMouseDown={onPaneMouseDown}
+            onContextMenu={(e)=>{ if (preventCtx.current) e.preventDefault() }}
           >
+            {/* Overlay visuel de la sélection rectangulaire */}
+            {marquee && (
+              <div
+                style={{
+                  position:'fixed',
+                  left: Math.min(marquee.start.x, marquee.end.x),
+                  top: Math.min(marquee.start.y, marquee.end.y),
+                  width: Math.abs(marquee.end.x - marquee.start.x),
+                  height: Math.abs(marquee.end.y - marquee.start.y),
+                  border:'1px dashed #f59e0b',
+                  background:'rgba(245,158,11,0.12)',
+                  pointerEvents:'none',
+                  zIndex:9
+                }}
+              />
+            )}
             <Background variant={BackgroundVariant.Dots} />
-            <Controls showInteractive={false} position="bottom-left" style={{ bottom: 20 }}/>
+            <MiniMap
+              className="minimap--white-viewport"
+              position="bottom-right"
+              style={{ backgroundColor: '#0b0f14', right:  0, bottom: 0}}
+              maskColor="rgba(0,0,0,0.15)"
+              nodeStrokeColor="#e2e8f0"
+              nodeBorderRadius={2}
+              /* Fallback si nodeComponent est ignoré par RF */
+              nodeColor={(n) => {
+                const parts = String(n.id || '').split('::')
+                const artId = parts[1] ?? String(n.id)
+                const a = artById.get(artId)
+                return typeColor(String(a?.drop?.type || ''))
+              }}
+              nodeComponent={MiniMapNode}
+            />
+            <Controls showInteractive={false} position="bottom-left" style={{ bottom: 20 }}>
+              <ControlButton
+                className={`rf-lock-btn ${lockNodes ? 'locked' : 'unlocked'}`}
+                onClick={() => setLockNodes(v => !v)}
+                title={lockNodes ? t('ui.controls.unlock','Unlock node dragging') : t('ui.controls.lock','Lock node dragging')}
+              >
+                {lockNodes ? '🔒' : '🔓'}
+              </ControlButton>
+            </Controls>
+            {/* Reset Graph (à gauche de la minimap) */}
+            <div style={{ position:'absolute', right:205, bottom:5, zIndex:7 }}>
+              <button
+                className="btn-reset-graph btn-reset-graph--art"
+                onClick={() => setShowResetPosConfirm(true)}
+                title={t('ui.controls.reset','Reset positions')}
+              >
+                <span className="icon">↺</span>
+                {t('ui.controls.reset','Reset positions')}
+              </button>
+            </div>
           </ReactFlow>
+          {/* Reset positions (artifacts) — modal de confirmation */}
+          {showResetPosConfirm && (
+            <div
+              onClick={() => setShowResetPosConfirm(false)}
+              style={{
+                position: 'fixed',
+                inset: 0,
+                background: 'rgba(0,0,0,0.6)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 1000,
+              }}
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  background: '#0f172a',
+                  color: 'white',
+                  border: '1px solid #334155',
+                  borderRadius: 8,
+                  padding: 16,
+                  minWidth: 360,
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.45)',
+                }}
+              >
+                <h3 style={{ marginTop: 0, marginBottom: 8 }}>
+                  {t('ui.controls.reset','Reset positions')}
+                </h3>
+                <p style={{ margin: 0 }}>
+                  {t('ui.confirm.reset.artifacts','Reset artifact positions? This removes all your manual moves.')}
+                </p>
+                <div style={{ display: 'flex', gap: 8, marginTop: 14, justifyContent: 'flex-end' }}>
+                  <button
+                    onClick={() => {
+                      try { resetLayoutPos?.('artifacts') } catch {}
+                      // Réapplique le layout de base immédiatement et nettoie la sélection
+                      setSelectedId(null)
+                      setRfNodes(layoutedNodes.map(n => ({ ...n, selected:false })))
+                      setShowResetPosConfirm(false)
+                    }}
+                  >
+                    {t('ui.confirm','Confirm')}
+                  </button>
+                  <button onClick={() => setShowResetPosConfirm(false)}>
+                    {t('ui.cancel','Cancel')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
