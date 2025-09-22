@@ -4,9 +4,11 @@ import sys, os, json, re, datetime, glob, shutil, csv
 from collections import defaultdict
 import pandas as pd
 import numpy as np
-from typing import Dict, List, Set
+from typing import Dict, List, Set, Any
 
 # python .\tools\convert_csv_to_json.py D:\downloadNWB\downloads\S9\S9_extract_quests_20250820.csv .\tools\items.csv .\tools\objectives_tasks .\tools\lang\ .\tools\pointofinterestdefinitions .\tools\javelindata_vitalscategories.json .\tools\MetaAchievementDataTable.csv .\tools\itemdefinitions\ .\tools\territories_map.json
+
+DEBUG_TASKS = os.environ.get("NW_DEBUG_TASKS", "").lower() in ("1","true","yes")
 
 if len(sys.argv) < 2:
     print("Usage: python tools/convert_csv_to_json.py <QUESTS_CSV> [ITEMS_CSV] [OBJECTIVE_TASKS_CSV] [OBJECTIVES_DIR] [META_ACHIEVEMENTS_CSV] [ITEM DEFINITIONS] [TERRITORIES MAP]")
@@ -21,7 +23,553 @@ EXCLUDE_RE = re.compile(r"(^01_|^S_|^Quest_|AC_Test|devworld|_alt|EnterZone_SM|_
 TYPE_EXCLUDE_RE = re.compile(r"\b(Artifact|Mission|Community Goal)\b", re.IGNORECASE)
 MANUAL_PATH = os.path.join('tools', 'manual_links.json')
 
+# --- NEW: exporter missions_factions.json à partir d'un CSV Missions.csv ---
+def export_missions_factions(missions_csv: str, territories_map_path: str | None = None):
+    # Lecture robuste (auto-détection du séparateur) pour éviter les colonnes vides
+    try:
+        mdf = pd.read_csv(missions_csv, encoding='utf-8', low_memory=False, sep=None, engine='python')
+        used = "auto(python)"
+    except Exception:
+        try:
+            mdf = pd.read_csv(missions_csv, encoding='utf-8', low_memory=False, sep=',')
+            used = ", (fallback)"
+        except Exception:
+            mdf = pd.read_csv(missions_csv, encoding='utf-8', low_memory=False, sep=';')
+            used = "; (fallback)"
+    print(f"[OK] Missions.csv chargé: {len(mdf)} lignes | sep={used}")
+    mdf.columns = [str(c).strip() for c in mdf.columns]
+    # Colonnes d’intérêt (présentes dans ton CSV)
+    cols = ['MissionID','ObjectiveID','AvailableTerritoryId','RequiredFaction',
+            'TaskKillContributionOverride','TaskKillContributionQtyOverride','POITagOverride',
+            'TaskHaveAndReturnItemsOverride','TaskHaveAndReturnItemsQtyOverride',
+            'TaskHaveAndReturnItemsDropProbabilityOverride','TaskHaveAndReturnChestDropProbabilityOverride',
+            'TaskHaveAndReturnItemsItemsDropVCOverride',
+            'TitleOverride','DescriptionOverride','ImagePath','MissionGoalType',
+            'MinLevel','MaxLevel','RequiredTradeskill','TradeskillLevel','VCLevel', 'RecommendedGroupSize']
+    for c in cols:
+        if c not in mdf.columns:
+            # variantes fréquentes
+            alt = next((k for k in mdf.columns if k.lower() == c.lower()), None)
+            if alt: mdf[c] = mdf[alt]
+            else: mdf[c] = None
+    # Helpers de conversion tolérants
+    def _to_int(v):
+        try:
+            if v is None or (isinstance(v, float) and np.isnan(v)): return None
+            s = str(v).strip()
+            if s == '' or s.lower() in ('nan','none'): return None
+            return int(float(s))
+        except Exception:
+            return None
+    def _to_float(v):
+        try:
+            if v is None or (isinstance(v, float) and np.isnan(v)): return None
+            s = str(v).strip().replace(',', '.')
+            if s == '' or s.lower() in ('nan','none'): return None
+            return float(s)
+        except Exception:
+            return None
+    def _clean_str(v):
+        if v is None or (isinstance(v, float) and np.isnan(v)): return ""
+        return str(v).strip()
 
+    # --- Normalisation du chemin d'image de fond ---
+    def _bg_from_imagepath(v: str) -> str:
+        """
+        - Remplace LyShineUI/Images -> public/icons
+        - Remplace l'extension par .webp
+        - Met UNIQUEMENT le nom de fichier en lowercase (le dossier reste identique)
+        """
+        s = _clean_str(v)
+        if not s:
+            return ""
+        s = s.replace("\\", "/")
+        s = re.sub(r"^LyShineUI/Images", "public/icons", s, flags=re.I)
+        s = re.sub(r"\.[A-Za-z0-9]+$", ".webp", s)
+        if "/" in s:
+            d, f = s.rsplit("/", 1)
+            return f"{d}/{f.lower()}"
+        return s.lower()
+
+    out = []
+    for _, r in mdf.iterrows():
+        out.append({
+            "MissionID": _clean_str(r['MissionID']),
+            "ObjectiveID": _clean_str(r['ObjectiveID']),
+            "AvailableTerritoryId": _to_int(r['AvailableTerritoryId']),
+            "RequiredFaction": _clean_str(r['RequiredFaction']),
+            # Tes colonnes additionnelles (on exporte proprement)
+            "TaskKillContributionOverride": _clean_str(r['TaskKillContributionOverride']),
+            "TaskKillContributionQtyOverride": _to_int(r['TaskKillContributionQtyOverride']),
+            "POITagOverride": _clean_str(r['POITagOverride']),
+            "TaskHaveAndReturnItemsOverride": _clean_str(r['TaskHaveAndReturnItemsOverride']),
+            "TaskHaveAndReturnItemsQtyOverride": _to_int(r['TaskHaveAndReturnItemsQtyOverride']),
+            "TaskHaveAndReturnItemsDropProbabilityOverride": _to_float(r['TaskHaveAndReturnItemsDropProbabilityOverride']),
+            "TaskHaveAndReturnChestDropProbabilityOverride": _to_float(r['TaskHaveAndReturnChestDropProbabilityOverride']),
+            "TaskHaveAndReturnItemsItemsDropVCOverride": _clean_str(r['TaskHaveAndReturnItemsItemsDropVCOverride']),
+            "TitleOverride": _clean_str(r['TitleOverride']),
+            "DescriptionOverride": _clean_str(r['DescriptionOverride']),
+            "ImagePath": _clean_str(r['ImagePath']),
+            "BgImage": _bg_from_imagepath(r['ImagePath']),
+            "MissionGoalType": _clean_str(r['MissionGoalType']),
+            "MinLevel": _to_int(r['MinLevel']),
+            "MaxLevel": _to_int(r['MaxLevel']),
+            "RequiredTradeskill": _clean_str(r['RequiredTradeskill']),
+            "TradeskillLevel": _to_int(r['TradeskillLevel']),
+            "VCLevel": _to_int(r['VCLevel']),
+            "SuccessGameEventIdOverride": _clean_str(r.get('SuccessGameEventIdOverride', '')),
+            "RecommendedGroupSize": _to_int(r['RecommendedGroupSize'])
+        })
+
+    # chemin de sortie
+    os.makedirs(os.path.join('public','data'), exist_ok=True)
+    dst = os.path.join('public','data','missions_factions.json')
+    # Enrichissements pour la description / titres
+    poi_idx = {}
+    try:
+        with open(os.path.join("public","data","poi_index.json"), "r", encoding="utf-8") as f:
+            poi_idx = json.load(f)
+    except Exception:
+        poi_idx = {}
+    items_def = load_item_definitions(None)
+    vitals_path = os.path.join("tools","javelindata_vitalscategories.json")
+
+    # ---- Index des GameEvents pour récupérer les récompenses ----
+    gevents_idx = {}
+    try:
+        with open(os.path.join("tools", "javelindata_gameevents.json"), "r", encoding="utf-8") as gf:
+            ge_list = json.load(gf)
+            if isinstance(ge_list, list):
+                for ge in ge_list:
+                    eid = str(ge.get("EventID", "") or "").strip()
+                    if eid:
+                        gevents_idx[eid] = ge
+    except Exception as ex:
+        print(f"[WARN] javelindata_gameevents.json non lu: {ex}")
+
+    # ---- (NEW) Charger Objectives et le CSV des Tasks ----
+    objectives_idx = None
+    try:
+        with open(os.path.join("tools","javelindata_objectives.json"), "r", encoding="utf-8") as f:
+            objectives_idx = json.load(f)  # peut être list ou dict
+        if DEBUG_TASKS:
+            nobj = len(objectives_idx) if isinstance(objectives_idx, list) else (len(objectives_idx or {}))
+            print(f"[DBG] objectives.json chargé: type={type(objectives_idx).__name__}, count={nobj}")
+    except Exception as ex:
+        if DEBUG_TASKS:
+            print(f"[DBG] objectives.json NON lu: {ex}")
+        objectives_idx = None
+    tasks_df = None
+    try:
+        tasks_df = pd.read_csv(os.path.join("tools","objectives_tasks","ObjectiveTasksDataManager.csv"),
+                               encoding="utf-8", low_memory=False)
+        tasks_df.columns = [str(c).strip() for c in tasks_df.columns]
+        if DEBUG_TASKS:
+            print(f"[DBG] ObjectiveTasksDataManager.csv chargé (tools/objectives_tasks/): {tasks_df.shape}, cols={list(tasks_df.columns)[:8]}...")
+    except Exception as ex:
+        tasks_df = None
+        if DEBUG_TASKS:
+            print(f"[DBG] ObjectiveTasksDataManager.csv NON lu (sous-dossier): {ex}")
+ 
+    # ------- Fallback: scanner tools/quests (JSON/CSV) pour Objectives & Tasks -------
+    QUESTS_DIR = os.path.join("tools", "quests")
+    _QUESTS_OBJ_IDX: Dict[str, dict] | None = None   # ObjectiveID -> dict (contient potentiellement "Task")
+    _QUESTS_TASK_IDX: Dict[str, dict] | None = None  # TaskID -> dict (contient potentiellement SubTask*, TP_DescriptionTag)
+
+    def _ensure_scan_quests():
+        """Construit les index à partir de tools/quests/** une seule fois."""
+        nonlocal _QUESTS_OBJ_IDX, _QUESTS_TASK_IDX
+        if _QUESTS_OBJ_IDX is not None and _QUESTS_TASK_IDX is not None:
+            return
+        _QUESTS_OBJ_IDX, _QUESTS_TASK_IDX = {}, {}
+        if not os.path.isdir(QUESTS_DIR):
+            if DEBUG_TASKS:
+                print(f"[DBG] Fallback quests: dossier absent {QUESTS_DIR}")
+            return
+        files: List[str] = []
+        for root, _, fnames in os.walk(QUESTS_DIR):
+            for fn in fnames:
+                if fn.lower().endswith((".json", ".csv", ".txt", ".yml", ".yaml")):
+                    files.append(os.path.join(root, fn))
+        if DEBUG_TASKS:
+            print(f"[DBG] Fallback quests: scan {len(files)} fichiers dans {QUESTS_DIR}")
+
+        def _push_objective(d: dict):
+            oid = str(d.get("ObjectiveID") or "").strip()
+            if oid:
+                # conserve la 1ère occurrence ; les suivantes peuvent écraser si plus complètes
+                prev = _QUESTS_OBJ_IDX.get(oid)
+                # on préfère une occurrence qui contient un 'Task'
+                if (prev is None) or (not prev.get("Task") and d.get("Task")):
+                    _QUESTS_OBJ_IDX[oid] = d
+
+        def _push_task(d: dict):
+            tid = str(d.get("TaskID") or d.get("TaskId") or d.get("Task") or "").strip()
+            if tid:
+                _QUESTS_TASK_IDX[tid] = d
+
+        def _walk_json(obj: Any):
+            if isinstance(obj, dict):
+                # Objective ?
+                if "ObjectiveID" in obj:
+                    _push_objective(obj)
+                # Task ?
+                if ("TaskID" in obj) or ("TaskId" in obj) or ("Task" in obj):
+                    _push_task(obj)
+                for v in obj.values():
+                    _walk_json(v)
+            elif isinstance(obj, list):
+                for it in obj:
+                    _walk_json(it)
+
+        for fp in files:
+            low = fp.lower()
+            try:
+                if low.endswith(".json"):
+                    with open(fp, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                    _walk_json(data)
+                elif low.endswith(".csv"):
+                    dfq = pd.read_csv(fp, encoding="utf-8", low_memory=False)
+                    cols = [str(c).strip() for c in dfq.columns]
+                    has_obj = any(c.lower()=="objectiveid" for c in cols)
+                    has_taskid = any(c.lower()=="taskid" for c in cols) or any(c.lower()=="task" for c in cols)
+                    if has_obj:
+                        for _, rr in dfq.iterrows():
+                            d = {k: (None if (isinstance(v,float) and np.isnan(v)) else v) for k,v in rr.to_dict().items()}
+                            if d.get("ObjectiveID"):
+                                _push_objective(d)
+                    if has_taskid:
+                        for _, rr in dfq.iterrows():
+                            d = {k: (None if (isinstance(v,float) and np.isnan(v)) else v) for k,v in rr.to_dict().items()}
+                            if d.get("TaskID") or d.get("Task"):
+                                _push_task(d)
+                else:
+                    # Fallback texte brut: on tente un regex simple
+                    txt = ""
+                    try:
+                        with open(fp, "r", encoding="utf-8") as f:
+                            txt = f.read()
+                    except Exception:
+                        pass
+                    if txt:
+                        # ObjectiveID + Task (proche ou dans le même bloc)
+                        for m in re.finditer(r'ObjectiveID"\s*:\s*"([^"]+)"', txt):
+                            oid = m.group(1).strip()
+                            # Task voisin
+                            m2 = re.search(r'Task"\s*:\s*"([^"]+)"', txt[m.end(): m.end()+500])
+                            _push_objective({"ObjectiveID": oid, **({"Task": m2.group(1).strip()} if m2 else {})})
+                        for m in re.finditer(r'(TaskID|Task)"\s*:\s*"([^"]+)"', txt):
+                            _push_task({"TaskID": m.group(2).strip()})
+            except Exception as ex:
+                if DEBUG_TASKS:
+                    print(f"[DBG] Fallback quests: échec lecture {os.path.basename(fp)} ({ex})")
+                continue
+        if DEBUG_TASKS:
+            print(f"[DBG] Fallback quests: Objectives={len(_QUESTS_OBJ_IDX)} | Tasks={len(_QUESTS_TASK_IDX)}")
+
+
+    def _find_objective(obj_id: str) -> dict | None:
+        if not objectives_idx or not obj_id: return None
+        if isinstance(objectives_idx, dict):
+            return objectives_idx.get(obj_id) or None
+        if isinstance(objectives_idx, list):
+            for it in objectives_idx:
+                if str(it.get("ObjectiveID","")).strip() == obj_id:
+                    return it
+        # Fallback: scanner tools/quests si pas trouvé
+        _ensure_scan_quests()
+        rec = (_QUESTS_OBJ_IDX or {}).get(obj_id)
+        if rec and DEBUG_TASKS:
+            print(f"[DBG] ObjectiveID '{obj_id}' trouvé via fallback tools/quests")
+        return rec
+
+    # --- Helpers Tasks (robustes + récursifs) ---
+    def _ci_col(df: pd.DataFrame, wanted: str) -> str | None:
+        w = wanted.strip().lower()
+        for c in df.columns:
+            if str(c).strip().lower() == w: return c
+        return None
+    def _task_row(task_id: str):
+        """Retourne une ligne de Task depuis le CSV principal, ou depuis tools/quests en fallback."""
+        if tasks_df is not None:
+            col_id = _ci_col(tasks_df, 'TaskID') or _ci_col(tasks_df, 'Task Id') or _ci_col(tasks_df, 'Task')
+            if col_id:
+                col = tasks_df[col_id].astype(str).str.strip().str.strip('"').str.strip("'")
+                rows = tasks_df.loc[col == str(task_id).strip().strip('"').strip("'")]
+                if not rows.empty:
+                    return rows.iloc[0].to_dict()
+        # Fallback: chercher dans tools/quests
+        _ensure_scan_quests()
+        rec = (_QUESTS_TASK_IDX or {}).get(task_id)
+        if rec and DEBUG_TASKS:
+            print(f"[DBG] TaskID '{task_id}' trouvé via fallback tools/quests")
+        return rec
+    def _task_desc_key_from_row(row: dict) -> str | None:
+        """Renvoie la clé de locale (sans @) depuis TP_DescriptionTag, en ignorant les NaN."""
+        candidates = ("TP_DescriptionTag",)
+        for cand in candidates:
+            for k, v in row.items():
+                if str(k).strip().lower() != cand.lower():
+                    continue
+                # v peut être numpy.nan -> ne pas le convertir en "nan"
+                if v is None:
+                    continue
+                try:
+                    import numpy as _np  # déjà importé plus haut sous np, mais restons sûrs
+                    if isinstance(v, float) and _np.isnan(v):
+                        continue
+                except Exception:
+                    pass
+                s = str(v).strip()
+                if not s or s.lower() == "nan":
+                    continue
+                if s.startswith("@"):
+                    s = s[1:].strip()
+                return s.lower()
+        return None
+    def _task_subtasks(row: dict) -> list[str]:
+        out = []
+        for i in range(1, 6):
+            key = f"SubTask{i}"
+            # match insensible à la casse
+            for k, v in row.items():
+                if str(k).strip().lower() == key.lower():
+                    val = str(v or "").strip()
+                    if val: out.append(val)
+                    break
+        return out
+    def _collect_task_ids_dfs(root_task_id: str) -> list[str]:
+        """
+        Parcours en profondeur : pour chaque task, on ajoute la task
+        si elle a un TP_DescriptionTag, puis on visite ses SubTask1..5
+        dans l'ordre.
+        """
+        seen = set()
+        out: list[str] = []
+        def dfs(tid: str):
+            if not tid or tid in seen: return
+            seen.add(tid)
+            row = _task_row(tid)
+            if not row: return
+            dkey = _task_desc_key_from_row(row)
+            if dkey:
+                out.append(tid)
+            subs = _task_subtasks(row)
+            for st in subs:
+                dfs(st)
+        dfs(root_task_id)
+        return out
+    def _apply_placeholders_for_key(desc_key: str, mission_row: dict) -> tuple[str, list]:
+        # Utilise la même mécanique que la description principale
+        return _apply_placeholders(desc_key, mission_row, poi_idx, items_def, vitals_path)
+ 
+    # --- Helpers manquants pour le fallback des tasks ---
+    def _find_item_def(item_id: str, defs: dict) -> dict:
+        """Retourne l’entrée d’itemdefinitions (clé = id en minuscule) ou {}."""
+        if not item_id:
+            return {}
+        return defs.get(str(item_id).lower()) or {}
+
+    def _vitals_display_name_key(vcid: str, vitals_json_path: str) -> tuple[str, bool]:
+        """
+        Retourne (name_key_sans_@, is_named) pour une VitalsCategoryID.
+        """
+        try:
+            vitals = _get_vitals_list(vitals_json_path)
+            rec = next((r for r in vitals if str(r.get("VitalsCategoryID") or "").strip() == str(vcid).strip()), None)
+            if not rec:
+                return ("", False)
+            raw = str(rec.get("DisplayName") or "").strip()
+            if raw.startswith("@"):
+                raw = raw[1:].strip()
+            return (raw.lower(), bool(rec.get("IsNamed")))
+        except Exception:
+            return ("", False)
+
+    out_arr = []
+
+    # Stats debug
+
+    dbg_stats = {"missions":0,"obj_found":0,"taskid_found":0,"desckey_found":0,"tasks_added":0}
+    dbg_examples = []
+
+    # --- Fallback: construit une ligne de task si aucune clé de description ---
+    def _build_task_tokens_from_taskrow(task_row: dict, mission_row: dict) -> dict | None:
+        """
+        Reproduit l'esprit du Graph : génère une ligne tokenisée avec {{ITEM}}, {{POI}}, {{VC}}.
+        Retourne { "text": "...", "tokens": [...] } ou None.
+        """
+        if not isinstance(task_row, dict):
+            return None
+        tokens = []
+        text_parts = []
+
+        # Qty générique
+        qty = None
+        for col in ("TargetQty","KillEnemyQty","NumberToKill","NumToLoot","Amount","Number"):
+            q = _to_int(task_row.get(col))
+            if q and q > 0:
+                qty = q
+                break
+
+        # ITEM
+        item_id = str(task_row.get("ItemName") or task_row.get("ItemID") or "").strip()
+        if item_id:
+            # récupère déf item pour nom+icone+rareté (mêmes helpers que la desc principale)
+            item_def = _find_item_def(item_id, items_def) if 'items_def' in globals() else None
+            icon = (item_def or {}).get("icon") or ""
+            rarity = (item_def or {}).get("rarity") or ""
+            name_key = (item_def or {}).get("name_key") or ""
+            drop = task_row.get("ItemDropProbability") or task_row.get("ItemDropVC") or ""
+            drop_str = ""
+            try:
+                if str(drop).strip():
+                    dv = float(drop)
+                    drop_str = (str(int(dv)) if dv.is_integer() else str(round(dv,2))) + "%"
+            except: pass
+            qty_prefix = f"{qty}× " if qty else ""
+            tokens.append({"type":"ITEM","id":item_id,"icon":icon,"rarity":rarity,"name_key":name_key,"drop":drop_str,"qty":qty})
+            text_parts.append(f"{qty_prefix}{{{{ITEM::icon={icon}::name={name_key or item_id}::drop={drop_str}::rarity={rarity}::id={item_id}}}}}")
+
+        # POI (depuis POITag de la mission ou du task_row)
+        poi_tag = str(mission_row.get("POITagOverride") or task_row.get("POITag") or "").strip().lower()
+        if poi_tag:
+            rec = poi_tag_to_def.get(poi_tag) or poi_tag_to_def.get(poi_tag.lower())
+            if rec:
+                tid = rec.get("territoryId") or ""
+                name_key = rec.get("name_key") or ""
+                icon = rec.get("map_icon") or ""
+                elite = 1 if rec.get("elite") else 0
+                tokens.append({"type":"POI","territory_id":tid,"name_key":name_key,"icon":icon,"elite":elite})
+                text_parts.append(f"{{{{POI::icon={icon}::name={name_key}::tid={tid}}}}}")
+
+        # VC (ennemis)
+        vcid = str(mission_row.get("TaskKillContributionOverride") or task_row.get("ItemDropVC") or "").strip()
+        if vcid:
+            qty_prefix = f"{qty}× " if qty else ""
+            name_key, is_named = _vitals_display_name_key(vcid, vitals_path)
+            lvl = _to_int(mission_row.get("VCLevel"))
+            tokens.append({"type":"VC","vcid":vcid,"name_key":name_key,"qty":qty,"is_named":1 if is_named else 0,"lvl":lvl})
+            text_parts.append(f"{qty_prefix}{{{{VC::name={name_key}::qty={qty or ''}::named={1 if is_named else 0}::id={vcid}}}}}")
+
+        text = " ".join([p for p in text_parts if p])
+        if not text and not tokens:
+            return None
+        return {"text": text, "tokens": tokens}
+
+    for m in out:
+        # Title
+        title_key = m.get("TitleOverride") or ""
+        title_resolved, _toks_ignore = _apply_placeholders(title_key, m, poi_idx, items_def, vitals_path)
+        # Description
+        desc_key = m.get("DescriptionOverride") or ""
+        desc_text, desc_tokens = _apply_placeholders(desc_key, m, poi_idx, items_def, vitals_path)
+        mm = dict(m)
+        mm["title_resolved"] = title_resolved
+        mm["desc_text"] = desc_text
+        mm["desc_tokens"] = desc_tokens
+
+        # ---- Tasks: ObjectiveID -> Task -> SubTask1..5 récursif -> TP_DescriptionTag ----
+        tasks_lines = []
+        obj_id = str(m.get("ObjectiveID") or "").strip()
+        obj = _find_objective(obj_id)
+        _dbg_task_id = ""
+        _dbg_desc_key = ""
+        if obj:
+            dbg_stats["obj_found"] += 1
+            _dbg_task_id = str(obj.get("Task") or "").strip()
+            if _dbg_task_id:
+                dbg_stats["taskid_found"] += 1
+                # Collecte en profondeur des SubTask* porteurs d'une TP_DescriptionTag
+                ordered_task_ids = _collect_task_ids_dfs(_dbg_task_id)
+                for tid in ordered_task_ids:
+                    row = _task_row(tid) or {}
+                    dkey = _task_desc_key_from_row(row)
+                    if not dkey:
+                        continue
+                    _dbg_desc_key = dkey  # garde trace du dernier trouvé
+                    t_text, t_tokens = _apply_placeholders_for_key(dkey, m)
+                    # On exporte la clé pour que le front localise dans la langue choisie
+                    tasks_lines.append({"key": dkey, "text": t_text, "tokens": t_tokens})
+                if tasks_lines:
+                    dbg_stats["desckey_found"] += 1
+        if tasks_lines:
+            mm["tasks"] = tasks_lines
+            dbg_stats["tasks_added"] += 1
+
+        if DEBUG_TASKS and len(dbg_examples) < 25:
+            dbg_examples.append({
+                "MissionID": m.get("MissionID"),
+                "ObjectiveID": obj_id,
+                "obj_found": bool(obj),
+                "TaskID": _dbg_task_id,
+                "DescKey": _dbg_desc_key,
+                "tasks_count": len(tasks_lines)
+            })
+
+        # ---- Récompenses (XP, pièces, réputation, etc.) ----
+        ev_id = (m.get("SuccessGameEventIdOverride") or "").strip()
+        ge = gevents_idx.get(ev_id)
+        if ge:
+            def _to_intsafe(v):
+                try:
+                    return int(float(v))
+                except Exception:
+                    return 0
+            def _to_floatsafe(v):
+                try:
+                    return float(v)
+                except Exception:
+                    return 0.0
+
+            coins_raw = _to_floatsafe(ge.get("CurrencyReward", 0))
+            # coins dans le fichier = *10 ; on divise par 10 et on garde 2 décimales
+            coins = round(coins_raw / 10.0, 2)
+            rewards = {
+                "xp": _to_intsafe(ge.get("UniversalExpAmount", 0)),
+                "coins": coins,
+                "territoryStanding": _to_intsafe(ge.get("TerritoryStanding", 0)),
+                "reputation": _to_intsafe(ge.get("FactionReputation", 0)),
+                "tokens": _to_intsafe(ge.get("FactionTokens", 0)),
+                "azothSalt": _to_intsafe(ge.get("AzothSalt", 0)),
+                "pvpXp": _to_intsafe(ge.get("PvpXp", 0)),
+                "influence": _to_intsafe(ge.get("FactionInfluenceAmount", 0)),
+            }
+            # Ne garder que si au moins une valeur est > 0
+            if any(v for v in rewards.values()):
+                mm["rewards"] = rewards
+
+        out_arr.append(mm)
+
+    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    with open(dst, "w", encoding="utf-8") as f:
+        json.dump(out_arr, f, ensure_ascii=False)
+    print(f"[OK] missions_factions.json enrichi → {dst} ({len(out_arr)} lignes)")
+
+    # Rapport debug optionnel 
+    if DEBUG_TASKS:
+        dbg_stats["missions"] = len(out_arr)
+        dbg_payload = {"stats": dbg_stats, "examples": dbg_examples}
+        dbg_path = os.path.join("public","data","_tasks_debug.json")
+        os.makedirs(os.path.dirname(dbg_path), exist_ok=True)
+        try:
+            with open(os.path.join('public','data','_tasks_debug.json'), 'w', encoding='utf-8') as fh:
+                json.dump({"stats": dbg_stats, "examples": dbg_examples[:50]}, fh, ensure_ascii=False, indent=2)
+            print(f"[DBG] Rapport écrit → public\\data\\_tasks_debug.json  stats={dbg_stats}")
+            if dbg_stats.get("tasks_added",0) == 0 and dbg_stats.get("desckey_found",0) == 0:
+                # aide rapide: lister les 12 premières colonnes présentes
+                try:
+                    cols = list(tasks_df.columns) if tasks_df is not None else []
+                except Exception:
+                    cols = []
+                print(f"[DBG] Aucune task ajoutée (pas de clé de loc ET fallback vide). Colonnes vues: {cols[:12]}")
+        except Exception as ex:
+            print(f"[DBG] Échec d’écriture du rapport ({dbg_path}): {ex}")
+    return len(out_arr)
+
+# Exemple d’appel (adapter le chemin à ton repo) :
+# export_missions_factions(os.path.join('tools','Missions.csv'), os.path.join('tools','territories_map.json'))
 
 # ----- items.csv (optionnel) -------------------------------------------------
 # Colonnes attendues: "Name", "Item ID", "Icon Path", "Rarity"
@@ -94,6 +642,206 @@ def _cdnize_icon(path: str) -> str:
     if p.lower().endswith(".png"):
         p = p[:-4] + ".webp"
     return ("https://cdn.nw-buddy.de/nw-data/live/" + p).lower()
+
+def _norm_loc_key(s: str) -> str:
+    s = str(s or "").strip()
+    if s.startswith("@"):
+        s = s[1:].strip()
+    if (s.startswith('"') and s.endswith('"')) or (s.startswith("'") and s.endswith("'")):
+        s = s[1:-1]
+    return s.strip().lower()
+ 
+def _strip_markup(s: str) -> str:
+    """ Supprime les balises/échappements (\n, <font ...>, etc.) pour un rendu propre dans l'UI. """
+    s = str(s or "")
+    s = s.replace("\\n", " ").replace("\n", " ")
+    s = re.sub(r"</?font[^>]*>", "", s, flags=re.I)
+    s = re.sub(r"<[^>]+>", "", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+# ---------------------------------------------------------------
+#  CACHES lourds + Tokens de description : TEXT / POI / ITEM / VC
+# ---------------------------------------------------------------
+# Cache en-us.json (chargé une seule fois)
+_EN_LOCALE_CACHE: dict | None = None
+def _get_en_locale() -> dict:
+    global _EN_LOCALE_CACHE
+    if _EN_LOCALE_CACHE is None:
+        try:
+            with open(os.path.join("public","lang","en-us.json"), "r", encoding="utf-8") as f:
+                _EN_LOCALE_CACHE = json.load(f)
+        except Exception:
+            _EN_LOCALE_CACHE = {}
+    return _EN_LOCALE_CACHE
+
+# Cache du JSON des vitals (chargé une seule fois par chemin)
+_VITALS_CACHE_PATH: str | None = None
+_VITALS_CACHE_DATA: list | None = None
+def _get_vitals_list(vitals_json_path: str) -> list:
+    global _VITALS_CACHE_PATH, _VITALS_CACHE_DATA
+    if _VITALS_CACHE_PATH != vitals_json_path or _VITALS_CACHE_DATA is None:
+        try:
+            with open(vitals_json_path, "r", encoding="utf-8") as f:
+                _VITALS_CACHE_DATA = json.load(f)
+        except Exception:
+            _VITALS_CACHE_DATA = []
+        _VITALS_CACHE_PATH = vitals_json_path
+    return _VITALS_CACHE_DATA or []
+
+def _apply_placeholders(text_key: str,
+                        mission: dict,
+                        poi_index: dict,
+                        items_def: dict,
+                        vitals_json_path: str) -> tuple[str, list]:
+    """
+    Retourne (desc_text, tokens[]) en remplaçant {POITags}, {itemName}, {enemyName}
+    et en CONSERVANT le texte autour via des tokens TEXT intercalés.
+    tokens: [{type:'TEXT',text}, {type:'POI',name_key,icon,territory_id,elite}, {type:'ITEM',...}, {type:'VC',...}]
+    """
+    raw_key = _norm_loc_key(text_key)
+    if not raw_key:
+        return ("", [])
+    # Fallback en-us chargé une seule fois (cache)
+    en = _get_en_locale()
+    base = str(en.get(raw_key, raw_key))
+
+    # Prépare les métadonnées nécessaires aux tokens
+    # POI
+    poi_tag = str(mission.get("POITagOverride") or "").strip().lower()
+    poi_rec = poi_index.get(poi_tag) or {}
+    poi_name_key = str(poi_rec.get("name_key") or "")
+    poi_icon = str(poi_rec.get("map_icon") or "")
+    poi_tid  = poi_rec.get("territory_id")
+    poi_elite = bool(poi_rec.get("elite"))
+    # ITEM
+    item_id = str(mission.get("TaskHaveAndReturnItemsOverride") or "").strip()
+    idef = items_def.get(item_id.lower()) or {}
+    item_name_key = str(idef.get("name_key") or "")
+    item_icon = str(idef.get("icon") or "")
+    item_rarity = str(idef.get("rarity") or "").lower()
+    drop = (mission.get("TaskHaveAndReturnItemsDropProbabilityOverride")
+            or mission.get("TaskHaveAndReturnChestDropProbabilityOverride") or "")
+    item_drop = float(drop) if str(drop).strip().replace('.','',1).isdigit() else None
+    item_qty  = mission.get("TaskHaveAndReturnItemsQtyOverride")
+    # VC
+    vcid = str(mission.get("TaskKillContributionOverride") or "").strip()
+    qty  = mission.get("TaskKillContributionQtyOverride")
+    lvl  = mission.get("VCLevel")
+    vrec = None
+    if vcid:
+      vitals = _get_vitals_list(vitals_json_path)
+      vrec = next((r for r in vitals if str(r.get("VitalsCategoryID") or "").strip()==vcid), None)
+    vc_name_key = _norm_loc_key((vrec or {}).get("DisplayName") or "")
+    vc_is_named = bool((vrec or {}).get("IsNamed"))
+
+    # 1) Tokenisation: on découpe sur les placeholders et on insère TEXT/POI/ITEM/VC dans l'ordre
+    pattern = re.compile(r"(\{POITags\}|\{itemName\}|\{enemyName\}|\{targetName\})")
+    parts = pattern.split(base)
+    tokens: list = []
+    for part in parts:
+        if not part:
+            continue
+        if part == "{POITags}":
+            tokens.append({"type":"POI","name_key":poi_name_key,"icon":poi_icon,"territory_id":poi_tid,"elite":poi_elite})
+        elif part == "{itemName}":
+            tokens.append({"type":"ITEM","id": item_id, "name_key": item_name_key,
+                           "icon": item_icon, "rarity": item_rarity,
+                           "drop": item_drop, "qty": (int(item_qty) if (isinstance(item_qty,int) or str(item_qty).isdigit()) else None)})
+        elif part == "{enemyName}" or part == "{targetName}":
+            tokens.append({"type":"VC","vcid": vcid, "name_key": vc_name_key,
+                           "is_named": vc_is_named,
+                           "qty": qty if (isinstance(qty,int) or str(qty).isdigit()) else None,
+                           "lvl": lvl if (isinstance(lvl,int) or str(lvl).isdigit()) else None})
+        else:
+            clean = _strip_markup(part)
+            if clean:
+                tokens.append({"type":"TEXT","text": clean})
+
+    # 2) desc_text “plat” (fallback) = remplacement simple par des noms/clés
+    s = base
+    if "{POITags}" in s:
+        s = s.replace("{POITags}", f"@{poi_name_key}" if poi_name_key else "")
+    if "{itemName}" in s:
+        s = s.replace("{itemName}", f"@{item_name_key}" if item_name_key else (item_id or ""))
+    if "{enemyName}" in s:
+        s = s.replace("{enemyName}", f"@{vc_name_key}" if vc_name_key else (vcid or ""))
+    if "{targetName}" in s:
+        s = s.replace("{targetName}", f"@{vc_name_key}" if vc_name_key else (vcid or ""))
+    return (_strip_markup(s), tokens)
+
+def build_poi_index(poi_dir: str, out_path: str = os.path.join('public','data','poi_index.json')) -> int:
+    """
+    Construit un index { poitag_lower : { name_key, map_icon, territory_id, elite } }
+    depuis:
+      - javelindata_poidefinitions_*.json
+      - javelindata_areadefinitions.json  (ex: brightwood6 ...)
+    """
+    if not os.path.isdir(poi_dir):
+        print(f"[INFO] POI dir introuvable: {poi_dir}")
+        return 0
+    files_poi  = sorted(glob.glob(os.path.join(poi_dir, "javelindata_poidefinitions_*.json")))
+    file_area  = os.path.join(poi_dir, "javelindata_areadefinitions.json")
+    files = list(files_poi)
+    if os.path.isfile(file_area):
+        files.append(file_area)
+    if not files:
+        print(f"[WARN] Aucun fichier POI/Area défini dans {poi_dir}")
+        return 0
+    idx: dict[str, dict] = {}
+    total = 0
+    for fp in files:
+        try:
+            with open(fp, "r", encoding="utf-8") as f:
+                arr = json.load(f)
+        except Exception as e:
+            print(f"[WARN] Lecture impossible: {os.path.basename(fp)} ({e})")
+            continue
+        if not isinstance(arr, list):
+            continue
+        for rec in arr:
+            total += 1
+            tags = rec.get("POITag") or []
+            if isinstance(tags, str):
+                tags = [tags]
+            # un POI est "elite" si la liste des tags contient "elite"
+            elite_flag = any(str(t).strip().lower() == 'elite' for t in tags)
+            name_key = _norm_loc_key(rec.get("NameLocalizationKey") or rec.get("Name") or "")
+            raw_icon = str(rec.get("MapIcon") or "").strip()
+            icon_url = _cdnize_icon(raw_icon) if raw_icon else ""
+            # anti double-prefix éventuel
+            icon_url = re.sub(r'(https://cdn\\.nw-buddy\\.de/nw-data/live/)+', 'https://cdn.nw-buddy.de/nw-data/live/', icon_url)
+            icon_url = icon_url.replace('/https://', '/')
+            terr = rec.get("TerritoryID")
+            try:
+                terr_id = int(terr) if terr is not None and str(terr).strip() != "" else None
+            except Exception:
+                terr_id = None
+            for t in tags:
+                key = str(t or "").strip().lower()
+                if not key:
+                    continue
+                idx[key] = {
+                  "name_key": name_key,
+                  "map_icon": icon_url,
+                  "territory_id": terr_id,
+                  "elite": elite_flag
+                }
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(idx, f, ensure_ascii=False)
+    kind_poi = len(files_poi)
+    kind_area = 1 if os.path.isfile(file_area) else 0
+    print(f"[OK] poi_index.json → {out_path} ({len(idx)} tags, fichiers: poidef={kind_poi}, areadef={kind_area}, entrées scannées={total})")
+    return len(idx)
+
+# --- AUTO: index POI (pointofinterestdefinitions) ---
+try:
+    poi_dir = os.path.join('tools','pointofinterestdefinitions')
+    if os.path.isdir(poi_dir):
+        build_poi_index(poi_dir)
+except Exception as _ex:
+    print(f"[WARN] poi_index.json non généré ({_ex})")
 
 def load_item_definitions(path_or_dir: str | None) -> dict[str, dict]:
     """
@@ -687,10 +1435,10 @@ def _extract_tp_tags_from_row(row: dict) -> list[str]:
 ############################################
 
 items_csv_path = sys.argv[2] if len(sys.argv) >= 3 and sys.argv[2] else None
-# Peut être un CSV unique OU un dossier contenant des ObjectiveTasksDataManager_*.csv
 objective_tasks_path = sys.argv[3] if len(sys.argv) >= 4 and sys.argv[3] else "ObjectiveTasksDataManager.csv"
 meta_csv_path = sys.argv[7] if len(sys.argv) >= 8 and sys.argv[7] else None
-territory_map_path = sys.argv[8] if len(sys.argv) >= 9 and sys.argv[8] else None
+# argv[9] = 10e argument -> territories_map.json (aligne avec ta commande)
+territory_map_path = sys.argv[9] if len(sys.argv) >= 10 else None
 
 
 
@@ -933,7 +1681,7 @@ def _format_percent(p) -> str:
         s = str(p).strip()
         return s if s.endswith('%') else (s + '%')
 
-def _apply_placeholders(txt: str, row: dict) -> str:
+def _apply_placeholders_tasktext(txt: str, row: dict) -> str:
     """
     Remplace {POITags}, {itemName}, {targetName} dans 'txt' à partir des colonnes de 'row'.
     Pour {itemName}, on injecte un token spécial lisible par le front :
@@ -1059,7 +1807,7 @@ def _collect_desc_texts(row: dict, visited: set[str]) -> list[str]:
         tag = str(row.get('TP_DescriptionTag') or '').strip()
         if tag:
             base = _locale_get(tag) if locale_map else tag
-            out.append(_apply_placeholders(base, row))
+            out.append(_apply_placeholders_tasktext(base, row))
     for cid in _iter_subtask_ids(row):
         child = task_index.get(cid)
         if child:
@@ -2049,3 +2797,12 @@ else:
 print(f"[INFO] ObjectiveTasks source: {objective_tasks_path}")
 if locale_arg:
     print(f"[INFO] Locales utilisées: {', '.join(_lang_key_from_path(p) for p in locale_files)}")
+
+
+# --- AUTO (après toutes les définitions) : génère missions_factions.json si tools/Missions.csv existe ---
+try:
+    _auto_missions = os.path.join('tools','Missions.csv')
+    if os.path.isfile(_auto_missions):
+        export_missions_factions(_auto_missions, os.path.join('tools','territories_map.json'))
+except Exception as _ex:
+    print(f"[WARN] missions_factions.json non généré automatiquement ({_ex})")

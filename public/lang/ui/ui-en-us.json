@@ -144,8 +144,38 @@
     "ui.filters.status.ongoing": "Ongoing",
     "ui.filters.status.not_started": "Not started",
 
-    "ui.artifacts.perks.unique": "Unique perk",
-    "ui.artifacts.perks.p2": "Perk 2",
-    "ui.artifacts.perks.p3": "Perk 3",
-    "ui.artifacts.perks.p4": "Perk 4"
+    "ui.description": "Description",
+    "ui.factions.loading": "Loading faction missions…",
+    "ui.confirm.reset.factions": "Reset faction positions? This will remove all your manual moves.",
+    "ui.factions.help.title": "Factions — Help",
+    "ui.factions.help.howto": "How to use this view",
+    "ui.factions.help.reorder": "Drag cards to rearrange them (disabled when “Lock” 🔒 is on).",
+    "ui.factions.help.multiselect": "Hold right-click to select multiple cards and move them together.",
+    "ui.factions.help.tipSearch": "Use the searchbar to navigate to a mission, by name or ID.",
+    "ui.factions.help.tipLinks": "You can click on mission items/mobs/zones to go to their NWDB / NW-Buddy pages.",
+    "ui.factions.help.tasks": "Open “Tasks (x)” under the description to see mission steps with the same badge system.",
+    "ui.factions.help.border": "Cards may have a yellow border for Expeditions and red for Elite.",
+    "ui.factions.help.prob": "The bottom-right panel shows probabilities by mission type (requires Faction + Zone + Level), plus Expedition and Elite rates.",
+    "ui.badges.levelRange.title": "Required level range",
+    "ui.badges.tradeskill.title": "Tradeskill requirement",
+    "ui.rewards.xp": "Experience",
+    "ui.rewards.coins": "Coins",
+    "ui.rewards.territoryStanding": "Territory Standing",
+    "ui.rewards.reputation": "Faction Reputation",
+    "ui.rewards.tokens": "Faction Tokens",
+    "ui.rewards.azothSalt": "Azoth Salt",
+    "ui.rewards.pvpXp": "PvP XP",
+    "ui.rewards.influence": "Faction Influence",
+    
+    "ui.factions.filters.faction": "Faction:",
+    "ui.factions.filters.zone": "Zone:",
+    "ui.factions.filters.level": "Level:",
+    "ui.factions.filters.any": "Any",
+
+    "ui.factions.prob.title": "Probabilities",
+    "ui.factions.prob.selectAll": "Choose Faction + Zone + Level to see the probabilities",
+    "ui.factions.prob.none": "No matching missions",
+    "ui.factions.prob.expedition": "Expedition",
+    "ui.factions.prob.elite": "Elite"
+
   }

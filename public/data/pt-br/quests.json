@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-09-14T15:10:16.213865Z",
+  "generated_at": "2025-09-22T14:18:38.468926Z",
   "quest_count": 730,
   "edge_count": 679,
   "quests": [
@@ -60283,10 +60283,10 @@
       "achievement_id": "12_Quest_Housing_2",
       "required_achievements_expr": "S_downpayment",
       "prerequisites": [
-        "1225_0101_downpayment_FL",
         "1225_0101_downpayment_MB",
         "1225_0101_downpayment_EF",
-        "1225_0101_downpayment_WW"
+        "1225_0101_downpayment_WW",
+        "1225_0101_downpayment_FL"
       ],
       "not_prerequisites": [],
       "repeatable": false,

@@ -1,0 +1,14 @@
+[
+	{
+		"NPCId": "0623_Fisher",
+		"Title": "@0623_Fisher_title",
+		"GenericName": "@0623_Fisher",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "0699_Barkimedes",
+		"Title": "@0699_Barkimedes_title",
+		"GenericName": "@0699_Barkimedes",
+		"ConversationStateId1": "0000_Old_Data"
+	}
+]

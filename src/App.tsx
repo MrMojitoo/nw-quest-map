@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar'
 import CharacterTabs from './components/CharacterTabs'
 import SearchBar from './components/SearchBar'
 import Artifacts from './components/Artifacts'
+import Factions from './components/Factions'
 import useStore from './store'
 import './styles.css'
 
@@ -91,7 +92,7 @@ export default function App() {
   }, [lang])
  
   // --- Modern language popover ---
-  const [tab, setTab] = useState<'quests'|'artifacts'>('quests')
+  const [tab, setTab] = useState<'quests'|'artifacts'|'factions'>('quests')
 
   const LANGS = [
     { code: 'en-us', cc: 'us', label: 'EN', name: 'English' },
@@ -246,7 +247,18 @@ export default function App() {
 
     'ui.card.tasks': 'Tasks',
     'ui.card.markDone': 'Mark as completed',
-    'ui.card.markUndone': 'Mark as not completed'
+    'ui.card.markUndone': 'Mark as not completed',
+
+    // Factions tab
+    'ui.factions.tab': 'Factions',
+    'ui.factions.help.title': 'How to use (Factions)',
+    'ui.factions.help.reorder': 'Drag cards to rearrange (disabled when “Lock” 🔒 is enabled).',
+    'ui.factions.help.multiselect': 'Hold right-click to select multiple cards and move them together.',
+    'ui.factions.filters.faction': 'Faction:',
+    'ui.factions.filters.zone': 'Zones:',
+    'ui.factions.reset': 'Reset positions (Factions)',
+    'ui.factions.loading': 'Loading faction missions…',
+    'ui.factions.error': 'Unable to load faction missions.',
   }
   const [uiMap, setUiMap] = useState<Record<string, string>>({})
   useEffect(() => {
@@ -314,6 +326,9 @@ export default function App() {
             </button>
             <button className={`tab tab-artifacts ${tab==='artifacts'?'active':''}`} onClick={openArtifacts}>
               {t('ui.tabs.artifacts','Artifacts')}
+            </button>
+            <button className={`tab tab-factions ${tab==='factions'?'active':''}`} onClick={()=>setTab('factions')}>
+            {t('ui.factions.tab','Factions')}
             </button>
           </nav>
           {/* CENTRE : Lang + Search (même colonne) */}
@@ -399,8 +414,10 @@ export default function App() {
               <Graph quests={data.quests} lang={lang} />
               <Sidebar lang={lang} />
             </>
-          ) : (
+          ) : tab === 'artifacts' ? (
             <Artifacts lang={lang} artifacts={artifacts} error={artifactsErr} />
+          ) : (
+            <Factions lang={lang} />
           )}
         </section>
         <footer className="footer">

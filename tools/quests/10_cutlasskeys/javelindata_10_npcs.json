@@ -1,0 +1,156 @@
+[
+	{
+		"NPCId": "1001_Watcher",
+		"Title": "@1001_Watcher_title",
+		"GenericName": "@1001_Watcher",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1002_Magistrate",
+		"Title": "@1002_Magistrate_title",
+		"GenericName": "@1002_Magistrate",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1003_Survivalist",
+		"Title": "@1003_Survivalist_title",
+		"GenericName": "@1003_Survivalist",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1004_Overseer",
+		"Title": "@1004_Overseer_title",
+		"GenericName": "@1004_Overseer",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1005_Artificer",
+		"Title": "@1005_Artificer_title",
+		"GenericName": "@1005_Artificer",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1008_Alchemist",
+		"Title": "@1008_Alchemist_title",
+		"GenericName": "@1008_Alchemist",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1009_Adjudicator",
+		"Title": "@1009_Adjudicator_title",
+		"GenericName": "@1009_Adjudicator",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1010_Barkeep",
+		"Title": "@1010_Barkeep_title",
+		"GenericName": "@1010_Barkeep",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1011_Stranger",
+		"GenericName": "@1011_Stranger",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1022_Innkeep",
+		"Title": "@1022_Innkeep_title",
+		"GenericName": "@1022_Innkeep",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1023_Fisher",
+		"Title": "@1023_Fisher_title",
+		"GenericName": "@1023_Fisher",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1030_Tamer",
+		"Title": "@1030_Tamer_title",
+		"GenericName": "@1030_Tamer",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1031_SwampWalker",
+		"Title": "@1031_SwampWalker_title",
+		"GenericName": "@1031_SwampWalker",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1032_Watcher",
+		"Title": "@1032_Watcher_title",
+		"GenericName": "@1032_Watcher",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1033_TreasureHunter",
+		"Title": "@1033_TreasureHunter_title",
+		"GenericName": "@1033_TreasureHunter",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1034_Navigator",
+		"Title": "@1034_Navigator_title",
+		"GenericName": "@1034_Navigator",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1035_Chef",
+		"Title": "@1035_Chef_title",
+		"GenericName": "@1035_Chef",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1027_Commander",
+		"Title": "@1027_Commander_title",
+		"GenericName": "@1027_Commander",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "Dungeon_BrokenLever",
+		"GenericName": "@Dungeon_BrokenLever",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "Dungeon_CutlassKeys00_Scalleywag_00",
+		"Title": "@Dungeon_CutlassKeys00_Scalleywag_title",
+		"GenericName": "@Dungeon_CutlassKeys00_Scalleywag",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "Dungeon_CutlassKeys00_Scalleywag_01",
+		"Title": "@Dungeon_CutlassKeys00_Scalleywag_title",
+		"GenericName": "@Dungeon_CutlassKeys00_Scalleywag",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "Dungeon_CutlassKeys00_Mariner_00",
+		"Title": "@Dungeon_CutlassKeys00_Mariner_title",
+		"GenericName": "@Dungeon_CutlassKeys00_Mariner",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "Dungeon_CutlassKeys00_Mariner_01",
+		"Title": "@Dungeon_CutlassKeys00_Mariner_title",
+		"GenericName": "@Dungeon_CutlassKeys00_Mariner",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1036_WallyWiddershins",
+		"Title": "@1036_WallyWiddershins_title",
+		"GenericName": "@1036_WallyWiddershins",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1037_RowanPennbrook",
+		"Title": "@1037_RowanPennbrook_title",
+		"GenericName": "@1037_RowanPennbrook",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "1038_QuiggleyQuorus",
+		"Title": "@1038_QuiggleyQuorus_title",
+		"GenericName": "@1038_QuiggleyQuorus",
+		"ConversationStateId1": "0000_Old_Data"
+	}
+]

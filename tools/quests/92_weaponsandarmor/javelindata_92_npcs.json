@@ -1,0 +1,50 @@
+[
+	{
+		"NPCId": "9201_Cleric",
+		"Title": "@9201_Cleric_Title",
+		"GenericName": "@9201_Cleric",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "9204_Executioner",
+		"Title": "@9204_Executioner_Title",
+		"GenericName": "@9204_Executioner",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "9205_Blademaster",
+		"Title": "@9205_Blademaster_Title",
+		"GenericName": "@9205_Blademaster",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "9202_Hunter",
+		"Title": "@9202_Hunter_Title",
+		"GenericName": "@9202_Hunter",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "9203_FirePriest",
+		"Title": "@9203_FirePriest_Title",
+		"GenericName": "@9203_FirePriest",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "9206_Guardian",
+		"Title": "@9206_Guardian_Title",
+		"GenericName": "@9206_Guardian",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "9207_Rogue",
+		"Title": "@9207_Rogue_Title",
+		"GenericName": "@9207_Rogue",
+		"ConversationStateId1": "0000_Old_Data"
+	},
+	{
+		"NPCId": "9208_Shaman",
+		"Title": "@9208_Shaman_Title",
+		"GenericName": "@9208_Shaman",
+		"ConversationStateId1": "0000_Old_Data"
+	}
+]

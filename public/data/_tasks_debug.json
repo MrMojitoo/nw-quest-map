@@ -1,0 +1,211 @@
+{
+  "stats": {
+    "missions": 2921,
+    "obj_found": 2534,
+    "taskid_found": 2534,
+    "desckey_found": 2534,
+    "tasks_added": 2534
+  },
+  "examples": [
+    {
+      "MissionID": "FM_Raid_0201",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0202",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0203",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0204",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0205",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0206",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0207",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0208",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0209",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0210",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0211",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0212",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0213",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0215",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0216",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0217",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0218",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0219",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0220",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0221",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0222",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0223",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0224",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0225",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    },
+    {
+      "MissionID": "FM_Raid_0226",
+      "ObjectiveID": "FM_killx_location",
+      "obj_found": true,
+      "TaskID": "FM_task_kill_X_enemies_container_location",
+      "DescKey": "objective_mission_task_desc_return_to_giver",
+      "tasks_count": 2
+    }
+  ]
+}

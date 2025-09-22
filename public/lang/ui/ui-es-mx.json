@@ -137,6 +137,40 @@
   "ui.artifacts.perks.unique": "Ventaja única",
   "ui.artifacts.perks.p2": "Ventaja 2",
   "ui.artifacts.perks.p3": "Ventaja 3",
-  "ui.artifacts.perks.p4": "Ventaja 4"
+  "ui.artifacts.perks.p4": "Ventaja 4",
+  
+  "ui.description": "Descripción",
+  "ui.factions.loading": "Cargando misiones de facción…",
+  "ui.confirm.reset.factions": "¿Restablecer posiciones de facción? Esto eliminará todos tus movimientos manuales.",
+  "ui.factions.help.title": "Facciones — Ayuda",
+  "ui.factions.help.howto": "Cómo usar esta vista",
+  "ui.factions.help.reorder": "Arrastra las tarjetas para acomodarlas (se desactiva cuando “Bloquear” 🔒 está activo).",
+  "ui.factions.help.multiselect": "Mantén presionado el clic derecho para seleccionar varias tarjetas y moverlas juntas.",
+  "ui.factions.help.tipSearch": "Usa la barra de búsqueda para ir a una misión por nombre o ID.",
+  "ui.factions.help.tipLinks": "Puedes hacer clic en objetos/enemigos/zonas para abrir sus páginas de NWDB / NW-Buddy.",
+  "ui.factions.help.tasks": "Abre «Tareas (x)» debajo de la descripción para ver los pasos con el mismo sistema de insignias.",
+  "ui.factions.help.border": "Borde amarillo para Expediciones y rojo para Élite.",
+  "ui.factions.help.prob": "El panel inferior derecho muestra probabilidades por tipo (requiere Facción + Zona + Nivel), y tasas de Expedición/Élite.",
+  "ui.badges.levelRange.title": "Rango de nivel requerido",
+  "ui.badges.tradeskill.title": "Requisito de oficio",
+  "ui.rewards.xp": "Experiencia",
+  "ui.rewards.coins": "Monedas",
+  "ui.rewards.territoryStanding": "Prestigio de territorio",
+  "ui.rewards.reputation": "Reputación de facción",
+  "ui.rewards.tokens": "Fichas de facción",
+  "ui.rewards.azothSalt": "Sal de Azoth",
+  "ui.rewards.pvpXp": "EXP de JcJ",
+  "ui.rewards.influence": "Influencia de facción",
+  
+  "ui.factions.filters.faction": "Facción:",
+  "ui.factions.filters.zone": "Zona:",
+  "ui.factions.filters.level": "Nivel:",
+  "ui.factions.filters.any": "Cualquiera",
+
+  "ui.factions.prob.title": "Probabilidades",
+  "ui.factions.prob.selectAll": "Elige Facción + Zona + Nivel para ver las probabilidades",
+  "ui.factions.prob.none": "No hay misiones coincidentes",
+  "ui.factions.prob.expedition": "Expedición",
+  "ui.factions.prob.elite": "Élite"
 
 }

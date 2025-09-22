@@ -80,6 +80,19 @@ body { background: linear-gradient(180deg, #0b0f14, #0d1117); color: var(--text)
   transform: scale(1.06);
 }
 
+/* Factions: teal/emerald */
+.tab-factions{
+  background: linear-gradient(180deg,#0f766e,#059669);
+  color:#fff;
+}
+.tab-factions:hover{ filter: brightness(1.08); }
+.tab-factions.active{
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,.85),
+    0 10px 22px rgba(0,0,0,.32);
+  transform: scale(1.06);
+}
+
 .brand{
   /* Titre + sous-titre en colonne, logo à gauche via ::before */
   display:grid;
@@ -350,9 +363,24 @@ body { background: linear-gradient(180deg, #0b0f14, #0d1117); color: var(--text)
   border: 1px solid var(--border);
   background: #0f1729;
   font-size: 12px;
-  min-width: 56px;                 /* largeur fixe pour stabiliser l'alignement */
+  min-width: auto;                 /* largeur fixe pour stabiliser l'alignement */
   justify-content: flex-end;       /* chiffres alignés à droite */
   font-variant-numeric: tabular-nums; /* largeur fixe par chiffre */
+}
+
+/* Version compacte des tags "faction/zone/type" dans les cartes */
+.node-card .tag--meta{
+  font-size: 10.5px;   /* plus petit */
+  padding: 1px 6px;    /* plus fin */
+  gap: 4px;            /* espace interne réduit */
+  line-height: 1.05;
+}
+/* Version compacte pour Lvl & Tradeskill */
+.node-card .tag--req{
+  font-size: 10.5px;
+  padding: 1px 6px;
+  gap: 4px;
+  line-height: 1.05;
 }
 
 .toolbar-row{
@@ -364,7 +392,80 @@ body { background: linear-gradient(180deg, #0b0f14, #0d1117); color: var(--text)
 }
 .toolbar-label{ margin-right:4px; opacity:.85; font-weight:600; }
 
+
 .filters { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+
+/* --- Barre de filtres moderne --- */
+.filters-modern{
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  background: rgba(17,24,38,0.75);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.28);
+  padding: 6px;
+}
+.filter-group{
+  display: grid;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+}
+.filter-label{
+  font-size: 12px;
+  color: var(--muted);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.legend-dot{
+  width: 10px; height: 10px; border-radius: 999px; display: inline-block;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.08) inset;
+}
+.filter-select{
+  appearance: none;
+  background: #0c1524;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px 30px 6px 10px;
+  font-size: 12px;
+  line-height: 1.1;
+  min-width: 160px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #9fb1c7 50%),
+    linear-gradient(135deg, #9fb1c7 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 12px) 50%;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+/* Version étroite uniquement pour le sélecteur de Level */
+.filter-select--level{
+  min-width: 60px;
+  padding-right: 24px;
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 8px) 50%;
+}
+.filter-select:focus{
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(70,166,255,0.15);
+}
+.filter-sep{
+  width: 1px;
+  margin: 0 6px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.15), transparent);
+}
+
+/* Essayez de colorer les options (support variable selon navigateur) */
+select.filter-select option{
+  /* Ces styles sont respectés par Chrome/Edge dans la plupart des cas */
+  padding: 4px 8px;
+}
 .toggle{
   background:#0b1220;
   color:#b7c6db;
@@ -470,10 +571,27 @@ body { background: linear-gradient(180deg, #0b0f14, #0d1117); color: var(--text)
 }
 
 .node-card { background: #0f172a; border: 1px solid var(--border); border-radius: 12px; color: var(--text); padding: 8px; min-width: 220px; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
-.node-card { max-width: 300px; cursor: grab;} 
-/* nécessaire pour l’overlay + isolation peinture pour limiter les repaints */
-.node-card { position: relative; }
-
+.node-card { max-width: 300px; cursor: grab; }
+/* Calque bg derrière + contenu au-dessus */
+.node-card { position: relative; overflow: hidden; isolation: isolate; }
+.node-card__bg{
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: .45;       /* transparence : ajuste ici */
+  pointer-events: none;
+  z-index: 0;         /* derrière */
+}
+.node-card__content{ position: relative; z-index: 1; }  /* au-dessus du bg */
+/* Mise en évidence quand une carte est ciblée par la recherche */
+.node-card--highlight{
+  outline: 2px solid #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245,158,11,.35);
+  transition: box-shadow .2s ease, outline-color .2s ease;
+}
 .node-card .title { font-weight: 700; font-size: 20px; line-height: 1.1; }
 .node-card .meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; color: var(--muted); font-size: 12px; }
 .node-card .zone { height: 6px; border-radius: 4px; margin-bottom: 6px; }
@@ -562,6 +680,16 @@ body { background: linear-gradient(180deg, #0b0f14, #0d1117); color: var(--text)
   display: inline-block;
   object-fit: contain;
   vertical-align: middle;
+}
+
+/* Centrer la ligne de rewards dans la carte */
+.node-card .rewards-inline{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  text-align: center;
 }
 
 /* ===== Badge complet pour l'item reward (fond  bordure  arrondis) ===== */
@@ -903,7 +1031,7 @@ input.search__input:focus{
 
 /* ===== Tasks (brut / auto-généré depuis ObjectiveTasks) ===== */
 .node-card .tasks-raw {
-  margin-top: 10px;
+  margin-top: 4px;
   border-top: 1px dashed var(--border);
   padding-top: 8px;
 }
@@ -998,6 +1126,31 @@ input.search__input:focus{
   border-radius: 999px;
 }
 
+/* --- Rewards (entre pointillés) pour Factions --- */
+.rewards-inline{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:2px;              
+  margin:6px 0 2px;     
+  padding:4px 0 2px;
+  border-top:1px dashed var(--border);   /* ligne au-dessus des rewards */
+}
+.rewards-inline .task-item {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  font-size: 10px;        
+  height: 18px;            
+  line-height: 18px;
+  padding: 0 3px;  
+  gap: 0px;      
+  border-radius: 9999px;
+}
+.rewards-inline .reward-icon{
+  width:11px; height:11px;
+  border-radius:3px; object-fit:cover;
+}
+
 /* -------- Tasks layout & badges -------- */
 .task-line{
   display:inline;           /* pas de flex ici -> flux naturel */
@@ -1020,6 +1173,20 @@ input.search__input:focus{
 }
 .task-item__name{ line-height:1; }
 
+.factions-tab{
+  /* Hauteur / “épaisseur” du badge POI */
+  --poi-badge-height: 24px;
+  /* Épaisseur de bordure du badge */
+  --poi-badge-border-w: 1px;
+}
+
+/* Le conteneur force un retour à la ligne et centre le badge */
+.factions-tab .poi-center{
+  flex-basis: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 /* POI badge (cliquable) */
 .poi-badge{
   text-decoration:none;
@@ -1028,6 +1195,28 @@ input.search__input:focus{
   border-color:rgba(70,166,255,0.35);
   color:#fff;                 /* lien blanc */
   overflow:visible;           /* laisse l’icône dépasser si besoin */
+  transition: border-color .15s ease, box-shadow .15s ease, transform .06s ease;
+  box-shadow: 0 0 0 0 rgba(70,166,255,0);
+  /* Aligne proprement avec le texte environnant */
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;          /* <-- évite l’effet “remonté” */
+  min-height: var(--poi-badge-height);
+  height: var(--poi-badge-height);
+  line-height: var(--poi-badge-height); /* texte centré dans le badge */
+  border-width: var(--poi-badge-border-w);
+}
+
+/* Taille de l’icône liée à la hauteur pour garder l’effet “zoom” */
+.factions-tab .poi-badge .reward-icon{
+  width: var(--poi-badge-height);
+  height: var(--poi-badge-height);
+  object-fit: cover;
+  vertical-align: middle;
+}
+/* Quand le badge POI apparaît en ligne dans la description */
+.tasks-raw .poi-badge{
+  vertical-align: middle;
 }
 .poi-badge:hover,
 .poi-badge:visited,
@@ -1035,6 +1224,18 @@ input.search__input:focus{
   color:#fff;                 /* garde le texte blanc à l’état hover/visited/focus */
   background:rgba(70,166,255,0.18);
   border-color:rgba(70,166,255,0.5);
+  box-shadow: 0 0 0 2px rgba(70,166,255,0.25);
+}
+/* Variante ELITE : bordure rouge + surbrillance rouge au hover */
+.poi-badge.elite{
+  border-color:#ef4444;
+  background:rgba(239,68,68,0.12);
+}
+.poi-badge.elite:hover,
+.poi-badge.elite:focus-visible{
+  border-color:#f87171;
+  box-shadow: 0 0 0 2px rgba(239,68,68,0.28);
+  background:rgba(239,68,68,0.16);
 }
 
 /* Icône plus grande dans le badge POI */
@@ -1056,6 +1257,7 @@ input.search__input:focus{
   min-width: 1ch;
   text-align: right;
   font-weight: 600;
+  margin-right: 8px;
 }
 /* Task focus (clic) : liseré blanc qui ressort bien */
 .art-card.artifact-quest-focus {
@@ -1082,6 +1284,12 @@ input.search__input:focus{
   color: #fff;
   text-decoration: none;
 }
+/* quantité & (Lvl) plus foncés dans le badge VC */
+.vc-badge .target-qty{
+  color: #c7c6c6;                /* slate-300 sur fond sombre → plus "foncé" que blanc */
+  font-weight: 800;
+}
+.vc-badge .target-lvl{ margin-left: 10px; color: #aaaaaa; font-weight: 600 }
 
 .reward-icon{
   width:16px; height:16px;
@@ -1100,6 +1308,14 @@ input.search__input:focus{
   border:1px solid rgba(255,255,255,0.2);
   background:rgba(255,255,255,0.08);
   vertical-align:middle;
+}
+
+/* quantité affichée en tête du badge d'item (ex: "3× ") */
+.task-item .item-qty{
+  display:inline-block;
+  margin-right: 4px;
+  color: #ffffff;                /* plus foncé que le texte principal */
+  font-weight: 800;
 }
 
 /* Liste Tasks avec tirets custom + espacements propres */
@@ -1770,4 +1986,95 @@ input.search__input:focus{
 }
 .art-card .vc-badge.vc-named {
   box-shadow: inset 0 0 0 1px var(--dropcolor, rgba(255,255,255,0.2));
+}
+
+/* ----- VC badges: enlever tout soulignage (tous états) ----- */
+.vc-badge,
+.vc-badge:link,
+.vc-badge:visited,
+.vc-badge:hover,
+.vc-badge:active,
+.vc-badge:focus,
+.vc-badge:focus-visible{
+  text-decoration: none !important;
+}
+
+/* --- Calque d'image de fond pour les cartes de missions --- */
+.node-card__bg{
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: .35;       /* transparence moyenne */
+  pointer-events: none;
+  z-index: 0;
+}
+
+ 
+/* --- Panel Probabilités --- */
+.prob-panel{
+  position:absolute;
+  right: 12px;
+  bottom: 35px;
+  z-index: 8;
+  width: 360px;
+  background:#0b1220;
+  border:1px solid #1e293b;
+  border-radius:8px;
+  box-shadow:0 10px 26px rgba(0,0,0,.38);
+  padding:10px 12px;
+  color:#e2e8f0;
+  font-size:15px;
+}
+.prob-title{
+  font-weight:700;
+  font-size:18px;
+  margin-bottom:8px;
+  opacity:.9;
+}
+.prob-empty{ opacity:.7; }
+.prob-list{ list-style:none; margin:0; padding:0; }
+.prob-row{
+  display:grid;
+  grid-template-columns: 1fr 8ch 8ch;
+  gap: 8px;
+  align-items: center;
+  padding:4px 0;
+  font-variant-numeric: tabular-nums;  
+}
+.prob-left{ display:flex; align-items:center; gap:8px; min-width:0; }
+.prob-dot{ width:12px; height:12px; border-radius:999px; display:inline-block; }
+.prob-type{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+/* On “déplie” la zone droite pour que ses enfants occupent les 2 dernières colonnes de la grille */
+.prob-right{ display: contents; }
+.prob-pct{
+  justify-self: end;     
+  font-weight:800;
+}
+.prob-count{
+  justify-self: end; 
+  opacity:.7;
+}
+
+/* Sous-section Expédition/Elite */
+.prob-extra{
+  border-top: 1px dashed var(--border);
+  margin-top: 8px;
+  padding-top: 8px;
+}
+.prob-subtitle{
+  font-size: 13px;
+  font-weight: 700;
+  opacity: .9;
+  margin-bottom: 4px;
+}
+.prob-extra-row{
+  display:grid;
+  grid-template-columns: 1fr 8ch 8ch;
+  gap: 8px;
+  align-items:center;
+  padding: 3px 0;
+  font-variant-numeric: tabular-nums;
 }
