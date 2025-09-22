@@ -12,6 +12,14 @@ import { LocaleContext } from '../App'
 const withBase = (p: string) =>
   (import.meta.env.BASE_URL + String(p || '').replace(/^\//, '')).replace(/([^:]\/)\/+/g, '$1')
 
+// met toutes les clés d’un objet en minuscules (utile pour les fichiers de langue)
+const lowerKeys = (obj: any) => {
+  const out: Record<string, string> = {}
+  if (!obj || typeof obj !== 'object') return out
+  for (const [k, v] of Object.entries(obj)) out[String(k).toLowerCase()] = String(v)
+  return out
+}
+
 type Mission = {
   MissionID: string
   ObjectiveID?: string
@@ -517,25 +525,39 @@ function FactionsInner({ lang }: { lang: string }) {
       .catch(()=>setTerritories({}))
   }, [])
  
-  // Fallback EN (si locale n’expose pas les clés en anglais)
+
+  // Fallback EN fusionné (UI + gros dictionnaire du jeu)
   const [enLocale, setEnLocale] = React.useState<Record<string,string>>({})
   React.useEffect(() => {
     let cancelled = false
-    const tryLoad = async () => {
-      const paths = ['/lang/ui/ui-en-us.json','/lang/en-us.json'].map(withBase)
-      for (const p of paths) {
-        try {
-          const r = await fetch(p)
-          if (!r.ok) continue
-          const j = await r.json()
-          if (!cancelled) setEnLocale(j || {})
-          return
-        } catch {}
-      }
+    const loadJson = async (path: string) => {
+      try { const r = await fetch(withBase(path)); if (!r.ok) return {}; return await r.json() } catch { return {} }
     }
-    tryLoad()
+    ;(async () => {
+      const ui   = lowerKeys(await loadJson('/lang/ui/ui-en-us.json'))
+      const game = lowerKeys(await loadJson('/lang/en-us.json'))
+      // priorité aux clés UI si collision
+      const merged = { ...game, ...ui }
+      if (!cancelled) setEnLocale(merged)
+    })()
     return () => { cancelled = true }
   }, [])
+
+  // Dictionnaire "gros" de la langue courante (fr-fr, es-es, …)
+  const [gameLocale, setGameLocale] = React.useState<Record<string,string>>({})
+  React.useEffect(() => {
+    let cancelled = false
+    const load = async () => {
+      try {
+        const r = await fetch(withBase(`/lang/${(lang || 'en-us').toLowerCase()}.json`))
+        if (!r.ok) return
+        const j = await r.json()
+        if (!cancelled) setGameLocale(lowerKeys(j))
+      } catch {}
+    }
+    load()
+    return () => { cancelled = true }
+  }, [lang])
  
   // --- POI index (tag -> { name_key, map_icon, territory_id }) ---
   const [poiIndex, setPoiIndex] = React.useState<Record<string, {name_key?:string; map_icon?:string; territory_id?:number; elite?:boolean}>>({})
@@ -550,10 +572,11 @@ function FactionsInner({ lang }: { lang: string }) {
   const locGet = React.useCallback((key?: string) => {
     if (!key) return ''
     const k = String(key).trim().replace(/^@/,'').toLowerCase()
-    const a = (locale && locale[k]) || (locale && locale[String(key).toLowerCase()])
-    const b = (enLocale && enLocale[k]) || (enLocale && enLocale[String(key).toLowerCase()])
-    return String(a ?? b ?? '')
-  }, [locale, enLocale])
+    const a = locale ? (locale[k] ?? locale[String(key).toLowerCase()]) : undefined
+    const c = gameLocale ? (gameLocale[k] ?? gameLocale[String(key).toLowerCase()]) : undefined
+    const b = enLocale ? (enLocale[k] ?? enLocale[String(key).toLowerCase()]) : undefined
+    return String(a ?? c ?? b ?? '')
+  }, [locale, gameLocale, enLocale])
 
   // Resolve POI (nom + icône + URL NWDB) pour une mission
   const resolvePoi = React.useCallback((m: Mission) => {
@@ -819,11 +842,12 @@ function FactionsInner({ lang }: { lang: string }) {
     const key = String(tid)
     const slug = territories[key]
     if (!slug) return ''
-    // 1) locale courante (si dispo), 2) fallback en-us.json, 3) slug brut
+    // 1) UI courante (si elle les contient), 2) gros dictionnaire courant, 3) EN fusionné, 4) slug brut
     const locA = locale ? (locale[slug] || locale[slug.toLowerCase()]) : undefined
+    const locC = gameLocale ? (gameLocale[slug] || gameLocale[slug.toLowerCase()]) : undefined
     const locB = enLocale ? (enLocale[slug] || enLocale[slug.toLowerCase()]) : undefined
-    return String(locA ?? locB ?? slug)
-  }, [territories, locale, enLocale])
+    return String(locA ?? locC ?? locB ?? slug)
+  }, [territories, locale, gameLocale, enLocale])
   
   const zoneSlugFromId = React.useCallback((tid: string | number | undefined) => {
     if (tid === undefined || tid === null) return undefined
