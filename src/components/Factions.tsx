@@ -395,7 +395,7 @@ function FactionsInner({ lang }: { lang: string }) {
         }
       } catch {}
       // 2) Fallback CSV (si tu n'as pas relancé le convert)
-      const csvPaths = ['/tools/Missions.csv', '/data/Missions.csv', '/Missions.csv'].map(withBase)
+      const csvPaths = ['/data/Missions.csv', '/Missions.csv'].map(withBase)
       for (const p of csvPaths) {
         try {
           const r2 = await fetch(p)
@@ -511,7 +511,7 @@ function FactionsInner({ lang }: { lang: string }) {
   // --- Chargement mapping territoires -> slug (puis libellé via locale) ---
   const [territories, setTerritories] = React.useState<Record<string,string>>({})
   React.useEffect(() => {
-    fetch(withBase('/tools/territories_map.json'))
+    fetch(withBase('/data/territories_map.json'))
       .then(r => r.json())
       .then(setTerritories)
       .catch(()=>setTerritories({}))
@@ -522,7 +522,7 @@ function FactionsInner({ lang }: { lang: string }) {
   React.useEffect(() => {
     let cancelled = false
     const tryLoad = async () => {
-      const paths = ['/tools/lang/en-us.json','/data/en-us.json'].map(withBase)
+      const paths = ['/data/ui-en-us.json','/lang/en-us.json'].map(withBase)
       for (const p of paths) {
         try {
           const r = await fetch(p)
