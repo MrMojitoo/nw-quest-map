@@ -522,7 +522,7 @@ function FactionsInner({ lang }: { lang: string }) {
   React.useEffect(() => {
     let cancelled = false
     const tryLoad = async () => {
-      const paths = ['/data/ui-en-us.json','/lang/en-us.json'].map(withBase)
+      const paths = ['/lang/ui/ui-en-us.json','/lang/en-us.json'].map(withBase)
       for (const p of paths) {
         try {
           const r = await fetch(p)
