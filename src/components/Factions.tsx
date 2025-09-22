@@ -1087,6 +1087,8 @@ function FactionsInner({ lang }: { lang: string }) {
   const [marquee, setMarquee] = React.useState<null | { start:{x:number;y:number}, end:{x:number;y:number} }>(null)
   const startPt = React.useRef<{x:number;y:number} | null>(null)
   const preventCtx = React.useRef(false)
+  const lastMovePt = React.useRef<{x:number;y:number} | null>(null)
+  const lastSelTs = React.useRef<number>(0)  // throttle horodaté
 
   // Empêche le menu contextuel pendant la sélection au clic droit
   const onGlobalContextMenu = React.useCallback((ev: MouseEvent) => {
@@ -1159,6 +1161,10 @@ function FactionsInner({ lang }: { lang: string }) {
   // rAF throttle pour éviter de recalculer à chaque pixel
   const rafRef = React.useRef<number | null>(null)
   const updateSelectionFromRect = React.useCallback((rect:{x1:number;y1:number;x2:number;y2:number}) => {
+    const now = performance.now()
+    // throttle ~20 FPS
+    if (now - lastSelTs.current < 50) return
+    lastSelTs.current = now
     if (rafRef.current) return
     rafRef.current = requestAnimationFrame(() => {
       rafRef.current = null
@@ -1168,7 +1174,16 @@ function FactionsInner({ lang }: { lang: string }) {
       const height = Math.abs(rect.y2 - rect.y1)
       const hits = reactFlow.getIntersectingNodes({ x, y, width, height })
       const hitIds = new Set(hits.map(h => h.id))
-      setRfNodes(prev => prev.map(n => (hitIds.has(n.id) ? { ...n, selected: true } : (n.selected ? { ...n, selected:false } : n))))
+      setRfNodes(prev => {
+        let anyChange = false
+        const out = prev.map(n => {
+          const want = hitIds.has(n.id)
+          if (n.selected === want) return n
+          anyChange = true
+          return { ...n, selected: want }
+        })
+        return anyChange ? out : prev
+      })
     })
   }, [reactFlow])
  
@@ -1214,6 +1229,10 @@ function FactionsInner({ lang }: { lang: string }) {
     const onMove = (ev: MouseEvent) => {
       const end = { x: ev.clientX, y: ev.clientY }
       setMarquee(m => (m ? { ...m, end } : m))
+      // ignorer les micro-mouvements (<4px) pour éviter les rafales inutiles
+      const lm = lastMovePt.current
+      if (lm && Math.abs(end.x - lm.x) < 4 && Math.abs(end.y - lm.y) < 4) return
+      lastMovePt.current = end
       const p1 = reactFlow.screenToFlowPosition(start)
       const p2 = reactFlow.screenToFlowPosition(end)
       updateSelectionFromRect({ x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y })
@@ -1221,6 +1240,7 @@ function FactionsInner({ lang }: { lang: string }) {
     const onUp = () => {
       startPt.current = null
       setMarquee(null)
+      lastMovePt.current = null
       if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null }
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('mouseup', onUp)
@@ -1229,8 +1249,8 @@ function FactionsInner({ lang }: { lang: string }) {
         window.removeEventListener('contextmenu', onGlobalContextMenu, true)
       }, 0)
     }
-    window.addEventListener('mousemove', onMove)
-    window.addEventListener('mouseup', onUp)
+    window.addEventListener('mousemove', onMove, { passive: true })
+    window.addEventListener('mouseup', onUp, { passive: true })
   }
 
   const [showResetPosConfirm, setShowResetPosConfirm] = React.useState(false)
@@ -1349,6 +1369,7 @@ function FactionsInner({ lang }: { lang: string }) {
         nodesConnectable={false}
         connectOnClick={false}
         elementsSelectable
+        selectionOnDrag={false}
         onNodesChange={onNodesChange}
         onNodeDragStart={onNodeDragStart}
         onNodeDragStop={onNodeDragStop}
@@ -1362,7 +1383,7 @@ function FactionsInner({ lang }: { lang: string }) {
         minZoom={0.03}
         maxZoom={3}
       >
-        {!isDragging && (
+        {!isDragging && !marquee && (
         <MiniMap
           className="minimap--white-viewport"
           position="bottom-right"
