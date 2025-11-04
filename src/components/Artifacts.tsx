@@ -1,4 +1,5 @@
 import React, { useContext, useMemo, useState, useRef, useCallback, useEffect } from 'react'
+import * as htmlToImage from 'html-to-image'
 import useStore from '../store'
 import { LocaleContext } from '../App'
 import ReactFlow, {
@@ -686,6 +687,7 @@ export default function Artifacts({ lang, artifacts, error }:{
   }, [helpCollapsed])
   const rfRef = useRef<ReactFlowInstance | null>(null)
   const viewInitRef = useRef(false)
+  const exportWrapRef = useRef<HTMLDivElement | null>(null)
   const [lockNodes, setLockNodes] = useState(false)
   // Marquee (sélection rectangulaire au clic droit)
   const [marquee, setMarquee] = useState<null | { start:{x:number;y:number}, end:{x:number;y:number} }>(null)
@@ -704,6 +706,65 @@ export default function Artifacts({ lang, artifacts, error }:{
   const resetProgress    = useStore(s => s.resetProgress)
   const [showResetConfirm, setShowResetConfirm] = useState(false)
   const [showResetPosConfirm, setShowResetPosConfirm] = useState(false)
+  
+  // Export PNG HD (viewport uniquement)
+  const exportPng = async () => {
+    const root = exportWrapRef.current
+    if (!root) return
+    const node = (root.querySelector('.react-flow__viewport') as HTMLElement) || root
+    // Demande le pixel ratio (autorise >5)
+    const input = window.prompt(
+      t?.('ui.controls.pixelratio','Pixel ratio (1–10, default 3)') ?? 'Pixel ratio (1–10, default 3)',
+      '3'
+    )
+    let pixelRatio = Number(input)
+    if (!Number.isFinite(pixelRatio)) pixelRatio = 3
+    pixelRatio = Math.max(1, Math.min(10, Math.round(pixelRatio)))
+    // Cap dynamique via 50 MP
+    const rect = node.getBoundingClientRect()
+    const w = Math.max(1, Math.floor(rect.width))
+    const h = Math.max(1, Math.floor(rect.height))
+    const MAX_PX = 50_000_000
+    let maxRatio = Math.floor(Math.sqrt(MAX_PX / (w * h)))
+    if (!Number.isFinite(maxRatio) || maxRatio < 1) maxRatio = 1
+    if (pixelRatio > maxRatio) {
+      console.warn(`Requested pixelRatio ${pixelRatio} > max ${maxRatio} for ${w}x${h}. Clamping.`)
+      pixelRatio = maxRatio
+    }
+     try {
+      let url: string | undefined
+      for (let pr = pixelRatio; pr >= 1; pr--) {
+        try {
+          url = await htmlToImage.toPng(node, {
+            pixelRatio: pr,
+            backgroundColor: '#0b0f14',
+            filter: (n) => {
+              if (!(n instanceof Element)) return true
+              if (n.closest('[data-no-export="true"]')) return false
+              const c = n.classList
+              return !(
+                c?.contains('react-flow__controls') ||
+                c?.contains('react-flow__minimap')  ||
+                c?.contains('btn-reset-graph')      ||
+                c?.contains('rf-lock-btn')
+              )
+            },
+          })
+          if (url) break
+        } catch (e) {
+          if (pr === 1) throw e
+          console.warn(`toPng failed at pixelRatio=${pr}, trying ${pr-1}…`, e)
+        }
+      }
+      if (!url) throw new Error('Export failed at all pixel ratios')
+       const a = document.createElement('a')
+      a.href = url!
+      a.download = `artifacts-map-${Date.now()}.png`
+      a.click()
+    } catch (e) {
+      console.error('Export PNG failed:', e)
+    }
+  }
  
   // --- Couleurs MiniMap (par rareté de l'artéfact) ---
   const artById = useMemo(() => {
@@ -1744,6 +1805,7 @@ export default function Artifacts({ lang, artifacts, error }:{
           </div>
         )}
         <div style={{width:'100%', height:'100%', border:'1px solid #1f2937', borderRadius:12, position:'relative'}}>
+          <div ref={exportWrapRef} className="graph" style={{ width: '100%', height: '100%' }}>
           <ReactFlow
             nodes={rfNodes}
             edges={rfEdges}
@@ -1783,6 +1845,7 @@ export default function Artifacts({ lang, artifacts, error }:{
             {/* Overlay visuel de la sélection rectangulaire */}
             {marquee && (
               <div
+                data-no-export="true"
                 style={{
                   position:'fixed',
                   left: Math.min(marquee.start.x, marquee.end.x),
@@ -1798,6 +1861,7 @@ export default function Artifacts({ lang, artifacts, error }:{
             )}
             <Background variant={BackgroundVariant.Dots} />
             <MiniMap
+              data-no-export="true"
               className="minimap--white-viewport"
               position="bottom-right"
               style={{ backgroundColor: '#0b0f14', right:  0, bottom: 0}}
@@ -1813,7 +1877,7 @@ export default function Artifacts({ lang, artifacts, error }:{
               }}
               nodeComponent={MiniMapNode}
             />
-            <Controls showInteractive={false} position="bottom-left" style={{ bottom: 20 }}>
+            <Controls data-no-export="true" showInteractive={false} position="bottom-left" style={{ bottom: 20 }}>
               <ControlButton
                 className={`rf-lock-btn ${lockNodes ? 'locked' : 'unlocked'}`}
                 onClick={() => setLockNodes(v => !v)}
@@ -1821,9 +1885,17 @@ export default function Artifacts({ lang, artifacts, error }:{
               >
                 {lockNodes ? '🔒' : '🔓'}
               </ControlButton>
+              {/* Export HD (PNG) */}
+              <ControlButton
+                onClick={exportPng}
+                title={t('ui.controls.export','Export image')}
+                aria-label={t('ui.controls.export','Export image')}
+              >
+                🖼️
+              </ControlButton>
             </Controls>
             {/* Reset Graph (à gauche de la minimap) */}
-            <div style={{ position:'absolute', right:205, bottom:5, zIndex:7 }}>
+            <div data-no-export="true" style={{ position:'absolute', right:205, bottom:5, zIndex:7 }}>
               <button
                 className="btn-reset-graph btn-reset-graph--art"
                 onClick={() => setShowResetPosConfirm(true)}
@@ -1834,6 +1906,7 @@ export default function Artifacts({ lang, artifacts, error }:{
               </button>
             </div>
           </ReactFlow>
+          </div>
           {/* Reset positions (artifacts) — modal de confirmation */}
           {showResetPosConfirm && (
             <div

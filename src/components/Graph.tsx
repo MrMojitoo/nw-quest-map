@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useRef, useCallback } from 'react'
+import * as htmlToImage from 'html-to-image'
 import ReactFlow, { MiniMap, Controls, ControlButton, Background, BackgroundVariant, Node, Edge, MarkerType, Position, useReactFlow, ReactFlowProvider,
   applyNodeChanges, type NodeChange } from 'reactflow'
 import { getZoneByIdPrefix } from '../utils/zones'
@@ -254,6 +255,7 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
 
   const reactFlow = useReactFlow()
   const paneRef = useRef<HTMLDivElement | null>(null)
+  const exportWrapRef = useRef<HTMLDivElement | null>(null)
   // Sélection multiple (marquee au clic droit)
   const [marquee, setMarquee] = useState<null | { start:{x:number;y:number}, end:{x:number;y:number} }>(null)
   const startPt = useRef<{x:number;y:number} | null>(null)
@@ -334,6 +336,69 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
     setUserPos({})
     hasCenteredRef.current = false // on autorise un recentrage automatique après relayout
   }, [typeOn, zoneOn, showRepeatables])
+
+  // --- Export PNG HD du viewport React Flow (sans UI) ---
+  const exportPng = async () => {
+    const root = exportWrapRef.current
+    if (!root) return
+    // On cible le vrai viewport (pan/zoom)
+    const node = (root.querySelector('.react-flow__viewport') as HTMLElement) || root
+    // Demande le pixel ratio (on autorise >5)
+    const input = window.prompt(
+      t?.('ui.controls.pixelratio','Pixel ratio (1–10, default 3)') ?? 'Pixel ratio (1–10, default 3)',
+      '3'
+    )
+    let pixelRatio = Number(input)
+   if (!Number.isFinite(pixelRatio)) pixelRatio = 3
+    pixelRatio = Math.max(1, Math.min(10, Math.round(pixelRatio)))
+
+   // Cap dynamique en fonction du viewport (ex: 50 MP)
+    const rect = node.getBoundingClientRect()
+    const w = Math.max(1, Math.floor(rect.width))
+    const h = Math.max(1, Math.floor(rect.height))
+    const MAX_PX = 50_000_000 // 50 mégapixels ≈ ~200Mo en RGBA
+    let maxRatio = Math.floor(Math.sqrt(MAX_PX / (w * h)))
+    if (!Number.isFinite(maxRatio) || maxRatio < 1) maxRatio = 1
+    if (pixelRatio > maxRatio) {
+      console.warn(`Requested pixelRatio ${pixelRatio} > max possible ${maxRatio} for current viewport ${w}x${h}. Clamping.`)
+      pixelRatio = maxRatio
+    }
+    try {
+      // Essais dégressifs: on tente le ratio demandé puis on descend jusqu'à 1 si besoin
+      let url: string | undefined
+      for (let pr = pixelRatio; pr >= 1; pr--) {
+        try {
+          url = await htmlToImage.toPng(node, {
+            pixelRatio: pr,
+            backgroundColor: '#0b0f14',
+            filter: (n) => {
+              if (!(n instanceof Element)) return true
+              if (n.closest('[data-no-export="true"]')) return false
+              const c = n.classList
+              return !(
+                c?.contains('react-flow__controls') ||
+                c?.contains('react-flow__minimap')  ||
+                c?.contains('btn-reset-graph')      ||
+                c?.contains('sidebar')              ||
+                c?.contains('rf-lock-btn')
+              )
+            },
+          })
+          if (url) break
+        } catch (e) {
+          if (pr === 1) throw e
+          console.warn(`toPng failed at pixelRatio=${pr}, trying ${pr-1}…`, e)
+        }
+      }
+      if (!url) throw new Error('Export failed at all pixel ratios')
+      const a = document.createElement('a')
+      a.href = url!
+      a.download = `quests-map-${Date.now()}.png`
+      a.click()
+    } catch (e) {
+      console.error('Export PNG failed:', e)
+    }
+  }
 
 
   // Centrage initial sur le nœud le plus "en haut à gauche"
@@ -1288,6 +1353,7 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
           })}
         </div>
       </div>
+      <div ref={exportWrapRef} className="graph" style={{ width: '100%', height: '100%' }}>
       <ReactFlow
         nodes={rfNodes}
         edges={rfEdges}
@@ -1313,6 +1379,7 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
         {/* Overlay visuel de la sélection rectangulaire */}
         {marquee && (
           <div
+          data-no-export="true"
             style={{
               position: 'fixed',
               left: Math.min(marquee.start.x, marquee.end.x),
@@ -1327,6 +1394,7 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
           />
         )}
         <MiniMap
+          data-no-export="true"
           className="minimap--white-viewport"
           position="bottom-right"
           style={{ backgroundColor:'#0b0f14', right: 0, bottom: 0 }}
@@ -1338,7 +1406,7 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
           nodeColor={(n)=> getZoneByIdPrefix(String(n.id)).color}
         />
         {/* Custom lock that only affects node dragging */}
-        <Controls showInteractive={false} style={{ bottom: 20 }}>
+        <Controls data-no-export="true" showInteractive={false} style={{ bottom: 20 }}>
           <ControlButton
             className={`rf-lock-btn ${lockNodes ? 'locked' : 'unlocked'}`}
             onClick={() => setLockNodes(v => !v)}
@@ -1370,10 +1438,18 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
             aria-label={t('ui.controls.back','Back to start')}
           >
             ↖️
-          </ControlButton>          
+          </ControlButton>         
+          {/* Export HD (PNG) */}
+          <ControlButton
+            onClick={exportPng}
+            title={t('ui.controls.export','Export image')}
+            aria-label={t('ui.controls.export','Export image')}
+          >
+            🖼️
+          </ControlButton>
         </Controls>
         {/* Reset Graph (à gauche de la minimap, en bas-droite) */}
-        <div style={{ position: 'absolute', right: 205, bottom: 5, zIndex: 7 }}>
+        <div data-no-export="true" style={{ position: 'absolute', right: 205, bottom: 5, zIndex: 7 }}>
           <button
             className="btn-reset-graph btn-reset-graph--quests"
             onClick={() => setShowResetPosConfirm(true)}
@@ -1385,6 +1461,7 @@ function GraphInner({ quests, lang = 'en-us' }: { quests: Quest[]; lang?: string
         </div>
         <Background variant={BackgroundVariant.Dots} gap={16} size={1} />
       </ReactFlow>
+      </div>
       {/* Reset positions (quests) — modal de confirmation */}
       {showResetPosConfirm && (
         <div

@@ -1,4 +1,5 @@
 import React from 'react'
+import * as htmlToImage from 'html-to-image'
 import ReactFlow, {
   MiniMap, Controls, ControlButton, Background, BackgroundVariant,
   Node, Edge, useReactFlow, applyNodeChanges, type NodeChange,
@@ -380,6 +381,7 @@ const nodeTypes = { faction: FactionNode }
 function FactionsInner({ lang }: { lang: string }) {
   const { t, locale } = React.useContext(LocaleContext)
   const rf = useReactFlow()
+  const exportWrapRef = React.useRef<HTMLDivElement | null>(null)
   const isCompleted = useStore(s => s.isCompleted)
   const toggleQuest = useStore(s => s.toggleQuest)
   const setManyNodePos = useStore(s => s.setManyNodePos)
@@ -1279,6 +1281,65 @@ function FactionsInner({ lang }: { lang: string }) {
   }
 
   const [showResetPosConfirm, setShowResetPosConfirm] = React.useState(false)
+
+  // Export PNG HD
+  const exportPng = async () => {
+    const root = exportWrapRef.current
+    if (!root) return
+    const node = (root.querySelector('.react-flow__viewport') as HTMLElement) || root
+    // Demande le pixel ratio (autorise >5)
+    const input = window.prompt(
+      t?.('ui.controls.pixelratio','Pixel ratio (1–10, default 3)') ?? 'Pixel ratio (1–10, default 3)',
+      '3'
+    )
+    let pixelRatio = Number(input)
+    if (!Number.isFinite(pixelRatio)) pixelRatio = 3
+    pixelRatio = Math.max(1, Math.min(10, Math.round(pixelRatio)))
+    // Cap dynamique via 50 MP
+    const rect = node.getBoundingClientRect()
+    const w = Math.max(1, Math.floor(rect.width))
+    const h = Math.max(1, Math.floor(rect.height))
+    const MAX_PX = 50_000_000
+    let maxRatio = Math.floor(Math.sqrt(MAX_PX / (w * h)))
+    if (!Number.isFinite(maxRatio) || maxRatio < 1) maxRatio = 1
+    if (pixelRatio > maxRatio) {
+      console.warn(`Requested pixelRatio ${pixelRatio} > max ${maxRatio} for ${w}x${h}. Clamping.`)
+      pixelRatio = maxRatio
+    }
+     try {
+      let url: string | undefined
+      for (let pr = pixelRatio; pr >= 1; pr--) {
+        try {
+          url = await htmlToImage.toPng(node, {
+            pixelRatio: pr,
+            backgroundColor: '#0b0f14',
+            filter: (n) => {
+              if (!(n instanceof Element)) return true
+              if (n.closest('[data-no-export="true"]')) return false
+              const c = n.classList
+              return !(
+                c?.contains('react-flow__controls') ||
+                c?.contains('react-flow__minimap')  ||
+                c?.contains('btn-reset-graph')      ||
+                c?.contains('rf-lock-btn')
+              )
+            },
+          })
+          if (url) break
+        } catch (e) {
+          if (pr === 1) throw e
+          console.warn(`toPng failed at pixelRatio=${pr}, trying ${pr-1}…`, e)
+        }
+      }
+      if (!url) throw new Error('Export failed at all pixel ratios')
+       const a = document.createElement('a')
+      a.href = url!
+      a.download = `factions-map-${Date.now()}.png`
+      a.click()
+    } catch (e) {
+      console.error('Export PNG failed:', e)
+    }
+  }
   // --- Sidebar locale (même logique que Artifacts) ---
   const SIDEBAR_KEY = 'sidebarCollapsed_factions_v1'
   const [helpCollapsed, setHelpCollapsed] = React.useState<boolean>(() => {
@@ -1385,6 +1446,7 @@ function FactionsInner({ lang }: { lang: string }) {
         </div>
       </div>
       {/* React Flow */}
+      <div ref={exportWrapRef} className="graph" style={{ width: '100%', height: '100%' }}>
       <ReactFlow
         nodeTypes={nodeTypes}
         nodes={rfNodes}
@@ -1410,6 +1472,7 @@ function FactionsInner({ lang }: { lang: string }) {
       >
         {!isDragging && !marquee && (
         <MiniMap
+          data-no-export="true"
           className="minimap--white-viewport"
           position="bottom-right"
           style={{ backgroundColor: '#0b0f14', right: 0, bottom: 0 }}
@@ -1430,7 +1493,7 @@ function FactionsInner({ lang }: { lang: string }) {
           nodeStrokeColor="#e2e8f0"
           nodeBorderRadius={2}
         />)}
-        <Controls showInteractive={false} position="bottom-left" style={{ bottom: 20 }}>
+        <Controls data-no-export="true" showInteractive={false} position="bottom-left" style={{ bottom: 20 }}>
           <ControlButton
             className={`rf-lock-btn ${lockNodes ? 'locked' : 'unlocked'}`}
             onClick={() => setLockNodes(v => !v)}
@@ -1446,9 +1509,18 @@ function FactionsInner({ lang }: { lang: string }) {
           >
             ↖️
           </ControlButton>
+          {/* Export HD (PNG) */}
+          <ControlButton
+            onClick={exportPng}
+            title={t('ui.controls.export','Export image')}
+            aria-label={t('ui.controls.export','Export image')}
+          >
+            🖼️
+          </ControlButton>
         </Controls>
         <Background variant={BackgroundVariant.Dots} gap={18} size={1} />
       </ReactFlow>
+      </div>
  
       {/* --- Probabilités par type (en bas à droite) --- */}
       {(() => {
@@ -1555,6 +1627,7 @@ function FactionsInner({ lang }: { lang: string }) {
       {/* Rectangle de sélection (marquee) */}
       {marquee && (
         <div
+          data-no-export="true"
           style={{
             position:'fixed', zIndex:11,
             left: Math.min(marquee.start.x, marquee.end.x),
@@ -1568,7 +1641,7 @@ function FactionsInner({ lang }: { lang: string }) {
         />
       )}
       {/* Reset (à droite de la minimap) */}
-      <div style={{ position:'absolute', right:645, bottom:35, zIndex:7 }}>
+      <div data-no-export="true" style={{ position:'absolute', right:645, bottom:35, zIndex:7 }}>
         <button
           className="btn-reset-graph btn-reset-graph--art"
           onClick={() => setShowResetPosConfirm(true)}
