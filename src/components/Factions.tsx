@@ -86,6 +86,7 @@ const TERR_COLORS: Record<string, string> = {
   edengrove:         '#10b981',
   restlessshore:     '#ff23daff',
   brimstonesands:    '#facc15',
+  dunwood:           '#33ff00ff',
 }
 
 // Couleurs par MissionGoalType

@@ -3,6 +3,7 @@ export type ZoneInfo = { key : string; name: string; color: string }
 // Mapping zones selon le préfixe d'ID
 export function getZoneByIdPrefix(questId: string | undefined | null): ZoneInfo {
   const id = (questId ?? '').trim()
+  if (id.startsWith('Quest_18009') || id.startsWith('Quest_18008') || id.startsWith('Quest_1801') || id.startsWith('Quest_20') || id.startsWith('Quest_28') || id.startsWith('Quest_42') || id.startsWith('Quest_61') || id.startsWith('Quest_1802') || id.startsWith('Quest_1803'))  return { key: 'dunwood',      name: "NightHaven",       color: "#00ff22ff" }
   if (id.startsWith('06'))                                                                            return { key: 'windsward',        name: "Windsward",          color: "#00ffff" }       // cyan
   if (id.startsWith('12'))                                                                            return { key: 'monarchsbluffs',   name: "Monarch's Bluffs",   color: "#9ca3af" }       // gris
   if (id.startsWith('99_') || id.startsWith('99A_') || id.startsWith('04A_') || id.startsWith('EF_')) return { key: 'everfall',         name: "Everfall",           color: "#1f3a93" }       // bleu foncé
@@ -16,7 +17,7 @@ export function getZoneByIdPrefix(questId: string | undefined | null): ZoneInfo 
   if (id.startsWith('09A_'))                                                                          return { key: 'firstlight',       name: "Elysian Wilds",      color: "#86efac" }
   if (id.startsWith('15'))                                                                            return { key: 'restlessshore',    name: "Restless Shore",     color: "#ff23daff" }
   if (id.startsWith('11'))                                                                            return { key: 'mourningdale',     name: "Mourningdale",       color: "#3923ffff" }
-  if (id.startsWith('05'))                                                                            return { key: 'reekwater',        name: "Reekwater",          color: "#238aebff" }
+  if (id.startsWith('05') || id.startsWith('Quest_02') || id.startsWith('Quest_1800'))                return { key: 'reekwater',        name: "Reekwater",          color: "#238aebff" }
   if (id.startsWith('C10A'))                                                                          return { key: 'cutlasskeys',      name: "Cutlass Keys",       color: "#fbff00ff" }
 
   // défaut

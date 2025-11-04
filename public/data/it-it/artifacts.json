@@ -1,6 +1,6 @@
 {
-  "generated_at": "2025-09-22T14:18:36.806138Z",
-  "artifact_count": 71,
+  "generated_at": "2025-11-04T15:07:34.430290Z",
+  "artifact_count": 73,
   "artifacts": [
     {
       "item_id": "Artifact_Set1_Amulet2",
@@ -8,22 +8,22 @@
       "type": "Amulet",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/corruptedamulet30.webp",
       "perks": {
-        "unique": "Centro dell'attenzione",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Divino",
-        "p4": "Salute"
+        "unique": "PerkID_Artifact_Set1_Amulet2",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_Healing",
+        "p4": "PerkID_Fixed_Amulet_HP"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cleric1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Amulet2",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Amulet_Healing",
-        "p4": "PerkID_Amulet_HP"
+        "p3": "PerkID_Slottable_Common_Healing",
+        "p4": "PerkID_Fixed_Amulet_HP"
       },
       "drop": {
         "type": "pvp tracks",
@@ -199,22 +199,22 @@
       "type": "Amulet",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/lostamulet10.webp",
       "perks": {
-        "unique": "Sguardo stordente",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Purifica",
-        "p4": "Salute"
+        "unique": "PerkID_Artifact_Set1_Amulet1",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Amulet_RemoveOnLow",
+        "p4": "PerkID_Fixed_Amulet_HP"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/debuffdur1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Amulet1",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Amulet_RemoveOnLow",
-        "p4": "PerkID_Amulet_HP"
+        "p3": "PerkID_Fixed_Amulet_RemoveOnLow",
+        "p4": "PerkID_Fixed_Amulet_HP"
       },
       "drop": {
         "type": "m1+ boss",
@@ -356,22 +356,22 @@
       "type": "Amulet",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/ancientamulet13.webp",
       "perks": {
-        "unique": "Vendetta della fenice",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Purifica",
-        "p4": "Recupero dell'energia"
+        "unique": "PerkID_Artifact_Set2_Amulet1",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Amulet_RemoveOnLow",
+        "p4": "PerkID_Fixed_Amulet_StamOnLow"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/debuffdur1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/stamina1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Amulet1",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Amulet_RemoveOnLow",
-        "p4": "PerkID_amulet_stamonlow"
+        "p3": "PerkID_Fixed_Amulet_RemoveOnLow",
+        "p4": "PerkID_Fixed_Amulet_StamOnLow"
       },
       "drop": {
         "type": "named",
@@ -456,22 +456,22 @@
       "type": "Blunderbuss",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss8_blunderbuss.webp",
       "perks": {
-        "unique": "Esplosione caotica",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Colpo esplosivo paralizzante",
-        "p4": "Intensamente seghettato"
+        "unique": "PerkID_Artifact_Set2_Blunderbuss",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_WeaponMastery_Blunderbuss_VortexShot",
+        "p4": "PerkID_Slottable_Common_BleedonCrit"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/blunderbuss_ability03.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/bleed1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Blunderbuss",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Ability_Blunderbuss_VortexShot",
-        "p4": "PerkID_Weapon_BleedonCrit"
+        "p3": "PerkID_WeaponMastery_Blunderbuss_VortexShot",
+        "p4": "PerkID_Slottable_Common_BleedonCrit"
       },
       "drop": {
         "type": "opr/ctf",
@@ -592,22 +592,22 @@
       "type": "Blunderbuss",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hblunderbusss3artifacts.webp",
       "perks": {
-        "unique": "Incantesimo logorato",
-        "p2": "Parassita",
+        "unique": "PerkID_Artifact_Set1_Blunderbuss",
+        "p2": "PerkID_Artifact_Set1_BlunderbussPerk",
         "p3": "Critici piagati",
-        "p4": "Incisivo"
+        "p4": "PerkID_Slottable_Common_CritChance"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
+        "unique": "",
+        "p2": "",
         "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/disease1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/critical1.webp"
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Blunderbuss",
         "p2": "PerkID_Artifact_Set1_BlunderbussPerk",
         "p3": "PerkID_Weapon_Disease_OnLowHP_Crit",
-        "p4": "PerkID_Weapon_CritChance"
+        "p4": "PerkID_Slottable_Common_CritChance"
       },
       "drop": {
         "type": "pvp tracks",
@@ -783,22 +783,22 @@
       "type": "Bow",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss6_bow.webp",
       "perks": {
-        "unique": "Affinità venefica",
-        "p2": "Frecce avvelenate",
-        "p3": "Mossa ricaricante",
-        "p4": "Incantato"
+        "unique": "PerkID_Artifact_Set2_Bow",
+        "p2": "PerkID_Artifact_Set2_BowPerk",
+        "p3": "PerkID_Fixed_Weapon_DoTPotDurInc",
+        "p4": "PerkID_Fixed_Weapon_Attunement_Nature"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/damagebasic1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Bow",
         "p2": "PerkID_Artifact_Set2_BowPerk",
-        "p3": "PerkID_Weapon_CDRBasic",
-        "p4": "PerkID_Weapon_DmgBasic"
+        "p3": "PerkID_Fixed_Weapon_DoTPotDurInc",
+        "p4": "PerkID_Fixed_Weapon_Attunement_Nature"
       },
       "drop": {
         "type": "named",
@@ -899,22 +899,22 @@
       "type": "Bow",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hbows3artifacts.webp",
       "perks": {
-        "unique": "Elettrificato",
-        "p2": "Dardo",
-        "p3": "Fulmine elusivo",
-        "p4": "Incantato"
+        "unique": "PerkID_Artifact_Set1_Bow",
+        "p2": "PerkID_Artifact_Set1_BowPerk",
+        "p3": "PerkID_Fixed_Weapon_DodgeSuccess_LightningDMG",
+        "p4": "PerkID_Slottable_Common_DmgBasic"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lightningdmg1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/damagebasic1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Bow",
         "p2": "PerkID_Artifact_Set1_BowPerk",
-        "p3": "PerkID_Weapon_DodgeSuccess_LightningDMG",
-        "p4": "PerkID_Weapon_DmgBasic"
+        "p3": "PerkID_Fixed_Weapon_DodgeSuccess_LightningDMG",
+        "p4": "PerkID_Slottable_Common_DmgBasic"
       },
       "drop": {
         "type": "named",
@@ -1050,27 +1050,89 @@
       ]
     },
     {
+      "item_id": "Artifact_Set3_2hBow",
+      "name": "Peste contagiosa",
+      "type": "Bow",
+      "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hbowtemplet5.webp",
+      "perks": {
+        "unique": "PerkID_Artifact_Set3_Bow",
+        "p2": "PerkID_WeaponMastery_Bow_PoisonShot",
+        "p3": "PerkID_Fixed_Weapon_DoTPotDurInc",
+        "p4": "PerkID_Fixed_Weapon_Disease_Heavy"
+      },
+      "perks_icons": {
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
+      },
+      "perks_ids": {
+        "unique": "PerkID_Artifact_Set3_Bow",
+        "p2": "PerkID_WeaponMastery_Bow_PoisonShot",
+        "p3": "PerkID_Fixed_Weapon_DoTPotDurInc",
+        "p4": "PerkID_Fixed_Weapon_Disease_Heavy"
+      },
+      "drop": {
+        "type": "named",
+        "mob": "Uttu",
+        "mobId": "spider_uttu_17dw02_20331",
+        "zone": "Ésagila",
+        "zoneTid": "20331",
+        "zoneIcon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/map/icon/pois/poi_spidernest.webp",
+        "chance": 20.0
+      },
+      "quests": [
+        {
+          "taskId": "Task_Perk1_Artifact_Set3_2hBow",
+          "perk": 2,
+          "number": 1,
+          "target": "Arciduca Menadion, il Mietitore nero",
+          "descriptions": [
+            "Sconfiggi {{VC::name=Arciduca Menadion, il Mietitore nero::qty=1::named=1::id=Upyr_Mindthief_Named_17DW07_10303::url=https://nwdb.info/db/creature/Upyr_Mindthief_Named_17DW07_10303}} presso {{POI::icon=https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/map/icon/pois/poi_gothiccastle.webp::name=Casa Dracul::tid=10303}}"
+          ]
+        },
+        {
+          "taskId": "Task_Perk2_Artifact_Set3_2hBow",
+          "perk": 3,
+          "number": 1,
+          "target": "Velatrix Avernath, Mastra bibliotecaria",
+          "descriptions": [
+            "Sconfiggi {{VC::name=Velatrix Avernath, Mastra bibliotecaria::qty=1::named=1::id=Upyr_Shade_Named_17DW02_10218::url=https://nwdb.info/db/creature/Upyr_Shade_Named_17DW02_10218}} presso {{POI::icon=https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/map/icon/pois/poi_gothiccastle.webp::name=Memora Singur::tid=10218}}"
+          ]
+        },
+        {
+          "taskId": "Task_Perk3_Artifact_Set3_2hBow",
+          "perk": 4,
+          "number": 1,
+          "target": "Lord Rathan, il Risvegliatore",
+          "descriptions": [
+            "Sconfiggi {{VC::name=Lord Rathan, il Risvegliatore::qty=1::named=1::id=Upyr_Consort_Named_17DW08_10312::url=https://nwdb.info/db/creature/Upyr_Consort_Named_17DW08_10312}} presso {{POI::icon=https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/map/icon/pois/ancient_temple_lg.webp::name=Buru di Irkalla::tid=10312}}"
+          ]
+        }
+      ]
+    },
+    {
       "item_id": "Artifact_Set2_Earring1",
       "name": "Giustizia",
       "type": "Earring",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/lostearring30.webp",
       "perks": {
-        "unique": "Protezione dell'alchimista",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Brindisi potenziante",
-        "p4": "Cuore curativo"
+        "unique": "PerkID_Artifact_Set2_Earring1",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Earring_CDR",
+        "p4": "PerkID_Fixed_Earring_OnHeartHeal"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/exhilarate1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Earring1",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Earring_OnPotionDmg",
-        "p4": "PerkID_Earring_OnHeartHeal"
+        "p3": "PerkID_Fixed_Earring_CDR",
+        "p4": "PerkID_Fixed_Earring_OnHeartHeal"
       },
       "drop": {
         "type": "influence races",
@@ -1214,22 +1276,22 @@
       "type": "Earring",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/angryearthearring30.webp",
       "perks": {
-        "unique": "La Sete",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Brindisi potenziante",
-        "p4": "Brindisi fortificante"
+        "unique": "PerkID_Artifact_Set1_Earring1",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Earring_OnPotionDmg",
+        "p4": "PerkID_Fixed_Earring_OnPotionFort"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Earring1",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Earring_OnPotionDmg",
-        "p4": "PerkID_Earring_OnPotionFort"
+        "p3": "PerkID_Fixed_Earring_OnPotionDmg",
+        "p4": "PerkID_Fixed_Earring_OnPotionFort"
       },
       "drop": {
         "type": "m1+ boss",
@@ -1467,22 +1529,22 @@
       "type": "Fire Staff",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hfirestaffs3artifacts.webp",
       "perks": {
-        "unique": "Potenza interiore",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Intensamente prodigioso",
-        "p4": "Malvagio"
+        "unique": "PerkID_Artifact_Set1_FireStaff",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_EmpowerOnCrit",
+        "p4": "PerkID_Slottable_Common_DmgCrit"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/empower1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/critical1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_FireStaff",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Weapon_EmpowerOnCrit",
-        "p4": "PerkID_Weapon_DmgCrit"
+        "p3": "PerkID_Slottable_Common_EmpowerOnCrit",
+        "p4": "PerkID_Slottable_Common_DmgCrit"
       },
       "drop": {
         "type": "m1+ boss",
@@ -1596,22 +1658,22 @@
       "type": "Fire Staff",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss6_firestaff.webp",
       "perks": {
-        "unique": "Ustionamento",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Intensamente seghettato",
-        "p4": "Mossa ricaricante"
+        "unique": "PerkID_Artifact_Set2_FireStaff",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_BleedonCrit",
+        "p4": "PerkID_Fixed_Weapon_DoTPotDurInc"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/bleed1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_FireStaff",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Weapon_bleedoncrit",
-        "p4": "PerkID_Weapon_CDRBasic"
+        "p3": "PerkID_Slottable_Common_BleedonCrit",
+        "p4": "PerkID_Fixed_Weapon_DoTPotDurInc"
       },
       "drop": {
         "type": "named",
@@ -1676,22 +1738,22 @@
       "type": "Flail",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/1hflails3artifacts.webp",
       "perks": {
-        "unique": "Punizione di Odo",
-        "p2": "Difesa di Odo",
-        "p3": "Furto di vita",
-        "p4": "Mossa ricaricante"
+        "unique": "PerkID_Artifact_Set1_Flail",
+        "p2": "PerkID_Artifact_Set1_FlailPerk",
+        "p3": "PerkID_Slottable_Common_HealperDmg",
+        "p4": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_DMG"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Flail",
         "p2": "PerkID_Artifact_Set1_FlailPerk",
-        "p3": "PerkID_Weapon_HealOnDmg",
-        "p4": "PerkID_Weapon_CDRBasic"
+        "p3": "PerkID_Slottable_Common_HealperDmg",
+        "p4": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_DMG"
       },
       "drop": {
         "type": "named",
@@ -1780,22 +1842,22 @@
       "type": "Flail",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss7_flail.webp",
       "perks": {
-        "unique": "Pesante fardello",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Mossa ricaricante",
-        "p4": "Incantato"
+        "unique": "PerkID_Artifact_Set2_Flail",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_WeaponMelee_AbilityEnderDmg",
+        "p4": "PerkID_Slottable_Common_DmgBasic"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/damagebasic1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Flail",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Weapon_CDRBasic",
-        "p4": "PerkID_Weapon_DmgBasic"
+        "p3": "PerkID_Fixed_WeaponMelee_AbilityEnderDmg",
+        "p4": "PerkID_Slottable_Common_DmgBasic"
       },
       "drop": {
         "type": "solo trials",
@@ -1879,22 +1941,22 @@
       "type": "Great Axe",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hgreataxeseason5artifactst5.webp",
       "perks": {
-        "unique": "Impeto",
-        "p2": "Rotazione infinita",
-        "p3": "Mossa ricaricante",
-        "p4": "Mulinello fortificante"
+        "unique": "PerkID_Artifact_Set2_Greataxe",
+        "p2": "PerkID_Artifact_Set2_GreatAxePerk",
+        "p3": "PerkID_WeaponMastery_GreatAxe_Whirlwind",
+        "p4": "PerkID_Fixed_Weapon_RendingStacks"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/greataxe_ability04.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Greataxe",
         "p2": "PerkID_Artifact_Set2_GreatAxePerk",
-        "p3": "PerkID_Weapon_CDRBasic",
-        "p4": "perkid_ability_greataxe_whirlwind"
+        "p3": "PerkID_WeaponMastery_GreatAxe_Whirlwind",
+        "p4": "PerkID_Fixed_Weapon_RendingStacks"
       },
       "drop": {
         "type": "10-trial",
@@ -1965,22 +2027,22 @@
       "type": "Great Axe",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hgreataxes3artifacts.webp",
       "perks": {
-        "unique": "Lama scurita",
-        "p2": "Abisso",
-        "p3": "Sintonia abissale",
-        "p4": "Mossa ricaricante"
+        "unique": "PerkID_Artifact_Set1_Greataxe",
+        "p2": "PerkID_Artifact_Set1_GreatAxePerk",
+        "p3": "PerkID_Fixed_Weapon_Attunement_Void",
+        "p4": "PerkID_Fixed_Weapon_DmgWithGrit"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/voiddmg1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Greataxe",
         "p2": "PerkID_Artifact_Set1_GreatAxePerk",
-        "p3": "PerkID_Weapon_Attunement_Void",
-        "p4": "PerkID_Weapon_CDRBasic"
+        "p3": "PerkID_Fixed_Weapon_Attunement_Void",
+        "p4": "PerkID_Fixed_Weapon_DmgWithGrit"
       },
       "drop": {
         "type": "breaches",
@@ -2051,22 +2113,22 @@
       "type": "Greatsword",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss7_greatsword.webp",
       "perks": {
-        "unique": "Velocità offensiva",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Malvagio",
-        "p4": "Velocità incisiva"
+        "unique": "PerkID_Artifact_Set2_Greatsword",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_DmgCrit",
+        "p4": "PerkID_Fixed_Weapon_HasteOnCrit"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/critical1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/unstoppable1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Greatsword",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Weapon_DmgCrit",
-        "p4": "PerkID_Weapon_Hasteoncrit"
+        "p3": "PerkID_Slottable_Common_DmgCrit",
+        "p4": "PerkID_Fixed_Weapon_HasteOnCrit"
       },
       "drop": {
         "type": "pvp tracks",
@@ -2222,25 +2284,29 @@
       "type": "Greatsword",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss9_greatsword.webp",
       "perks": {
-        "unique": "Parallasse",
-        "p2": "Onda falciforme",
-        "p3": "Colpi ostacolanti",
-        "p4": "Accumuli laceranti"
+        "unique": "PerkID_Artifact_Set3_Greatsword",
+        "p2": "PerkID_Artifact_Set3_GreatswordPerk",
+        "p3": "PerkID_Fixed_Weapon_DmgWithGrit",
+        "p4": "PerkID_Fixed_Weapon_RendingStacks"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/slashdmg1.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/damagebasic1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/keen1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set3_Greatsword",
         "p2": "PerkID_Artifact_Set3_GreatswordPerk",
-        "p3": "PerkID_Weapon_DmgWithGrit",
-        "p4": "PerkID_Weapon_RendingStacks"
+        "p3": "PerkID_Fixed_Weapon_DmgWithGrit",
+        "p4": "PerkID_Fixed_Weapon_RendingStacks"
       },
       "drop": {
-        "type": "season pass"
+        "type": "breaches",
+        "itemId": "darknessrewardcontainermajor1l65",
+        "itemName": "Nascondiglio della breccia grande (livello: 65)",
+        "itemIcon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/resource/darknessrewardcontainermajor4.webp",
+        "chance": 10.0
       },
       "quests": [
         {
@@ -2332,22 +2398,22 @@
       "type": "Greatsword",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hgreatswords3artifacts.webp",
       "perks": {
-        "unique": "Lama bilanciata",
-        "p2": "Colpi incisivi",
-        "p3": "Critici incisivi",
-        "p4": "Mossa ricaricante"
+        "unique": "PerkID_Artifact_Set1_Greatsword",
+        "p2": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_DMG",
+        "p3": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_Crit",
+        "p4": "PerkID_Slottable_Common_CritChance"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/damagebasic1.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/critical1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Greatsword",
-        "p2": "PerkID_Weapon_Melee_ChargedHeavy_DMG",
-        "p3": "PerkID_Weapon_Melee_ChargedHeavy_Crit",
-        "p4": "PerkID_Weapon_CDRBasic"
+        "p2": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_DMG",
+        "p3": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_Crit",
+        "p4": "PerkID_Slottable_Common_CritChance"
       },
       "drop": {
         "type": "pvp tracks",
@@ -2518,27 +2584,83 @@
       ]
     },
     {
+      "item_id": "Artifact_Set3_1hThrowingAxe",
+      "name": "Accetta Incenerante",
+      "type": "Hatchet",
+      "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/1hhatchetseason5passt5.webp",
+      "perks": {
+        "unique": "PerkID_Artifact_Set3_Hatchet",
+        "p2": "PerkID_WeaponMastery_Hatchet_Rending_Throw",
+        "p3": "PerkID_Fixed_Weapon_DoTPotDurInc",
+        "p4": "PerkID_Fixed_Weapon_OnKillBuff"
+      },
+      "perks_icons": {
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
+      },
+      "perks_ids": {
+        "unique": "PerkID_Artifact_Set3_Hatchet",
+        "p2": "PerkID_WeaponMastery_Hatchet_Rending_Throw",
+        "p3": "PerkID_Fixed_Weapon_DoTPotDurInc",
+        "p4": "PerkID_Fixed_Weapon_OnKillBuff"
+      },
+      "drop": {
+        "type": "season pass"
+      },
+      "quests": [
+        {
+          "taskId": "Task_Perk1_Artifact_Set3_1hThrowingAxe",
+          "perk": 2,
+          "number": 1,
+          "target": "Carcero il Custode",
+          "descriptions": [
+            "Sconfiggi {{VC::name=Carcero il Custode::qty=1::named=1::id=Inquisitor_Warden_Named_17DW01_20332::url=https://nwdb.info/db/creature/Inquisitor_Warden_Named_17DW01_20332}} presso {{POI::icon=https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/map/icon/pois/lumbermill.webp::name=Fortino della misericordia::tid=20332}}"
+          ]
+        },
+        {
+          "taskId": "Task_Perk2_Artifact_Set3_1hThrowingAxe",
+          "perk": 3,
+          "number": 1,
+          "target": "Familiares Mala",
+          "descriptions": [
+            "Sconfiggi {{VC::name=Familiares Mala::qty=1::named=1::id=Inquisitor_Cleric_Named_17DW01_20321::url=https://nwdb.info/db/creature/Inquisitor_Cleric_Named_17DW01_20321}} presso {{POI::icon=https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/map/icon/pois/castle.webp::name=Bivacco dei rimbecchi::tid=20321}}"
+          ]
+        },
+        {
+          "taskId": "Task_Perk3_Artifact_Set3_1hThrowingAxe",
+          "perk": 4,
+          "number": 1,
+          "target": "Ministro Avalon",
+          "descriptions": [
+            "Sconfiggi {{VC::name=Ministro Avalon::qty=1::named=1::id=Inquisitor_Markswoman_Named_17DW01_20323::url=https://nwdb.info/db/creature/Inquisitor_Markswoman_Named_17DW01_20323}} presso Inquisitor_hall_20323"
+          ]
+        }
+      ]
+    },
+    {
       "item_id": "Artifact_Set1_1hThrowingAxe",
       "name": "Francisca di Freya",
       "type": "Hatchet",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/1hhatchets3artifacts.webp",
       "perks": {
-        "unique": "Maestria nel lancio",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Lancio lacerante potenziato",
-        "p4": "Mossa ricaricante"
+        "unique": "PerkID_Artifact_Set1_Hatchet",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_WeaponMastery_Hatchet_Rending_Throw",
+        "p4": "PerkID_Fixed_Weapon_RendingStacks"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/hatchet_ability04.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Hatchet",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Ability_Hatchet_Rending_Throw",
-        "p4": "PerkID_Weapon_CDRBasic"
+        "p3": "PerkID_WeaponMastery_Hatchet_Rending_Throw",
+        "p4": "PerkID_Fixed_Weapon_RendingStacks"
       },
       "drop": {
         "type": "m1+ boss",
@@ -2720,21 +2842,21 @@
       "type": "Hatchet",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/1hhatchetseason5artifactst5.webp",
       "perks": {
-        "unique": "Corruzione",
-        "p2": "Contaminazione",
-        "p3": "Intensamente seghettato",
+        "unique": "PerkID_Artifact_Set2_Hatchet",
+        "p2": "PerkID_Artifact_Set2_HatchetPerk",
+        "p3": "PerkID_Slottable_Common_BleedonCrit",
         "p4": "Mossa ricaricante"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/bleed1.webp",
+        "unique": "",
+        "p2": "",
+        "p3": "",
         "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp"
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Hatchet",
         "p2": "PerkID_Artifact_Set2_HatchetPerk",
-        "p3": "PerkID_Weapon_bleedoncrit",
+        "p3": "PerkID_Slottable_Common_BleedonCrit",
         "p4": "PerkID_Weapon_CDRBasic"
       },
       "drop": {
@@ -2769,9 +2891,9 @@
           "taskId": "Task_Perk3_Artifact_Set2_1hThrowingAxe",
           "perk": 4,
           "number": 1,
-          "target": "Cupidigia",
+          "target": "Orellani",
           "descriptions": [
-            "Sconfiggi {{VC::name=Cupidigia::qty=1::named=1::id=swamp_dryad_beast_named_elite_05wc10::url=https://nwdb.info/db/creature/swamp_dryad_beast_named_elite_05wc10}} presso ArenaSwamp"
+            "Sconfiggi {{VC::name=Orellani::qty=1::named=1::id=swamp_dryad_beast_named_elite_05wc10::url=https://nwdb.info/db/creature/swamp_dryad_beast_named_elite_05wc10}} presso ArenaSwamp"
           ]
         }
       ],
@@ -2796,22 +2918,22 @@
       "type": "Heavy Chestwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_s7artifacts_survivorscoat_chest.webp",
       "perks": {
-        "unique": "Sopravvivenza",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Protezione incantata",
-        "p4": "Ricaricante"
+        "unique": "PerkID_Artifact_Set2_HeavyChest",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Chest_HealthStam_Synergy",
+        "p4": "PerkID_Fixed_Armor_BuffDurExtention"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lostbane1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_HeavyChest",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Armor_DefBasic",
-        "p4": "PerkID_Common_CDR"
+        "p3": "PerkID_Fixed_Chest_HealthStam_Synergy",
+        "p4": "PerkID_Fixed_Armor_BuffDurExtention"
       },
       "drop": {
         "type": "doubloons"
@@ -2958,22 +3080,22 @@
       "type": "Heavy Chestwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_legendaryheavychest6_chest.webp",
       "perks": {
-        "unique": "Rinforzo oscuro",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Protezione incantata",
-        "p4": "Avversione fisica"
+        "unique": "PerkID_Artifact_Set1_HeavyChest",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_DefBasic",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Physical"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lostbane1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/rangewardp1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_HeavyChest",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Armor_DefBasic",
-        "p4": "PerkID_Armor_RangeDefense_Physical"
+        "p3": "PerkID_Slottable_Common_DefBasic",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Physical"
       },
       "drop": {
         "type": "m1+ boss",
@@ -3143,22 +3265,22 @@
       "type": "Heavy Footwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_legendaryheavycalves2_feet.webp",
       "perks": {
-        "unique": "Inamovibile",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Protezione Grinta",
-        "p4": "Avversione fisica"
+        "unique": "PerkID_Artifact_Set1_HeavyFeet",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_DefGrit",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Physical"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/siegeward1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/rangewardp1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_HeavyFeet",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Armor_DefGrit",
-        "p4": "PerkID_Armor_RangeDefense_Physical"
+        "p3": "PerkID_Slottable_Common_DefGrit",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Physical"
       },
       "drop": {
         "type": "pvp tracks",
@@ -3334,22 +3456,22 @@
       "type": "Heavy Footwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_s8artifactsrunicgreeves_feet.webp",
       "perks": {
-        "unique": "Speditezza",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Vigore affrettato",
-        "p4": "Avversione elementale"
+        "unique": "PerkID_Artifact_Set2_HeavyFeet",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_DoTPotencyRed_Haste",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Elemental"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/unstoppable1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/rangewarde1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_HeavyFeet",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Armor_HercyneRaid_1",
-        "p4": "PerkID_Armor_RangeDefense_Elemental"
+        "p3": "PerkID_Slottable_Common_DoTPotencyRed_Haste",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Elemental"
       },
       "drop": {
         "type": "pvp tracks",
@@ -3541,26 +3663,26 @@
       "type": "Heavy Glove",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_season5artifacts_gravitygauntlets_gloves.webp",
       "perks": {
-        "unique": "Carica",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Salute",
-        "p4": "Protezione incantata"
+        "unique": "PerkID_Artifact_Set2_HeavyHands",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Chest_HealthStam_Synergy",
+        "p4": "PerkID_Fixed_Armor_PvP_ReflectDmg"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lostbane1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_HeavyHands",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Armor_Health",
-        "p4": "PerkID_Armor_DefBasic"
+        "p3": "PerkID_Fixed_Chest_HealthStam_Synergy",
+        "p4": "PerkID_Fixed_Armor_PvP_ReflectDmg"
       },
       "drop": {
         "type": "named",
-        "mob": "Cupidigia",
+        "mob": "Orellani",
         "mobId": "swamp_dryad_beast_named_elite_05wc10",
         "zone": "Laghetto Eterno",
         "zoneTid": "50119",
@@ -3682,22 +3804,22 @@
       "type": "Heavy Glove",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_legendaryheavyforearms1_gloves.webp",
       "perks": {
-        "unique": "Magnetico",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Avversione fisica"
+        "unique": "PerkID_Artifact_Set1_HeavyHands",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Hands_OnAtkBlocked_IncStamDmg",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Physical"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/rangewardp1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_HeavyHands",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_RangeDefense_Physical"
+        "p3": "PerkID_Fixed_Hands_OnAtkBlocked_IncStamDmg",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Physical"
       },
       "drop": {
         "type": "m1+ boss",
@@ -3939,22 +4061,22 @@
       "type": "Heavy Headwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_legendaryheavyhelmet3_head.webp",
       "perks": {
-        "unique": "Testa dura",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Fortificazione elusiva"
+        "unique": "PerkID_Artifact_Set1_HeavyHead",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Head_OnCritTaken_CritChance",
+        "p4": "PerkID_Fixed_Armor_DodgeSuccess_Fortify"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/fortify1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_HeavyHead",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "perkid_armor_dodgesuccess_fortify"
+        "p3": "PerkID_Fixed_Head_OnCritTaken_CritChance",
+        "p4": "PerkID_Fixed_Armor_DodgeSuccess_Fortify"
       },
       "drop": {
         "type": "pvp tracks",
@@ -4130,22 +4252,22 @@
       "type": "Heavy Legwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_season5artifacts_stabilitypants_legs.webp",
       "perks": {
-        "unique": "Fondamenta stabili",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Protezione incantata"
+        "unique": "PerkID_Artifact_Set2_HeavyLegs",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_Health",
+        "p4": "PerkID_Fixed_Armor_PvP_ReflectDmg"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lostbane1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_HeavyLegs",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_DefBasic"
+        "p3": "PerkID_Slottable_Common_Health",
+        "p4": "PerkID_Fixed_Armor_PvP_ReflectDmg"
       },
       "drop": {
         "type": "pvp tracks",
@@ -4321,22 +4443,22 @@
       "type": "Heavy Legwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_legendarymediumthighs3_legs.webp",
       "perks": {
-        "unique": "Libertà infinita",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Libertà",
-        "p4": "Protezione incantata"
+        "unique": "PerkID_Artifact_Set1_HeavyLegs",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_DurCC",
+        "p4": "PerkID_Slottable_Common_DefBasic"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/debuffdur1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lostbane1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_HeavyLegs",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Armor_DurCC",
-        "p4": "PerkID_Armor_DefBasic"
+        "p3": "PerkID_Slottable_Common_DurCC",
+        "p4": "PerkID_Slottable_Common_DefBasic"
       },
       "drop": {
         "type": "pvp tracks",
@@ -4512,22 +4634,22 @@
       "type": "Ice Gauntlet",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hicegauntlets3artifacts.webp",
       "perks": {
-        "unique": "Fine gelida",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Malvagio",
-        "p4": "Mossa ricaricante"
+        "unique": "PerkID_Artifact_Set1_IceGauntlet",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_DmgCrit",
+        "p4": "PerkID_Fixed_Weapon_RendingStacks"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/critical1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_IceGauntlet",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Weapon_DmgCrit",
-        "p4": "PerkID_Weapon_CDRBasic"
+        "p3": "PerkID_Slottable_Common_DmgCrit",
+        "p4": "PerkID_Fixed_Weapon_RendingStacks"
       },
       "drop": {
         "type": "m1+ boss",
@@ -4729,22 +4851,22 @@
       "type": "Ice Gauntlet",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss6_icegauntlet.webp",
       "perks": {
-        "unique": "Tomba ghiacciata",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Mossa ricaricante",
-        "p4": "Malvagio"
+        "unique": "PerkID_Artifact_Set2_IceGauntlet",
+        "p2": "PerkID_Charm_EmptySkillPerk",
+        "p3": "PerkID_Fixed_Weapon_DoTPotDurInc",
+        "p4": "PerkID_Slottable_Common_DmgCrit"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/critical1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_IceGauntlet",
-        "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Weapon_CDRBasic",
-        "p4": "PerkID_Weapon_DmgCrit"
+        "p2": "PerkID_Charm_EmptySkillPerk",
+        "p3": "PerkID_Fixed_Weapon_DoTPotDurInc",
+        "p4": "PerkID_Slottable_Common_DmgCrit"
       },
       "drop": {
         "type": "named",
@@ -4836,22 +4958,22 @@
       "type": "Kite Shield",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/1hkiteshields3artifacts.webp",
       "perks": {
-        "unique": "Purificazione ricaricante",
-        "p2": "Contrattacco",
-        "p3": "Difesa curativa",
-        "p4": "Furto di vita"
+        "unique": "PerkID_Artifact_Set1_KiteShield",
+        "p2": "PerkID_Fixed_Shield_Kite_OnBlockDmg",
+        "p3": "PerkID_Fixed_Shield_Kite_OnBlockHeal",
+        "p4": "PerkID_Slottable_Common_HealperDmg"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/rend1.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lifeleech1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_KiteShield",
-        "p2": "PerkID_Shield_Kite_OnBlockDmg",
-        "p3": "PerkID_Shield_Kite_OnBlockHeal",
-        "p4": "PerkID_Weapon_HealOnDmg"
+        "p2": "PerkID_Fixed_Shield_Kite_OnBlockDmg",
+        "p3": "PerkID_Fixed_Shield_Kite_OnBlockHeal",
+        "p4": "PerkID_Slottable_Common_HealperDmg"
       },
       "drop": {
         "type": "pvp tracks",
@@ -5027,22 +5149,22 @@
       "type": "Life Staff",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss6_lifestaff.webp",
       "perks": {
-        "unique": "Tocco di luce",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Mossa ricaricante",
-        "p4": "Benedetto"
+        "unique": "PerkID_Artifact_Set2_LifeStaff",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_LifeStaff_OnLowBonusHeal",
+        "p4": "PerkID_Slottable_Common_HealOutgoing"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cleric1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_LifeStaff",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Weapon_CDRBasic",
-        "p4": "PerkID_WeaponLife_HealOutgoing"
+        "p3": "PerkID_Fixed_LifeStaff_OnLowBonusHeal",
+        "p4": "PerkID_Slottable_Common_HealOutgoing"
       },
       "drop": {
         "type": "pvp tracks",
@@ -5210,22 +5332,22 @@
       "type": "Life Staff",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hlifestaffs3artifacts.webp",
       "perks": {
-        "unique": "Vendetta della natura",
-        "p2": "Faro crudele",
-        "p3": "Mossa ricaricante",
-        "p4": "Incantato"
+        "unique": "PerkID_Artifact_Set1_LifeStaff",
+        "p2": "PerkID_WeaponMastery_LifeStaff_DivineEmbrace",
+        "p3": "PerkID_Fixed_WeaponHeal_OnKillContribution_HealMod",
+        "p4": "PerkID_Fixed_LifeStaff_OnLowBonusHeal"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/lifestaff_ability06.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/damagebasic1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_LifeStaff",
-        "p2": "PerkID_Ability_LifeStaff_Beacon",
-        "p3": "PerkID_Weapon_CDRBasic",
-        "p4": "PerkID_Weapon_DmgBasic"
+        "p2": "PerkID_WeaponMastery_LifeStaff_DivineEmbrace",
+        "p3": "PerkID_Fixed_WeaponHeal_OnKillContribution_HealMod",
+        "p4": "PerkID_Fixed_LifeStaff_OnLowBonusHeal"
       },
       "drop": {
         "type": "pvp tracks",
@@ -5401,22 +5523,22 @@
       "type": "Light Chestwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_season8artifactsvampiresvestments_chest.webp",
       "perks": {
-        "unique": "Prosciugamento",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Salute",
-        "p4": "Guarigioni elusive"
+        "unique": "PerkID_Artifact_Set2_LightChest",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_Health",
+        "p4": "PerkID_Slottable_Common_PvP_DodgeSuccess_Heal"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_LightChest",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Armor_Health",
-        "p4": "PerkID_PvP_Armor_DodgeSuccess_Heal"
+        "p3": "PerkID_Slottable_Common_Health",
+        "p4": "PerkID_Slottable_Common_PvP_DodgeSuccess_Heal"
       },
       "drop": {
         "type": "m1+ rewards",
@@ -5520,22 +5642,22 @@
       "type": "Light Chestwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_legendarylightchest2_chest.webp",
       "perks": {
-        "unique": "Senza peso",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Avversione fisica"
+        "unique": "PerkID_Artifact_Set1_LightChest",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Armor_DamageTradeOff",
+        "p4": "PerkID_Fixed_Chest_HealthStam_Synergy"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/rangewardp1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_LightChest",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_RangeDefense_Physical"
+        "p3": "PerkID_Fixed_Armor_DamageTradeOff",
+        "p4": "PerkID_Fixed_Chest_HealthStam_Synergy"
       },
       "drop": {
         "type": "named",
@@ -5624,22 +5746,22 @@
       "type": "Light Footwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_hexencirce_feet.webp",
       "perks": {
-        "unique": "Benedizione elusiva",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Avversione fisica"
+        "unique": "PerkID_Artifact_Set1_LightFeet",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Legs_DodgeSuccess_Stamina",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Physical"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/rangewardp1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_LightFeet",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_RangeDefense_Physical"
+        "p3": "PerkID_Fixed_Legs_DodgeSuccess_Stamina",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Physical"
       },
       "drop": {
         "type": "opr/ctf",
@@ -5832,22 +5954,22 @@
       "type": "Light Footwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_season5artifacts_creedboots_feet.webp",
       "perks": {
-        "unique": "Imboscata",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Libertà"
+        "unique": "PerkID_Artifact_Set2_LightFeet",
+        "p2": "PerkID_Charm_EmptySkillPerk",
+        "p3": "PerkID_Fixed_Armor_DamageTradeOff",
+        "p4": "PerkID_Slottable_Common_DurCC"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/debuffdur1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_LightFeet",
-        "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_DurCC"
+        "p2": "PerkID_Charm_EmptySkillPerk",
+        "p3": "PerkID_Fixed_Armor_DamageTradeOff",
+        "p4": "PerkID_Slottable_Common_DurCC"
       },
       "drop": {
         "type": "mobs",
@@ -5930,22 +6052,22 @@
       "type": "Light Glove",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_nagacorruptedmedium_hands.webp",
       "perks": {
-        "unique": "Colpo fulmineo",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Libertà"
+        "unique": "PerkID_Artifact_Set1_LightHands",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Armor_PvP_ReflectDmg",
+        "p4": "PerkID_Slottable_Common_DurCC"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/debuffdur1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_LightHands",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_DurCC"
+        "p3": "PerkID_Fixed_Armor_PvP_ReflectDmg",
+        "p4": "PerkID_Slottable_Common_DurCC"
       },
       "drop": {
         "type": "named",
@@ -6030,22 +6152,22 @@
       "type": "Light Glove",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_s8artifactslich_gloves.webp",
       "perks": {
-        "unique": "Maledizione",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Avversione elementale",
-        "p4": "Protezione incantata"
+        "unique": "PerkID_Artifact_Set2_LightHands",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_RangeDefense_Elemental",
+        "p4": "PerkID_Slottable_Common_DefBasic"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/rangewarde1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lostbane1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_LightHands",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Armor_RangeDefense_Elemental",
-        "p4": "PerkID_Armor_DefBasic"
+        "p3": "PerkID_Slottable_Common_RangeDefense_Elemental",
+        "p4": "PerkID_Slottable_Common_DefBasic"
       },
       "drop": {
         "type": "pvp tracks",
@@ -6209,22 +6331,22 @@
       "type": "Light Headwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_s7artifacts_cowlofpower_head.webp",
       "perks": {
-        "unique": "Energia disperata",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Protezione incantata",
-        "p4": "Salute"
+        "unique": "PerkID_Artifact_Set2_LightHead",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_DefBasic",
+        "p4": "PerkID_Slottable_Common_Health"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lostbane1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_LightHead",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Armor_DefBasic",
-        "p4": "PerkID_Armor_Health"
+        "p3": "PerkID_Slottable_Common_DefBasic",
+        "p4": "PerkID_Slottable_Common_Health"
       },
       "drop": {
         "type": "pvp tracks",
@@ -6364,22 +6486,22 @@
       "type": "Light Headwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/cloth_setb_hat_t4.webp",
       "perks": {
-        "unique": "Brillantezza",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Avversione fisica"
+        "unique": "PerkID_Artifact_Set1_LightHead",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_DmgBasic",
+        "p4": "PerkID_Fixed_Armor_DodgeSuccess_Fortify"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/rangewardp1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_LightHead",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_RangeDefense_Physical"
+        "p3": "PerkID_Slottable_Common_DmgBasic",
+        "p4": "PerkID_Fixed_Armor_DodgeSuccess_Fortify"
       },
       "drop": {
         "type": "breaches",
@@ -6450,22 +6572,22 @@
       "type": "Light Legwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_nagacorruptedmedium_legs.webp",
       "perks": {
-        "unique": "Ginocchia rinforzate",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Protezione incantata",
-        "p4": "Avversione fisica"
+        "unique": "PerkID_Artifact_Set1_LightLegs",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_DefBasic",
+        "p4": "PerkID_Fixed_Legs_DodgeSuccess_Stamina"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lostbane1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/rangewardp1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_LightLegs",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Armor_DefBasic",
-        "p4": "PerkID_Armor_RangeDefense_Physical"
+        "p3": "PerkID_Slottable_Common_DefBasic",
+        "p4": "PerkID_Fixed_Legs_DodgeSuccess_Stamina"
       },
       "drop": {
         "type": "opr/ctf",
@@ -6570,22 +6692,22 @@
       "type": "Medium Chestwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_season5artifacts_natureswrath_chest.webp",
       "perks": {
-        "unique": "Benedizione della natura",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Protezione incantata"
+        "unique": "PerkID_Artifact_Set2_MediumChest",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Chest_HealthStam_Synergy",
+        "p4": "PerkID_Fixed_Legs_DmgPerMissingHP"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lostbane1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_MediumChest",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_DefBasic"
+        "p3": "PerkID_Fixed_Chest_HealthStam_Synergy",
+        "p4": "PerkID_Fixed_Legs_DmgPerMissingHP"
       },
       "drop": {
         "type": "named",
@@ -6626,7 +6748,7 @@
           "number": 1,
           "target": "La regina delle sirene",
           "descriptions": [
-            "Sconfiggi {{VC::name=La regina delle sirene::qty=1::named=0::id=undead_siren::url=https://nwdb.info/db/creature/undead_siren}} presso {{POI::icon=https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/map/icon/pois/hero_shipwreck_elite.webp::name=Spira di Melpomene::tid=50131}}"
+            "Sconfiggi {{VC::name=La regina delle sirene::qty=1::named=0::id=undead_siren::url=https://nwdb.info/db/creature/undead_siren}} presso {{POI::icon=::name=Spira di Melpomene::tid=50131}}"
           ]
         }
       ],
@@ -6687,22 +6809,22 @@
       "type": "Medium Chestwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_wraithhunterlightnailst3_chest.webp",
       "perks": {
-        "unique": "Estremamente ricaricante",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Salute"
+        "unique": "PerkID_Artifact_Set1_MediumChest",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Chest_HealthStam_Synergy",
+        "p4": "PerkID_Fixed_Armor_LifestealNoConsumable"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_MediumChest",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_Health"
+        "p3": "PerkID_Fixed_Chest_HealthStam_Synergy",
+        "p4": "PerkID_Fixed_Armor_LifestealNoConsumable"
       },
       "drop": {
         "type": "pvp tracks",
@@ -6878,22 +7000,22 @@
       "type": "Medium Footwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_legendarymediumcalves1_feet.webp",
       "perks": {
-        "unique": "Rapido",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Libertà"
+        "unique": "PerkID_Artifact_Set1_MediumFeet",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Feet_HasteOnVault",
+        "p4": "PerkID_Slottable_Common_DurCC"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/debuffdur1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_MediumFeet",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_DurCC"
+        "p3": "PerkID_Fixed_Feet_HasteOnVault",
+        "p4": "PerkID_Slottable_Common_DurCC"
       },
       "drop": {
         "type": "named",
@@ -6986,22 +7108,22 @@
       "type": "Medium Glove",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_legendaryheavyforearms2_gloves.webp",
       "perks": {
-        "unique": "Tocco del demone",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Avversione elementale"
+        "unique": "PerkID_Artifact_Set1_MediumHands",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Hands_OnAtkBlocked_IncStamDmg",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Elemental"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/rangewarde1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_MediumHands",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_RangeDefense_Elemental"
+        "p3": "PerkID_Fixed_Hands_OnAtkBlocked_IncStamDmg",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Elemental"
       },
       "drop": {
         "type": "named",
@@ -7047,22 +7169,22 @@
       "type": "Medium Glove",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_s7artifacts_ghostlytouch_gloves.webp",
       "perks": {
-        "unique": "Abbraccio spettrale",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Protezione incantata",
-        "p4": "Ricaricante"
+        "unique": "PerkID_Artifact_Set2_MediumHands",
+        "p2": "PerkID_Charm_EmptySkillPerk",
+        "p3": "PerkID_Slottable_Common_DefBasic",
+        "p4": "PerkID_Fixed_Hands_OnSwap_Cleanse"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lostbane1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_MediumHands",
-        "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Armor_DefBasic",
-        "p4": "PerkID_Common_CDR"
+        "p2": "PerkID_Charm_EmptySkillPerk",
+        "p3": "PerkID_Slottable_Common_DefBasic",
+        "p4": "PerkID_Fixed_Hands_OnSwap_Cleanse"
       },
       "drop": {
         "type": "doubloons"
@@ -7225,22 +7347,22 @@
       "type": "Medium Headwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_s9artifactsplagueherald_head.webp",
       "perks": {
-        "unique": "Portapeste",
-        "p2": "Protezione spettrale assorbi-vita",
-        "p3": "Ricaricante",
-        "p4": "Libertà"
+        "unique": "PerkID_Artifact_Set3_MediumHead",
+        "p2": "PerkID_RuneglassGem_CruelSub_Heal",
+        "p3": "PerkID_Fixed_Chest_HealthStam_Synergy",
+        "p4": "PerkID_Slottable_Common_DurCC"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/runeglass/malachitecutt4_health.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/debuffdur1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set3_MediumHead",
         "p2": "PerkID_RuneglassGem_CruelSub_Heal",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_DurCC"
+        "p3": "PerkID_Fixed_Chest_HealthStam_Synergy",
+        "p4": "PerkID_Slottable_Common_DurCC"
       },
       "drop": {
         "type": "influence races",
@@ -7384,22 +7506,22 @@
       "type": "Medium Headwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_season8artifactsoldcrown_head.webp",
       "perks": {
-        "unique": "Regale",
-        "p2": "Protezione spettrale energizzata",
-        "p3": "Onice immacolata",
-        "p4": "Opale immacolato"
+        "unique": "PerkID_Artifact_Set2_MediumHead",
+        "p2": "PerkID_RuneglassGem_CruelSub_Stamina",
+        "p3": "PerkID_Gem_PhysicalWard4",
+        "p4": "PerkID_Gem_ElementalWard4"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/runeglass/malachitecutt4_stamina.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/resource/onyxcutt4.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/resource/opalcutt4.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_MediumHead",
         "p2": "PerkID_RuneglassGem_CruelSub_Stamina",
-        "p3": "PerkID_Artifact_Set2_MediumHead_PhysGem",
-        "p4": "PerkID_Artifact_Set2_MediumHead_ElemGem"
+        "p3": "PerkID_Gem_PhysicalWard4",
+        "p4": "PerkID_Gem_ElementalWard4"
       },
       "drop": {
         "type": "pvp tracks",
@@ -7595,22 +7717,22 @@
       "type": "Medium Headwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_harbingermediumsmile_head.webp",
       "perks": {
-        "unique": "Scrollato di dosso",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Vigore",
-        "p4": "Rinvigorito"
+        "unique": "PerkID_Artifact_Set1_MediumHead",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_DurDot",
+        "p4": "PerkID_Slottable_Common_DurDebuff"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/debuffdur1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/debuffdur1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_MediumHead",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "perkid_armor_durdot",
-        "p4": "perkid_armor_durdebuff"
+        "p3": "PerkID_Slottable_Common_DurDot",
+        "p4": "PerkID_Slottable_Common_DurDebuff"
       },
       "drop": {
         "type": "chests",
@@ -7788,22 +7910,22 @@
       "type": "Medium Legwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_s7artifacts_azothconductors_legs.webp",
       "perks": {
-        "unique": "Dono del mago",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Salute"
+        "unique": "PerkID_Artifact_Set2_MediumLegs",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Armor_LifestealNoConsumable",
+        "p4": "PerkID_Fixed_Armor_PvP_ReflectDmg"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_MediumLegs",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_Health"
+        "p3": "PerkID_Fixed_Armor_LifestealNoConsumable",
+        "p4": "PerkID_Fixed_Armor_PvP_ReflectDmg"
       },
       "drop": {
         "type": "raid boss",
@@ -7925,22 +8047,22 @@
       "type": "Medium Legwear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/m_legendarymediumthighs1_legs.webp",
       "perks": {
-        "unique": "Completo",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Ricaricante",
-        "p4": "Avversione elementale"
+        "unique": "PerkID_Artifact_Set1_MediumLegs",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Legs_DodgeSuccess_Stamina",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Elemental"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/rangewarde1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_MediumLegs",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Common_CDR",
-        "p4": "PerkID_Armor_RangeDefense_Elemental"
+        "p3": "PerkID_Fixed_Legs_DodgeSuccess_Stamina",
+        "p4": "PerkID_Slottable_Common_RangeDefense_Elemental"
       },
       "drop": {
         "type": "quest",
@@ -8025,22 +8147,22 @@
       "type": "Musket",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hmuskets3artifacts.webp",
       "perks": {
-        "unique": "Leve extra",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Trappole acceleranti",
-        "p4": "Bombe adesive riparatrici"
+        "unique": "PerkID_Artifact_Set1_Musket",
+        "p2": "PerkID_Fixed_Weapon_HasteOnCrit",
+        "p3": "PerkID_WeaponMastery_Musket_Traps",
+        "p4": "PerkID_WeaponMastery_Musket_StickyBomb"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/musket_ability04.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/musket_ability05.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Musket",
-        "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Ability_Musket_Traps",
-        "p4": "PerkID_Ability_Musket_StickyBomb"
+        "p2": "PerkID_Fixed_Weapon_HasteOnCrit",
+        "p3": "PerkID_WeaponMastery_Musket_Traps",
+        "p4": "PerkID_WeaponMastery_Musket_StickyBomb"
       },
       "drop": {
         "type": "named",
@@ -8149,22 +8271,22 @@
       "type": "Musket",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss6_musket.webp",
       "perks": {
-        "unique": "Colpo di schegge",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Intensamente seghettato",
-        "p4": "Malvagio"
+        "unique": "PerkID_Artifact_Set2_Musket",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_BleedonCrit",
+        "p4": "PerkID_Slottable_Common_DmgCrit"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/bleed1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/critical1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Musket",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Weapon_BleedonCrit",
-        "p4": "PerkID_Weapon_DmgCrit"
+        "p3": "PerkID_Slottable_Common_BleedonCrit",
+        "p4": "PerkID_Slottable_Common_DmgCrit"
       },
       "drop": {
         "type": "opr/ctf",
@@ -8313,22 +8435,22 @@
       "type": "Rapier",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/1hrapiers3artifacts.webp",
       "perks": {
-        "unique": "Armonia del colpo di grazia",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Svolazzo letale",
-        "p4": "Tondo incisivo"
+        "unique": "PerkID_Artifact_Set1_Rapier",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Weapon_DoTPotDurInc",
+        "p4": "PerkID_WeaponMastery_Rapier_FlourishAndFinish"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/rapier_ability3_flourish.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/rapier_ability1_slash.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Rapier",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Ability_Rapier_FlourishAndFinish",
-        "p4": "PerkID_Ability_Rapier_Tondo"
+        "p3": "PerkID_Fixed_Weapon_DoTPotDurInc",
+        "p4": "PerkID_WeaponMastery_Rapier_FlourishAndFinish"
       },
       "drop": {
         "type": "named",
@@ -8385,22 +8507,22 @@
       "type": "Rapier",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss6_rapier.webp",
       "perks": {
-        "unique": "Punta di lava",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Colpi incisivi",
-        "p4": "Mossa ricaricante"
+        "unique": "PerkID_Artifact_Set2_Rapier",
+        "p2": "PerkID_Charm_EmptySkillPerk",
+        "p3": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_DMG",
+        "p4": "PerkID_Fixed_Weapon_DoTPotDurInc"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/damagebasic1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Rapier",
-        "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Weapon_Melee_ChargedHeavy_DMG",
-        "p4": "PerkID_Weapon_CDRBasic"
+        "p2": "PerkID_Charm_EmptySkillPerk",
+        "p3": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_DMG",
+        "p4": "PerkID_Fixed_Weapon_DoTPotDurInc"
       },
       "drop": {
         "type": "m1+ boss",
@@ -8518,22 +8640,22 @@
       "type": "Ring",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/angryearthring21.webp",
       "perks": {
-        "unique": "Affinità elementale",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Consapevolezza incisiva",
-        "p4": "Vigoroso"
+        "unique": "PerkID_Artifact_Set2_Ring1",
+        "p2": "PerkID_Fixed_Ring_OnTargetDoT_CritChance",
+        "p3": "PerkID_Slottable_Common_DmgCrit",
+        "p4": "PerkID_Fixed_Ring_BaseDamageInc"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/critical1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/stamina1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Ring1",
-        "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Ring_Crit",
-        "p4": "PerkID_Ring_MaxStamina"
+        "p2": "PerkID_Fixed_Ring_OnTargetDoT_CritChance",
+        "p3": "PerkID_Slottable_Common_DmgCrit",
+        "p4": "PerkID_Fixed_Ring_BaseDamageInc"
       },
       "drop": {
         "type": "raid boss",
@@ -8695,22 +8817,22 @@
       "type": "Ring",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/armor/corruptedring20.webp",
       "perks": {
-        "unique": "Armonia del demone",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Assorbi-vita",
-        "p4": "Vigoroso"
+        "unique": "PerkID_Artifact_Set1_Ring1",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_HealperDmg",
+        "p4": "PerkID_Fixed_Ring_OnSwap_CritChanceTilNextHit"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/stamina1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Ring1",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Ring_HealperDmg",
-        "p4": "PerkID_Ring_MaxStamina"
+        "p3": "PerkID_Slottable_Common_HealperDmg",
+        "p4": "PerkID_Fixed_Ring_OnSwap_CritChanceTilNextHit"
       },
       "drop": {
         "type": "m1+ boss",
@@ -8924,22 +9046,22 @@
       "type": "Round Shield",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/1hroundshields3artifacts.webp",
       "perks": {
-        "unique": "Spuntoni seghettati",
-        "p2": "Colpo di scudo riducente",
-        "p3": "Carica con scudo fortificante",
-        "p4": "Intensamente prodigioso"
+        "unique": "PerkID_Artifact_Set1_RoundShield",
+        "p2": "PerkID_WeaponMastery_Shield_ShieldBash",
+        "p3": "PerkID_WeaponMastery_Shield_ShieldRush",
+        "p4": "PerkID_Fixed_Shield_Kite_OnBlockDmg"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/sword_ability04.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/sword_ability05.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/empower1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_RoundShield",
-        "p2": "PerkID_Ability_Shield_ShieldBash",
-        "p3": "PerkID_Ability_Shield_ShieldRush",
-        "p4": "PerkID_Weapon_EmpowerOnCrit"
+        "p2": "PerkID_WeaponMastery_Shield_ShieldBash",
+        "p3": "PerkID_WeaponMastery_Shield_ShieldRush",
+        "p4": "PerkID_Fixed_Shield_Kite_OnBlockDmg"
       },
       "drop": {
         "type": "mobs",
@@ -9092,22 +9214,22 @@
       "type": "Spear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hspears3artifacts.webp",
       "perks": {
-        "unique": "Pungiglione",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Giavellotto separante",
-        "p4": "Colpi incisivi"
+        "unique": "PerkID_Artifact_Set1_Spear",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_WeaponMastery_Spear_Javelin",
+        "p4": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_DMG"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/spear_ability01.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/damagebasic1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Spear",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Ability_Spear_Javelin",
-        "p4": "PerkID_Weapon_Melee_ChargedHeavy_DMG"
+        "p3": "PerkID_WeaponMastery_Spear_Javelin",
+        "p4": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_DMG"
       },
       "drop": {
         "type": "named",
@@ -9160,22 +9282,22 @@
       "type": "Spear",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hspearseason5artifactst5.webp",
       "perks": {
-        "unique": "Punta avvelenata",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Critici incisivi",
-        "p4": "Colpi incisivi"
+        "unique": "PerkID_Artifact_Set2_Spear",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_Crit",
+        "p4": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_DMG"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/critical1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/damagebasic1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Spear",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "perkid_weapon_melee_chargedheavy_crit",
-        "p4": "PerkID_Weapon_Melee_ChargedHeavy_DMG"
+        "p3": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_Crit",
+        "p4": "PerkID_Fixed_Weapon_Melee_ChargedHeavy_DMG"
       },
       "drop": {
         "type": "named",
@@ -9183,7 +9305,6 @@
         "mobId": "undead_siren",
         "zone": "Spira di Melpomene",
         "zoneTid": "50131",
-        "zoneIcon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/map/icon/pois/hero_shipwreck_elite.webp",
         "mode": "PvE Arena",
         "chance": 20.0
       },
@@ -9297,22 +9418,22 @@
       "type": "Sword",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss8_sword.webp",
       "perks": {
-        "unique": "Osservazioni sprezzanti",
-        "p2": "Vendetta energizzata",
-        "p3": "Incisivo",
-        "p4": "Intensamente fortificato"
+        "unique": "PerkID_Artifact_Set2_Sword",
+        "p2": "PerkId_RuneglassGem_StrikeAdd_Stamina",
+        "p3": "PerkID_Fixed_Weapon_RendingStacks",
+        "p4": "PerkID_Slottable_Common_FortifyOnCrit"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/runeglass/jaspercutt4_stamina.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/critical1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/fortify1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Sword",
         "p2": "PerkId_RuneglassGem_StrikeAdd_Stamina",
-        "p3": "PerkID_Weapon_CritChance",
-        "p4": "PerkID_Weapon_FortifyOnCrit"
+        "p3": "PerkID_Fixed_Weapon_RendingStacks",
+        "p4": "PerkID_Slottable_Common_FortifyOnCrit"
       },
       "drop": {
         "type": "m1+ rewards",
@@ -9420,22 +9541,22 @@
       "type": "Sword",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/1hswords3artifacts.webp",
       "perks": {
-        "unique": "Emorragia",
-        "p2": "Turbine rotante",
-        "p3": "Lama rotante potenziante",
-        "p4": "Intensamente seghettato"
+        "unique": "PerkID_Artifact_Set1_Sword",
+        "p2": "PerkID_Artifact_Set1_SwordPerk",
+        "p3": "PerkID_WeaponMastery_Sword_WhirlingBlade",
+        "p4": "PerkID_Slottable_Common_BleedonCrit"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/sword_ability02.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/bleed1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Sword",
         "p2": "PerkID_Artifact_Set1_SwordPerk",
-        "p3": "PerkID_Ability_Sword_WhirlingBlade",
-        "p4": "PerkID_Weapon_BleedonCrit"
+        "p3": "PerkID_WeaponMastery_Sword_WhirlingBlade",
+        "p4": "PerkID_Slottable_Common_BleedonCrit"
       },
       "drop": {
         "type": "m1+ boss",
@@ -9641,22 +9762,22 @@
       "type": "Tower Shield",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/1htowershields3artifacts.webp",
       "perks": {
-        "unique": "Muro di scudi",
-        "p2": "Sentinella cromatica",
-        "p3": "Robusto",
-        "p4": "Intensamente fortificato"
+        "unique": "PerkID_Artifact_Set1_TowerShield",
+        "p2": "PerkID_Artifact_Set1_TowerPerk",
+        "p3": "PerkID_Fixed_MeleeShield_BlockingStam",
+        "p4": "PerkID_Slottable_Common_FortifyOnCrit"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/stamina1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/fortify1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_TowerShield",
         "p2": "PerkID_Artifact_Set1_TowerPerk",
-        "p3": "PerkID_WeaponMelee_BlockingStam",
-        "p4": "PerkID_Weapon_FortifyOnCrit"
+        "p3": "PerkID_Fixed_MeleeShield_BlockingStam",
+        "p4": "PerkID_Slottable_Common_FortifyOnCrit"
       },
       "drop": {
         "type": "m1+ boss",
@@ -9810,22 +9931,22 @@
       "type": "Tower Shield",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss8_towershield.webp",
       "perks": {
-        "unique": "Altruismo",
+        "unique": "PerkID_Artifact_Set2_TowerShield",
         "p2": "Robusto",
-        "p3": "Protezione incantata",
-        "p4": "Furto di vita"
+        "p3": "PerkID_Slottable_Common_DefBasic",
+        "p4": "PerkID_Fixed_MeleeShield_BlockingMove"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
+        "unique": "",
         "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/stamina1.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/lostbane1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp"
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_TowerShield",
         "p2": "PerkID_WeaponMelee_BlockingStam",
-        "p3": "PerkID_Armor_DefBasic",
-        "p4": "PerkID_Weapon_HealOnDmg"
+        "p3": "PerkID_Slottable_Common_DefBasic",
+        "p4": "PerkID_Fixed_MeleeShield_BlockingMove"
       },
       "drop": {
         "type": "m1+ rewards",
@@ -10025,22 +10146,22 @@
       "type": "Void Gauntlet",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss6_voidgauntlet.webp",
       "perks": {
-        "unique": "Squarcio riparatore",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Mossa ricaricante",
-        "p4": "Incisivo"
+        "unique": "PerkID_Artifact_Set2_VoidGauntlet",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Fixed_WeaponHeal_OnKillContribution_HealMod",
+        "p4": "PerkID_Slottable_Common_CritChance"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/critical1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_VoidGauntlet",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Weapon_CDRBasic",
-        "p4": "PerkID_Weapon_CritChance"
+        "p3": "PerkID_Fixed_WeaponHeal_OnKillContribution_HealMod",
+        "p4": "PerkID_Slottable_Common_CritChance"
       },
       "drop": {
         "type": "breaches",
@@ -10111,22 +10232,22 @@
       "type": "Void Gauntlet",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hvoidgauntlets3artifacts.webp",
       "perks": {
-        "unique": "Energia negativa",
-        "p2": "Incisivo",
-        "p3": "Furto di vita",
-        "p4": "Mossa ricaricante"
+        "unique": "PerkID_Artifact_Set1_VoidGauntlet",
+        "p2": "PerkID_Fixed_Weapon_Attunement_Void",
+        "p3": "PerkID_Slottable_Common_HealperDmg",
+        "p4": "PerkID_Fixed_Weapon_DoTPotDurInc"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/critical1.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_VoidGauntlet",
-        "p2": "PerkID_Weapon_CritChance",
-        "p3": "PerkID_Weapon_HealOnDmg",
-        "p4": "PerkID_Weapon_CDRBasic"
+        "p2": "PerkID_Fixed_Weapon_Attunement_Void",
+        "p3": "PerkID_Slottable_Common_HealperDmg",
+        "p4": "PerkID_Fixed_Weapon_DoTPotDurInc"
       },
       "drop": {
         "type": "named",
@@ -10191,22 +10312,22 @@
       "type": "War Hammer",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss9_warhammer.webp",
       "perks": {
-        "unique": "Getto",
-        "p2": "Sgombero separante",
+        "unique": "PerkID_Artifact_Set3_Warhammer",
+        "p2": "PerkID_WeaponMastery_Hammer_ClearOut",
         "p3": "Colpi piagati",
-        "p4": "Incantesimo alternante"
+        "p4": "PerkID_Fixed_Weapon_DmgWithGrit"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/warhammer_ability04.webp",
+        "unique": "",
+        "p2": "",
         "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/disease1.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/damagebasic1.webp"
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set3_Warhammer",
-        "p2": "PerkID_Ability_Hammer_ClearOut",
+        "p2": "PerkID_WeaponMastery_Hammer_ClearOut",
         "p3": "PerkID_Weapon_Disease_OnLowHP_Heavy",
-        "p4": "PerkID_Weapon_Melee_AlternateAttacks"
+        "p4": "PerkID_Fixed_Weapon_DmgWithGrit"
       },
       "drop": {
         "type": "opr/ctf",
@@ -10244,9 +10365,9 @@
           "taskId": "Task_Perk3_Artifact_Set3_2hWarhammer",
           "perk": 4,
           "number": 1,
-          "target": "Cupidigia",
+          "target": "Orellani",
           "descriptions": [
-            "Sconfiggi {{VC::name=Cupidigia::qty=1::named=1::id=Swamp_Dryad_Beast_Named_ELITE_05Wc10::url=https://nwdb.info/db/creature/Swamp_Dryad_Beast_Named_ELITE_05Wc10}} presso {{POI::icon=https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/map/icon/pois/ancient_ruins_elite.webp::name=Laghetto Eterno::tid=50119}}"
+            "Sconfiggi {{VC::name=Orellani::qty=1::named=1::id=Swamp_Dryad_Beast_Named_ELITE_05Wc10::url=https://nwdb.info/db/creature/Swamp_Dryad_Beast_Named_ELITE_05Wc10}} presso {{POI::icon=https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/map/icon/pois/ancient_ruins_elite.webp::name=Laghetto Eterno::tid=50119}}"
           ]
         }
       ],
@@ -10299,22 +10420,22 @@
       "type": "War Hammer",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/2hwarhammers3artifacts.webp",
       "perks": {
-        "unique": "Benedizione di Mjölnir",
-        "p2": "Scintilla",
-        "p3": "Maglio possente ricaricante",
-        "p4": "Mossa ricaricante"
+        "unique": "PerkID_Artifact_Set1_Warhammer",
+        "p2": "PerkID_Artifact_Set1_WarhammerPerk",
+        "p3": "PerkID_WeaponMastery_Hammer_MightyGavel",
+        "p4": "PerkID_Fixed_Weapon_Attunement_Lightning"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/abilities/warhammer_ability02.webp",
-        "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/cdr1.webp"
+        "unique": "",
+        "p2": "",
+        "p3": "",
+        "p4": ""
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set1_Warhammer",
         "p2": "PerkID_Artifact_Set1_WarhammerPerk",
-        "p3": "PerkID_Ability_Hammer_MightyGavel",
-        "p4": "PerkID_Weapon_CDRBasic"
+        "p3": "PerkID_WeaponMastery_Hammer_MightyGavel",
+        "p4": "PerkID_Fixed_Weapon_Attunement_Lightning"
       },
       "drop": {
         "type": "m1+ boss",
@@ -10464,21 +10585,21 @@
       "type": "War Hammer",
       "icon": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/items/weapon/app_artifactss7_warhammer.webp",
       "perks": {
-        "unique": "Consumo",
-        "p2": "Alloggiamento vuoto",
-        "p3": "Furto di vita",
+        "unique": "PerkID_Artifact_Set2_Warhammer",
+        "p2": "PerkID_Gem_EmptyGemSlot",
+        "p3": "PerkID_Slottable_Common_HealperDmg",
         "p4": "Recupero incisivo"
       },
       "perks_icons": {
-        "unique": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/misc/icon_attribute_arrow.webp",
-        "p2": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/crafting/crafting_gemslot.webp",
-        "p3": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp",
+        "unique": "",
+        "p2": "",
+        "p3": "",
         "p4": "https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/icons/perks/health1.webp"
       },
       "perks_ids": {
         "unique": "PerkID_Artifact_Set2_Warhammer",
         "p2": "PerkID_Gem_EmptyGemSlot",
-        "p3": "PerkID_Weapon_HealOnDmg",
+        "p3": "PerkID_Slottable_Common_HealperDmg",
         "p4": "PerkID_Weapon_Melee_ChargedHeavy_Heal"
       },
       "drop": {
@@ -10522,9 +10643,9 @@
           "taskId": "Task_Perk3_Artifact_Set2_2hWarhammer",
           "perk": 4,
           "number": 1,
-          "target": "Cupidigia",
+          "target": "Orellani",
           "descriptions": [
-            "Sconfiggi {{VC::name=Cupidigia::qty=1::named=1::id=Swamp_Dryad_Beast_Named_ELITE_05Wc10::url=https://nwdb.info/db/creature/Swamp_Dryad_Beast_Named_ELITE_05Wc10}} presso {{POI::icon=https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/map/icon/pois/ancient_ruins_elite.webp::name=Laghetto Eterno::tid=50119}}"
+            "Sconfiggi {{VC::name=Orellani::qty=1::named=1::id=Swamp_Dryad_Beast_Named_ELITE_05Wc10::url=https://nwdb.info/db/creature/Swamp_Dryad_Beast_Named_ELITE_05Wc10}} presso {{POI::icon=https://cdn.nw-buddy.de/nw-data/live/lyshineui/images/map/icon/pois/ancient_ruins_elite.webp::name=Laghetto Eterno::tid=50119}}"
           ]
         }
       ],

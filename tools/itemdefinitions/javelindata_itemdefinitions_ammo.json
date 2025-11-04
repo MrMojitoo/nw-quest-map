@@ -776,11 +776,27 @@
 		"AmmoWhizByTrigger": "Play_Bullet_WizzBys"
 	},
 	{
+		"AmmoID": "BaseDaggerAmmo",
+		"AmmoType": "Thrown",
+		"DamageModifier": 1,
+		"StaggerDamageModifier": 1,
+		"AmmoPrefabPath": "Items/Weapons/basic_thrown",
+		"AmmoWhizByTrigger": "Play_Bullet_WizzBys"
+	},
+	{
 		"AmmoID": "MagicBook_Projectile",
 		"AmmoType": "Siege",
 		"DamageModifier": 1,
 		"StaggerDamageModifier": 1,
 		"AmmoPrefabPath": "WorldEvents/Dunwood/Gimmicks/MagicBooks/magic_book_proj",
 		"AmmoWhizByTrigger": "Play_Bullet_WizzBys"
+	},
+	{
+		"AmmoID": "AI_Seraphim_Mute_Seraph_Rebuke_Impact_Projectile",
+		"AmmoType": "Shot",
+		"DamageModifier": 1,
+		"StaggerDamageModifier": 1,
+		"AmmoPrefabPath": "Characters/Trials/Seraphim/Trial_Quest_Seraphim_Mute_Rebuke_Impact_Wave_Small",
+		"AmmoWhizByTrigger": "Play_Arrow_WhizzBys"
 	}
 ]

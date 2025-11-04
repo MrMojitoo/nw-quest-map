@@ -18,7 +18,7 @@ csv_path = sys.argv[1]
 out_path = os.path.join('public', 'data', 'quests.json')
 df = pd.read_csv(csv_path, encoding='utf-8', low_memory=False)
 df.columns = [c.strip() for c in df.columns]
-EXCLUDE_RE = re.compile(r"(^01_|^S_|^Quest_|AC_Test|devworld|_alt|EnterZone_SM|_EG|_RW|^9806_|^9809_|^9812_" \
+EXCLUDE_RE = re.compile(r"(^01_|^S_|^Quest_03|^Quest_08|AC_Test|devworld|_alt|EnterZone_SM|_EG|_RW|^9806_|^9809_|^9812_" \
                         r"|(_soldier|_destroyer|_ranger|_musketeer|_occultist|_mystic|_swordsman)$)")
 TYPE_EXCLUDE_RE = re.compile(r"\b(Artifact|Mission|Community Goal)\b", re.IGNORECASE)
 MANUAL_PATH = os.path.join('tools', 'manual_links.json')
@@ -1451,16 +1451,42 @@ except NameError:
 
 def load_objective_tasks_many(path_or_csv: str) -> Dict[str, dict]:
     """
-    Charge un ou plusieurs ObjectiveTasksDataManager_*.csv et fusionne en:
+    Charge un ou plusieurs CSVs de tasks et fusionne en:
       dict[TaskID] = row(dict)
-    - Si path_or_csv est un dossier: on prend tous les fichiers
-      ObjectiveTasksDataManager*.csv dedans.
-    - Sinon: on traite path_or_csv comme un seul CSV.
+
+    - Si path_or_csv est un dossier: prend tous les fichiers
+      ObjectiveTasksDataManager*.csv ET Quest_*.datasheet.csv.
+    - Sinon: traite path_or_csv comme un seul CSV.
     """
+    def _read_csv_robust_keep_headers(fp: str) -> pd.DataFrame | None:
+        try:
+            # 1) auto-détection
+            return pd.read_csv(fp, encoding='utf-8', low_memory=False, sep=None, engine='python')
+        except Exception:
+            try:
+                # 2) virgule
+                return pd.read_csv(fp, encoding='utf-8', low_memory=False)
+            except Exception:
+                try:
+                    # 3) point-virgule
+                    return pd.read_csv(fp, encoding='utf-8', low_memory=False, sep=';')
+                except Exception as e:
+                    print(f"[WARN] Lecture impossible: {fp} ({e})")
+                    return None
+
+    def _pick_id_col(cols: list[str]) -> str | None:
+        wanted = {"taskid", "task id", "task"}
+        lowmap = {str(c).strip().lower(): c for c in cols}
+        for w in ("taskid", "task id", "task"):
+            if w in lowmap:
+                return lowmap[w]
+        return None
+
     files: List[str] = []
     if path_or_csv and os.path.isdir(path_or_csv):
-        # Tous les CSV “ObjectiveTasksDataManager*.csv” du dossier
+        # Tous les CSV “ObjectiveTasksDataManager*.csv” et “Quest_*.datasheet.csv”
         files = sorted(glob.glob(os.path.join(path_or_csv, "ObjectiveTasksDataManager*.csv")))
+        files += sorted(glob.glob(os.path.join(path_or_csv, "Quest_*.datasheet.csv")))
     elif path_or_csv and os.path.isfile(path_or_csv):
         files = [path_or_csv]
     else:
@@ -1469,30 +1495,44 @@ def load_objective_tasks_many(path_or_csv: str) -> Dict[str, dict]:
             files = ["ObjectiveTasksDataManager.csv"]
 
     if not files:
-        print(f"[WARN] Aucun ObjectiveTasksDataManager*.csv trouvé à partir de: {path_or_csv}")
+        print(f"[WARN] Aucun fichier de tasks trouvé à partir de: {path_or_csv}")
         return {}
 
     idx: Dict[str, dict] = {}
     total_rows = 0
     for fp in files:
+        df_tasks = _read_csv_robust_keep_headers(fp)
+        if df_tasks is None:
+            continue
+        # Ne PAS normaliser les noms de colonnes ici : le reste du pipeline attend
+        # des clés comme 'SubTask1', 'TP_DescriptionTag', etc.
+        # On ne fait que strip les noms.
         try:
-            df_tasks = pd.read_csv(fp, encoding='utf-8', low_memory=False)
-        except Exception as e:
-            print(f"[WARN] Lecture impossible: {fp} ({e})")
+            df_tasks.columns = [str(c).strip() for c in df_tasks.columns]
+        except Exception:
+            pass
+
+        id_col = _pick_id_col(list(df_tasks.columns))
+        if not id_col:
+            print(f"[WARN] Aucune colonne TaskID/Task Id/Task dans {os.path.basename(fp)} — ignoré")
             continue
-        df_tasks.columns = [c.strip() for c in df_tasks.columns]
-        if "TaskID" not in df_tasks.columns:
-            print(f"[WARN] Colonne 'TaskID' absente dans {os.path.basename(fp)} — ignoré")
-            continue
+
+        loaded_here = 0
         for _, row in df_tasks.iterrows():
-            tid = str(row.get("TaskID","")).strip()
+            tid = str(row.get(id_col, "")).strip().strip('"').strip("'")
             if not tid:
                 continue
-            # dernière occurrence gagne (OK pour nous)
-            idx[tid] = {k: (None if (isinstance(v,float) and np.isnan(v)) else v) for k,v in row.to_dict().items()}
+            # dernière occurrence gagne (OK, permet aux datasheets de surcharger)
+            idx[tid] = {k: (None if (isinstance(v, float) and np.isnan(v)) else v) for k, v in row.to_dict().items()}
             total_rows += 1
-    print(f"[OK] ObjectiveTasks chargés: {len(idx)} (fusion de {len(files)} fichier(s), {total_rows} lignes lues)")
+            loaded_here += 1
+
+        if DEBUG_TASKS:
+            print(f"[DBG] {os.path.basename(fp)}: {loaded_here} tasks indexées via '{id_col}'")
+
+    print(f"[OK] Tasks chargées: {len(idx)} (fusion de {len(files)} fichier(s), {total_rows} lignes lues)")
     return idx
+
 
 
 
